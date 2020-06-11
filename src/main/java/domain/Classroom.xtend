@@ -19,6 +19,13 @@ import javax.persistence.OneToOne
 @Accessors
 class Classroom {
 	
+	@Id
+	@GeneratedValue
+	Long id
+	
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	Subject subject
+	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	List<Homework> homework = new ArrayList<Homework>
 	
@@ -28,13 +35,6 @@ class Classroom {
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	List<Post> posts = new ArrayList<Post>
 	
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	Long id
-	
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	Subject subject
 	
 	def addUser(User userToAdd){
 		users.add(userToAdd)

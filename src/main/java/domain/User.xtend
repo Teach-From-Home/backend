@@ -14,7 +14,7 @@ import org.uqbar.commons.model.annotations.Observable
 class User{
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue
 	Long id
 	
 	@Column
@@ -28,5 +28,9 @@ class User{
 	
 	@Column
 	int dni
-
+	
+	@Column
+	String password
+	
+	
 }

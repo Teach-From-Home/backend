@@ -14,7 +14,7 @@ import org.uqbar.commons.model.annotations.Observable
 class Subject {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue
 	Long id
 	
 	@Column
