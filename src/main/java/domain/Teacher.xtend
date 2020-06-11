@@ -5,7 +5,13 @@ import java.util.ArrayList
 import javax.persistence.OneToMany
 import javax.persistence.FetchType
 import javax.persistence.CascadeType
+import org.eclipse.xtend.lib.annotations.Accessors
+import javax.persistence.Entity
+import org.uqbar.commons.model.annotations.Observable
 
+@Entity
+@Observable
+@Accessors
 class Teacher extends User{
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

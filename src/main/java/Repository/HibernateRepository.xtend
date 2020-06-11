@@ -13,7 +13,7 @@ import javax.persistence.Persistence
 @Accessors
 abstract class HibernateRepository<T> {
 
-	static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("Heladeria")
+	static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TeachFromHome")
 	protected static EntityManager entityManager = entityManagerFactory.createEntityManager
 
 	def List<T> allInstances() {

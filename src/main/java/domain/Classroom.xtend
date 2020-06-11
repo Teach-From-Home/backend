@@ -2,15 +2,21 @@ package domain
 
 import java.util.ArrayList
 import java.util.List
-import javax.persistence.OneToMany
-import javax.persistence.ManyToMany
-import javax.persistence.GenerationType
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.Column
 import javax.persistence.CascadeType
 import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.ManyToMany
+import javax.persistence.OneToMany
+import org.eclipse.xtend.lib.annotations.Accessors
+import javax.persistence.Entity
+import org.uqbar.commons.model.annotations.Observable
+import javax.persistence.OneToOne
 
+@Entity
+@Observable
+@Accessors
 class Classroom {
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
@@ -27,7 +33,7 @@ class Classroom {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	Long id
 	
-	@Column
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	Subject subject
 	
 	def addUser(User userToAdd){
