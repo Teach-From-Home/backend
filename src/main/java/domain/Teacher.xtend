@@ -4,10 +4,10 @@ import java.util.List
 import java.util.ArrayList
 import javax.persistence.OneToMany
 import javax.persistence.FetchType
-import javax.persistence.CascadeType
 import org.eclipse.xtend.lib.annotations.Accessors
 import javax.persistence.Entity
 import org.uqbar.commons.model.annotations.Observable
+import javax.persistence.CascadeType
 
 @Entity
 @Observable

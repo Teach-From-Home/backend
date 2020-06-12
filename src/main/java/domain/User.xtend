@@ -31,6 +31,4 @@ class User{
 	
 	@Column
 	String password
-	
-	
 }

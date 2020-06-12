@@ -5,7 +5,6 @@ import java.util.List
 import javax.persistence.CascadeType
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
@@ -13,6 +12,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import javax.persistence.Entity
 import org.uqbar.commons.model.annotations.Observable
 import javax.persistence.OneToOne
+import javax.persistence.Column
 
 @Entity
 @Observable
@@ -23,7 +23,10 @@ class Classroom {
 	@GeneratedValue
 	Long id
 	
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@Column(columnDefinition="TEXT")
+	String description
+	
+	@OneToOne
 	Subject subject
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
@@ -34,7 +37,6 @@ class Classroom {
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	List<Post> posts = new ArrayList<Post>
-	
 	
 	def addUser(User userToAdd){
 		users.add(userToAdd)

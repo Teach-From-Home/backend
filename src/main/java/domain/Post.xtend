@@ -7,7 +7,6 @@ import javax.persistence.Id
 import javax.persistence.GeneratedValue
 import javax.persistence.Column
 import javax.persistence.OneToMany
-import javax.persistence.GenerationType
 import org.eclipse.xtend.lib.annotations.Accessors
 import javax.persistence.Entity
 import org.uqbar.commons.model.annotations.Observable
@@ -23,23 +22,20 @@ class Post {
 	@Id
 	@GeneratedValue
 	Long id
-	
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	Student student
-	
+
+	@OneToOne
+	User user
+
 	@Column
 	boolean isPrivate
-	
-	@Column
+
+	@Column(columnDefinition="TEXT")
 	String text
-	
-	@Column
-	String type
-	
+
 	@Column
 	LocalDate date
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	List<Post> coments = new ArrayList<Post>
 	
 	def addComent(Post comentToAdd){

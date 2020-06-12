@@ -20,6 +20,6 @@ class Subject {
 	@Column
 	String name
 	
-	@Column
+	@Column(columnDefinition="TEXT")
 	String description
 }
