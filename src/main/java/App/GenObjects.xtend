@@ -33,7 +33,11 @@ class GenObjects {
 		//User Data definition
 		
 		val admin = new User => [
-			name = "admin"
+			name = "juan"
+			
+			lastname = "pedraza"
+			
+			email = "juanpedraza@gmail.com"
 			
 			dni = 40128383
 			
