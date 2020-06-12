@@ -14,7 +14,7 @@ class UserService {
 	}
 	
 	def getUsers(){
-		userRepo.getUsers()
+		userRepo.getUsers().toJson
 	}
 }
 
