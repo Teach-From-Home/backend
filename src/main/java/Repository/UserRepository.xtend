@@ -42,7 +42,7 @@ class UserRepository extends HibernateRepository<User>{
 			
 		} finally {
 			
-		}
+		} 
 	}
 	
 	def getUsers(){
