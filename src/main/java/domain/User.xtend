@@ -24,7 +24,7 @@ class User{
 	String name
 	
 	@Column
-	String lastname
+	String lastName
 	
 	@Column
 	String email

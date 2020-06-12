@@ -5,6 +5,7 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 import services.UserSignIn
+import domain.Teacher
 
 class UserRepository extends HibernateRepository<User>{
 	
@@ -53,6 +54,27 @@ class UserRepository extends HibernateRepository<User>{
 			query.select(from)
 			
 			return entityManager.createQuery(query).resultList
+			
+		} finally {
+			
+		}
+	}
+	
+	def getTeacherSubjects(Long id){
+		try {
+			val teacherEntity = Teacher
+			
+			val criteria = entityManager.criteriaBuilder
+			val query = criteria.createQuery(teacherEntity)
+			val from = query.from(teacherEntity)
+			query.select(from)
+			
+			query.where(newArrayList => [
+					add(criteria.equal(from.get("id"), id))
+				]
+			)
+			
+			return entityManager.createQuery(query).singleResult
 			
 		} finally {
 			

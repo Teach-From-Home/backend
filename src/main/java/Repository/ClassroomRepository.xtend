@@ -38,4 +38,39 @@ class ClassroomRepository extends HibernateRepository<Classroom>{
 		}
 	}
 	
+	def getClassroom(Long id){
+		try {
+			val criteria = entityManager.criteriaBuilder
+			val query = criteria.createQuery(Classroom)
+			val from = query.from(Classroom)
+			query.select(from)
+			
+			query.where(newArrayList => [
+					add(criteria.equal(from.get("id"), id))
+				]
+			)
+			return entityManager.createQuery(query).singleResult
+			
+		} finally {
+			
+		}
+	}
+	
+	def getHomeworkFromStudentView(Long id){
+		try {
+			val criteria = entityManager.criteriaBuilder
+			val query = criteria.createQuery(Classroom)
+			val from = query.from(Classroom)
+			query.select(from)
+			
+			query.where(newArrayList => [
+					add(criteria.equal(from.get("id"), id))
+				]
+			)
+			return entityManager.createQuery(query).singleResult
+			
+		} finally {
+			
+		}
+	}
 }

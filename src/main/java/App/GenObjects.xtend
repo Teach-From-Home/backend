@@ -35,7 +35,7 @@ class GenObjects {
 		val admin = new User => [
 			name = "juan"
 			
-			lastname = "pedraza"
+			lastName = "pedraza"
 			
 			email = "juanpedraza@gmail.com"
 			
@@ -47,7 +47,7 @@ class GenObjects {
 		val student1 = new Student => [
 			name = "pepe"
 		
-			lastname = "tini"
+			lastName = "tini"
 		
 			email = "agustinmariotini@gmail.com"
 		
@@ -59,7 +59,7 @@ class GenObjects {
 		val teacher = new Teacher => [
 			name = "julian"
 			
-			lastname = "weich"
+			lastName = "weich"
 			
 			email = "julianweich@gmail.com"
 			

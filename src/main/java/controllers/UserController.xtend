@@ -7,17 +7,20 @@ import services.UserService
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.xtrest.api.annotation.Get
+import org.uqbar.xtrest.json.JSONUtils
+import services.UserSignIn
 
 @Controller
 class UserController {
-	
+	extension JSONUtils = new JSONUtils
 	UserService userService = new UserService
 	
 	@Post("/login")
 	def login(@Body String body){
 	try {
 			try {
-				return ok(userService.getUserSignIn(body))
+				val userSignInBody = body.fromJson(UserSignIn)
+				return ok(userService.getUserSignIn(userSignInBody).toJson)
 			} catch (UserException exception) {
 				return badRequest()
 			}
@@ -30,7 +33,20 @@ class UserController {
 	def getUsers(){
 		try {
 			try {
-				return ok(userService.getUsers())
+				return ok(userService.getUsers().toJson)
+			} catch (UserException exception) {
+				return badRequest()
+			}
+		} catch (UnrecognizedPropertyException exception) {
+			return badRequest()
+		}
+	}
+	
+	@Get("/teacherSubjects/:id")
+	def getTeacherSubjects(){
+		try {
+			try {
+				return ok(userService.getTeacherSubjects(id).toJson)
 			} catch (UserException exception) {
 				return badRequest()
 			}
@@ -39,4 +55,3 @@ class UserController {
 		}
 	}
 }
-

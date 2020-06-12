@@ -1,20 +1,23 @@
 package services
 
 import Repository.UserRepository
-import org.uqbar.xtrest.json.JSONUtils
 import org.eclipse.xtend.lib.annotations.Accessors
+import Parsers.ParserStringToLong
 
 class UserService {
-	extension JSONUtils = new JSONUtils
 	UserRepository userRepo = UserRepository.instance
+	static ParserStringToLong parserStringToLong = ParserStringToLong.instance
 	
-	def getUserSignIn(String userSignInBody){
-		val userSignInData = userSignInBody.fromJson(UserSignIn)
-		userRepo.getUserBySignIn(userSignInData).toJson
+	def getUserSignIn(UserSignIn userSignInData){
+		userRepo.getUserBySignIn(userSignInData)
 	}
 	
 	def getUsers(){
-		userRepo.getUsers().toJson
+		userRepo.getUsers()
+	}
+	
+	def getTeacherSubjects(String id){
+		userRepo.getTeacherSubjects(parserStringToLong.parsearDeStringALong(id)).subjects
 	}
 }
 
