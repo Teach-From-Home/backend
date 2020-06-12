@@ -14,6 +14,7 @@ import javax.persistence.Persistence
 abstract class HibernateRepository<T> {
 
 	static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TeachFromHome")
+
 	protected static EntityManager entityManager = entityManagerFactory.createEntityManager
 
 	def List<T> allInstances() {
@@ -50,5 +51,4 @@ abstract class HibernateRepository<T> {
 			throw new RuntimeException("Ha ocurrido un error. La operación no puede completarse.", e)
 		}
 	}
-
 }

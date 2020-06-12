@@ -18,6 +18,9 @@ class User{
 	Long id
 	
 	@Column
+	boolean active = true
+	
+	@Column
 	String name
 	
 	@Column
