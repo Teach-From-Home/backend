@@ -10,6 +10,6 @@ class Role {
 	static String alumn = "ALUMN"
 
 	static def validateRole(String userId, String role) {
-		UserRepository.instance.getUserById(Long.parseLong(userId)).role == role
+		UserRepository.instance.searchById(userId).role == role
 	}
 }
