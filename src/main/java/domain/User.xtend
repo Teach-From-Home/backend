@@ -31,4 +31,7 @@ class User{
 	
 	@Column
 	String password
+	
+	@Column
+	String role
 }
