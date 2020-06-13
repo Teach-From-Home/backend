@@ -24,7 +24,7 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 	}
 
 	override queryById(Long id, CriteriaBuilder builder, CriteriaQuery<Classroom> query, Root<Classroom> from) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		query.select(from).where(builder.equal(from.get("id"), id))
 	}
 
 	override allInstances() {

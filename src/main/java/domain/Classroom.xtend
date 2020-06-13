@@ -43,6 +43,9 @@ class Classroom {
 	@JsonIgnore
 	List<Post> posts = new ArrayList<Post>
 	
+	@Column
+	boolean active = true
+	
 	def addUser(User userToAdd){
 		users.add(userToAdd)
 	}

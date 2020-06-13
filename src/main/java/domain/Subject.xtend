@@ -19,4 +19,7 @@ class Subject {
 	
 	@Column(columnDefinition="TEXT")
 	String description
+	
+	@Column
+	boolean active = true
 }

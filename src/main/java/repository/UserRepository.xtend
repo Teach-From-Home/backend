@@ -48,24 +48,5 @@ class UserRepository extends HibernateRepository<User> {
 		query.select(from).where(builder.equal(from.get("id"), id))
 	}
 	
-	def getUserById(Long id){
-		val entityManager = this.entityManager
-		try {
-			val criteria = entityManager.criteriaBuilder
-			val query = criteria.createQuery(entityType)
-			val from = query.from(entityType)
-			query.select(from).where(
-				criteria.and(
-					criteria.equal(from.get("id"), id)
-				)
-			)
-			entityManager.createQuery(query).singleResult
-		}catch (NoResultException e) {
-			throw new BadCredentialsException("No existe el usuario consultado")
-		} 
-		finally {
-			entityManager?.close
-		}
-	}
 
 }

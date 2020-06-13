@@ -22,7 +22,7 @@ class SubjectRepository extends HibernateRepository<Subject>{
 
 	
 	override queryById(Long id, CriteriaBuilder builder, CriteriaQuery<Subject> query, Root<Subject> from) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		query.select(from).where(builder.equal(from.get("id"), id))
 	}
 	
 }
