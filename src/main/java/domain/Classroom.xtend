@@ -1,5 +1,6 @@
 package domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.ArrayList
 import java.util.List
 import javax.persistence.CascadeType
@@ -28,13 +29,16 @@ class Classroom {
 	Subject subject
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	List<Homework> homework = new ArrayList<Homework>
 	
 	//not using cascade classroom should not change any users
 	@ManyToMany(fetch=FetchType.LAZY)
+	@JsonIgnore
 	List<User> users = new ArrayList<User>
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	List<Post> posts = new ArrayList<Post>
 	
 	def addUser(User userToAdd){

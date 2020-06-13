@@ -7,9 +7,7 @@ import controllers.ClassroomController
 
 class TfmApp {
 	def static void main(String[] args) {
-		
-		
-		
+	
 		GenObjects.generateAll()
 		
 		
