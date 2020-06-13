@@ -1,4 +1,4 @@
-package Repository
+package repository
 
 import domain.Subject
 import javax.persistence.criteria.CriteriaQuery

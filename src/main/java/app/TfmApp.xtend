@@ -1,4 +1,4 @@
-package App
+package app
 
 import org.uqbar.xtrest.api.XTRest
 import controllers.UserController

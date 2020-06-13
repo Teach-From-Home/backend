@@ -1,6 +1,5 @@
 package controllers
 
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import domain.User
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.xtrest.api.annotation.Body
@@ -9,15 +8,17 @@ import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.api.annotation.Post
 import org.uqbar.xtrest.json.JSONUtils
 import services.UserService
+import utils.BadCredentialsException
+import utils.Parsers
 
 @Controller
 class UserController {
 	extension JSONUtils = new JSONUtils
 	UserService userService = new UserService
-	
+
 	@Post("/login")
-	def login(@Body String body){
-	try {
+	def login(@Body String body) {
+		try {
 			try {
 				val loginCredentials = body.fromJson(User)
 				val loggedUser = userService.getUserSignIn(loginCredentials)
@@ -25,13 +26,15 @@ class UserController {
 			} catch (UserException exception) {
 				return badRequest()
 			}
-		} catch (UnrecognizedPropertyException exception) {
-			return badRequest()
+		} catch (BadCredentialsException e) {
+			return forbidden(Parsers.errorJson(e.message))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
-	
+
 	@Get("/users")
-	def getUsers(){
+	def getUsers() {
 		try {
 			try {
 				val users = userService.getUsers()
@@ -39,9 +42,8 @@ class UserController {
 			} catch (UserException exception) {
 				return badRequest()
 			}
-		} catch (UnrecognizedPropertyException exception) {
-			return badRequest()
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
 }
-

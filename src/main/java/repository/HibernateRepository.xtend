@@ -1,4 +1,4 @@
-package Repository
+package repository
 
 import java.util.List
 import javax.persistence.EntityManagerFactory

@@ -1,8 +1,5 @@
-package App
+package app
 
-import Repository.ClassroomRepository
-import Repository.SubjectRepository
-import Repository.UserRepository
 import domain.Classroom
 import domain.Homework
 import domain.HomeworkDone
@@ -12,6 +9,9 @@ import domain.Subject
 import domain.Teacher
 import domain.User
 import java.time.LocalDate
+import repository.ClassroomRepository
+import repository.SubjectRepository
+import repository.UserRepository
 
 class GenObjects {
 	def static generateAll() {

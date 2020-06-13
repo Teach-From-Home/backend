@@ -1,6 +1,6 @@
 package services
 
-import Repository.SubjectRepository
+import repository.SubjectRepository
 
 class SubjectService {
 	SubjectRepository subjectRepo = SubjectRepository.instance

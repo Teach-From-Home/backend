@@ -1,4 +1,4 @@
-package Repository
+package repository
 
 import domain.Classroom
 import javax.persistence.criteria.CriteriaBuilder

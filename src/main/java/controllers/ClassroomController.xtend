@@ -1,11 +1,11 @@
 package controllers
 
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.json.JSONUtils
 import services.ClassroomService
+import utils.Parsers
 
 @Controller
 class ClassroomController {
@@ -20,8 +20,8 @@ class ClassroomController {
 			} catch (UserException exception) {
 				return badRequest()
 			}
-		} catch (UnrecognizedPropertyException exception) {
-			return badRequest()
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
 }

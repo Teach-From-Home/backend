@@ -1,9 +1,11 @@
-package Repository
+package repository
 
 import domain.User
+import javax.persistence.NoResultException
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
+import utils.BadCredentialsException
 
 class UserRepository extends HibernateRepository<User> {
 
@@ -34,7 +36,10 @@ class UserRepository extends HibernateRepository<User> {
 				)
 			)
 			entityManager.createQuery(query).singleResult
-		} finally {
+		}catch (NoResultException e) {
+			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
+		} 
+		finally {
 			entityManager?.close
 		}
 	}

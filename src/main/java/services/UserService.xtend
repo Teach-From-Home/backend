@@ -1,7 +1,7 @@
 package services
 
-import Repository.UserRepository
 import domain.User
+import repository.UserRepository
 
 class UserService {
 	UserRepository userRepo = UserRepository.instance

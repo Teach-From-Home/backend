@@ -1,6 +1,6 @@
 package services
 
-import Repository.ClassroomRepository
+import repository.ClassroomRepository
 
 class ClassroomService {
 	ClassroomRepository classroomRepo = ClassroomRepository.instance
