@@ -19,23 +19,10 @@ class ClassroomRepository extends HibernateRepository<Classroom>{
 	override getEntityType() {
 		Classroom
 	}
+
 	
-	override generateWhere(CriteriaBuilder criteria, CriteriaQuery<Classroom> query, Root<Classroom> camposCandidato, Classroom t) {
+	override queryById(Long id, CriteriaBuilder builder, CriteriaQuery<Classroom> query, Root<Classroom> from) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	def getClassrooms(){
-		try {
-			val criteria = entityManager.criteriaBuilder
-			val query = criteria.createQuery(entityType)
-			val from = query.from(entityType)
-			query.select(from)
-			
-			return entityManager.createQuery(query).resultList
-			
-		} finally {
-			
-		}
 	}
 	
 }

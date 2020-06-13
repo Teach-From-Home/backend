@@ -1,25 +1,20 @@
 package domain
 
 import java.time.LocalDate
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
-import javax.persistence.Column
-import org.eclipse.xtend.lib.annotations.Accessors
-import javax.persistence.Entity
-import org.uqbar.commons.model.annotations.Observable
 import java.util.ArrayList
 import java.util.List
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
-import javax.persistence.FetchType
-import javax.persistence.CascadeType
-import javax.persistence.Inheritance
-import javax.persistence.InheritanceType
+import org.eclipse.xtend.lib.annotations.Accessors
 
 @Entity
-@Observable
 @Accessors
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 class Homework {
 	@Id
 	@GeneratedValue
@@ -31,28 +26,32 @@ class Homework {
 	@Column
 	boolean available
 	
-	@Column
+	
 	LocalDate date
+	
+	@Column
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	List<HomeworkDone> uploadedHomeworks = new ArrayList<HomeworkDone>
 	
 	def changeState(){
 		available = !available
 	}
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-	List<HomeworkDone> homeworkDone = new ArrayList<HomeworkDone>
-	
-	def addHomeworkDone(HomeworkDone homeworkDoneToAdd){
-		homeworkDone.add(homeworkDoneToAdd)
+	def uploadHomework(HomeworkDone homeworkDoneToAdd){
+		uploadedHomeworks.add(homeworkDoneToAdd)
 	}
 	
 }
 
+
 @Entity
-@Observable
 @Accessors
-class HomeworkDone extends Homework{
-	//student edit only file_link and send the new homework to the homeworkDone list
+class HomeworkDone{
+	@Id
+	@GeneratedValue
+	Long id
 	
+	//student edit only file_link and send the new homework to the homeworkDone list
 	@OneToOne
 	Student student
 	
@@ -60,10 +59,12 @@ class HomeworkDone extends Homework{
 	String file
 	
 	//teacher edit grade and coment on the selected homework on homeworkDone
-	
 	@Column
 	double grade
 	
 	@Column
 	String coment
+	
+	@Column
+	LocalDate uploadDate
 }

@@ -1,15 +1,12 @@
 package domain
 
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
 import javax.persistence.Column
-import javax.persistence.GenerationType
-import org.eclipse.xtend.lib.annotations.Accessors
 import javax.persistence.Entity
-import org.uqbar.commons.model.annotations.Observable
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import org.eclipse.xtend.lib.annotations.Accessors
 
 @Entity
-@Observable
 @Accessors
 class Subject {
 	

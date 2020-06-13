@@ -19,22 +19,10 @@ class SubjectRepository extends HibernateRepository<Subject>{
 	override getEntityType() {
 		Subject
 	}
+
 	
-	override generateWhere(CriteriaBuilder criteria, CriteriaQuery<Subject> query, Root<Subject> camposCandidato, Subject t) {
+	override queryById(Long id, CriteriaBuilder builder, CriteriaQuery<Subject> query, Root<Subject> from) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def getSubjects(){
-		try {
-			val criteria = entityManager.criteriaBuilder
-			val query = criteria.createQuery(entityType)
-			val from = query.from(entityType)
-			query.select(from)
-			
-			return entityManager.createQuery(query).resultList
-			
-		} finally {
-			
-		}
-	}
 }

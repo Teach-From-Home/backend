@@ -18,7 +18,7 @@
 		<class>HomeworkDone</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/TeachFromHome?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://186.137.65.8/TeachFromHome?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
 			<property name="javax.persistence.jdbc.user" value="tfm" />
 			<property name="javax.persistence.jdbc.password" value="TFM_lospibes" />
 			<!-- propiedades de hibernate -->

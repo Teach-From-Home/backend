@@ -4,10 +4,9 @@ import domain.User
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
-import services.UserSignIn
 
-class UserRepository extends HibernateRepository<User>{
-	
+class UserRepository extends HibernateRepository<User> {
+
 	static UserRepository instance
 
 	static def getInstance() {
@@ -16,46 +15,32 @@ class UserRepository extends HibernateRepository<User>{
 		}
 		instance
 	}
-	
+
 	override getEntityType() {
 		User
 	}
-	
-	override generateWhere(CriteriaBuilder criteria, CriteriaQuery<User> query, Root<User> camposCandidato, User t) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	def getUserBySignIn(UserSignIn userSignInData) {
+
+	def login(User userCredentials) {
+		val entityManager = this.entityManager
 		try {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(entityType)
 			val from = query.from(entityType)
-			query.select(from)
-			query.where(newArrayList => [
-					add(criteria.equal(from.get("dni"), userSignInData.dni))
-					add(criteria.equal(from.get("password"), userSignInData.password))
-					add(criteria.equal(from.get("active"),1))
-				]
+			query.select(from).where(
+				criteria.and(
+					criteria.equal(from.get("dni"), userCredentials.dni),
+					criteria.equal(from.get("password"), userCredentials.password),
+					criteria.equal(from.get("active"), userCredentials.active)
+				)
 			)
-			
-			return entityManager.createQuery(query).singleResult
-			
+			entityManager.createQuery(query).singleResult
 		} finally {
-			
-		} 
-	}
-	
-	def getUsers(){
-		try {
-			val criteria = entityManager.criteriaBuilder
-			val query = criteria.createQuery(entityType)
-			val from = query.from(entityType)
-			query.select(from)
-			
-			return entityManager.createQuery(query).resultList
-			
-		} finally {
-			
+			entityManager?.close
 		}
 	}
+
+	override queryById(Long id, CriteriaBuilder builder, CriteriaQuery<User> query, Root<User> from) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
 }

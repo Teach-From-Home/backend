@@ -6,6 +6,6 @@ class SubjectService {
 	SubjectRepository subjectRepo = SubjectRepository.instance
 	
 	def getSubjects(){
-		subjectRepo.getSubjects()
+		subjectRepo.allInstances
 	}
 }

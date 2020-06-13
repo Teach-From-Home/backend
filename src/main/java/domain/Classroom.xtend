@@ -3,19 +3,17 @@ package domain
 import java.util.ArrayList
 import java.util.List
 import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
-import org.eclipse.xtend.lib.annotations.Accessors
-import javax.persistence.Entity
-import org.uqbar.commons.model.annotations.Observable
 import javax.persistence.OneToOne
-import javax.persistence.Column
+import org.eclipse.xtend.lib.annotations.Accessors
 
 @Entity
-@Observable
 @Accessors
 class Classroom {
 	
@@ -32,7 +30,8 @@ class Classroom {
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	List<Homework> homework = new ArrayList<Homework>
 	
-	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	//not using cascade classroom should not change any users
+	@ManyToMany(fetch=FetchType.LAZY)
 	List<User> users = new ArrayList<User>
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

@@ -1,25 +1,16 @@
 package services
 
 import Repository.UserRepository
-import org.uqbar.xtrest.json.JSONUtils
-import org.eclipse.xtend.lib.annotations.Accessors
+import domain.User
 
 class UserService {
-	extension JSONUtils = new JSONUtils
 	UserRepository userRepo = UserRepository.instance
 	
-	def getUserSignIn(String userSignInBody){
-		val userSignInData = userSignInBody.fromJson(UserSignIn)
-		userRepo.getUserBySignIn(userSignInData).toJson
+	def getUserSignIn(User loginCredentials){
+		userRepo.login(loginCredentials)
 	}
 	
 	def getUsers(){
-		userRepo.getUsers().toJson
+		userRepo.allInstances
 	}
-}
-
-@Accessors
-class UserSignIn{
-	int dni
-	String password
 }

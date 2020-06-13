@@ -1,23 +1,27 @@
 package controllers
 
-import org.uqbar.xtrest.api.annotation.Controller
-import org.uqbar.xtrest.api.annotation.Post
-import org.uqbar.xtrest.api.annotation.Body
-import services.UserService
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
+import domain.User
 import org.uqbar.commons.model.exceptions.UserException
+import org.uqbar.xtrest.api.annotation.Body
+import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
+import org.uqbar.xtrest.api.annotation.Post
+import org.uqbar.xtrest.json.JSONUtils
+import services.UserService
 
 @Controller
 class UserController {
-	
+	extension JSONUtils = new JSONUtils
 	UserService userService = new UserService
 	
 	@Post("/login")
 	def login(@Body String body){
 	try {
 			try {
-				return ok(userService.getUserSignIn(body))
+				val loginCredentials = body.fromJson(User)
+				val loggedUser = userService.getUserSignIn(loginCredentials)
+				return ok(loggedUser.toJson)
 			} catch (UserException exception) {
 				return badRequest()
 			}
@@ -30,7 +34,8 @@ class UserController {
 	def getUsers(){
 		try {
 			try {
-				return ok(userService.getUsers())
+				val users = userService.getUsers()
+				return ok(users.toJson)
 			} catch (UserException exception) {
 				return badRequest()
 			}

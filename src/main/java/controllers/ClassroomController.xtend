@@ -1,22 +1,22 @@
 package controllers
 
-import org.uqbar.xtrest.api.annotation.Controller
-import Repository.ClassroomRepository
-import org.uqbar.xtrest.json.JSONUtils
-import org.uqbar.commons.model.exceptions.UserException
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
+import org.uqbar.commons.model.exceptions.UserException
+import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
+import org.uqbar.xtrest.json.JSONUtils
+import services.ClassroomService
 
 @Controller
 class ClassroomController {
-	ClassroomRepository classroomRepo = new ClassroomRepository
+	ClassroomService classroomService = new ClassroomService
 	extension JSONUtils = new JSONUtils
 	
 	@Get("/classrooms")
 	def getUsers(){
 		try {
 			try {
-				return ok(classroomRepo.getClassrooms().toJson)
+				return ok(classroomService.getClassrooms().toJson)
 			} catch (UserException exception) {
 				return badRequest()
 			}

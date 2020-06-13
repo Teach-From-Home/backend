@@ -1,167 +1,139 @@
 package App
 
-import Repository.UserRepository
-import domain.Student
-import domain.User
-import domain.Teacher
-import domain.Subject
 import Repository.ClassroomRepository
 import Repository.SubjectRepository
+import Repository.UserRepository
 import domain.Classroom
 import domain.Homework
 import domain.HomeworkDone
-import java.time.LocalDate
 import domain.Post
+import domain.Student
+import domain.Subject
+import domain.Teacher
+import domain.User
+import java.time.LocalDate
 
 class GenObjects {
-	def static generateAll(){
-		
-		//Repo
-		
-		val userRepo  = new UserRepository
+	def static generateAll() {
+
+		// Repo
+		val userRepo = new UserRepository
 		val classroomRepo = new ClassroomRepository
 		val subjectRepo = new SubjectRepository
-		
-		//Subject data definition
-		
-		val dataBase = new Subject =>[
+
+		// Subject data definition
+		val dataBase = new Subject => [
 			name = "Base de Datos"
-			
+
 			description = "Materia en la cual se veran temas relacionados a base de datos, diagramas, formas normales, etc."
 		]
-		
-		//User Data definition
-		
+
+		// User Data definition
 		val admin = new User => [
 			name = "admin"
-			
+
 			dni = 40128383
-			
+
 			password = "admin"
 		]
-		
+
 		val student1 = new Student => [
 			name = "pepe"
-		
+
 			lastname = "tini"
-		
+
 			email = "agustinmariotini@gmail.com"
-		
+
 			dni = 38992539
-		
+
 			password = "tini"
 		]
-		
+
 		val teacher = new Teacher => [
 			name = "julian"
-			
+
 			lastname = "weich"
-			
+
 			email = "julianweich@gmail.com"
-			
+
 			dni = 16546867
-			
+
 			password = "julian"
 		]
-		
+
 		teacher.addSubject(dataBase)
-		
-		//Set student id as the same as Hibernate student id, to init the student
-		
-		teacher.id = new Long(4)
-		
-		student1.id = new Long(2)
-		
-		//Post and coment data definition
-		
+
+
+		// Post and coment data definition
 		val comentarioDer = new Post => [
 			user = teacher
 			isPrivate = true
 			text = "hola, como estas? que necesitas?"
 			date = LocalDate.of(2020, 09, 04)
 		]
-		
+
 		val consultaDer = new Post => [
 			user = student1
 			isPrivate = true
 			text = "hola, tengo una consulta con el der de la tarea."
 			date = LocalDate.of(2020, 09, 03)
 		]
-		
-		consultaDer.addComent(comentarioDer)
-		
-		//HomeworkDone data definition
-		
-		val derRealizado = new HomeworkDone => [
-			description = "Una base de datos para una pequeña empresa debe contener información acerca de clientes, artículos y pedidos. Hasta el momento se registran los siguientes datos en documentos varios: • Para cada cliente: Número de cliente (único), Direcciones de envío (varias por cliente), Saldo, Límite de
-crédito (depende del cliente, pero en ningún caso debe superar los 3.000.000 pts), Descuento. 
-• Para cada artículo: Número de artículo (único), Fábricas que lo distribuyen, Existencias de ese artículo 
-en cada fábrica, Descripción del artículo. • Para cada pedido: Cada pedido tiene una cabecera y el cuerpo del pedido. 
-La cabecera está formada por el número de cliente, dirección de envío y fecha del pedido. El cuerpo del pedido son varias líneas, en 
-cada línea se especifican el número del artículo pedido y la cantidad. 
-Además, se ha determinado que se debe almacenar la información de las fábricas. Sin embargo, dado el 
-uso de distribuidores, se usará: Número de la fábrica (único) y Teléfono de contacto. Y se desean ver 
-cuántos artículos (en total) provee la fábrica. También, por información estratégica, se podría incluir 
-información de fábricas alternativas respecto de las que ya fabrican artículos para esta empresa. Nota: Una dirección se entenderá como Nº, Calle, Comuna y Ciudad. Una fecha incluye hora. 
-Se pide hacer el diagrama ER para la base de datos que represente esta información."
 
-			date = LocalDate.of(2020, 09, 01)
-			
+		consultaDer.addComent(comentarioDer)
+
+		
+
+		// Homework data definition
+		val realizarDer = new Homework => [
+			description = "Una base de datos para una pequeï¿½a empresa debe contener informaciï¿½n acerca de clientes, artï¿½culos y pedidos. Hasta el momento se registran los siguientes datos en documentos varios: ï¿½ Para cada cliente: Nï¿½mero de cliente (ï¿½nico), Direcciones de envï¿½o (varias por cliente), Saldo, Lï¿½mite de
+				crï¿½dito (depende del cliente, pero en ningï¿½n caso debe superar los 3.000.000 pts), Descuento. 
+				ï¿½ Para cada artï¿½culo: Nï¿½mero de artï¿½culo (ï¿½nico), Fï¿½bricas que lo distribuyen, Existencias de ese artï¿½culo 
+				en cada fï¿½brica, Descripciï¿½n del artï¿½culo. ï¿½ Para cada pedido: Cada pedido tiene una cabecera y el cuerpo del pedido. 
+				La cabecera estï¿½ formada por el nï¿½mero de cliente, direcciï¿½n de envï¿½o y fecha del pedido. El cuerpo del pedido son varias lï¿½neas, en 
+				cada lï¿½nea se especifican el nï¿½mero del artï¿½culo pedido y la cantidad. 
+				Ademï¿½s, se ha determinado que se debe almacenar la informaciï¿½n de las fï¿½bricas. Sin embargo, dado el 
+				uso de distribuidores, se usarï¿½: Nï¿½mero de la fï¿½brica (ï¿½nico) y Telï¿½fono de contacto. Y se desean ver 
+				cuï¿½ntos artï¿½culos (en total) provee la fï¿½brica. Tambiï¿½n, por informaciï¿½n estratï¿½gica, se podrï¿½a incluir 
+				informaciï¿½n de fï¿½bricas alternativas respecto de las que ya fabrican artï¿½culos para esta empresa. Nota: Una direcciï¿½n se entenderï¿½ como Nï¿½, Calle, Comuna y Ciudad. Una fecha incluye hora. 
+				Se pide hacer el diagrama ER para la base de datos que represente esta informaciï¿½n."
+
+			date = LocalDate.of(2020, 09, 05)
+
 			available = true
-			
+		]
+		// HomeworkDone data definition
+		val derRealizado = new HomeworkDone => [
+			uploadDate = LocalDate.of(2020, 09, 01)
 			student = student1
 			file = "asdasd"
 			grade = 9
 			coment = "nicely done!!"
 		]
-		
-		//Homework data definition
-		
-		val realizarDer = new Homework => [
-			description = "Una base de datos para una pequeña empresa debe contener información acerca de clientes, artículos y pedidos. Hasta el momento se registran los siguientes datos en documentos varios: • Para cada cliente: Número de cliente (único), Direcciones de envío (varias por cliente), Saldo, Límite de
-crédito (depende del cliente, pero en ningún caso debe superar los 3.000.000 pts), Descuento. 
-• Para cada artículo: Número de artículo (único), Fábricas que lo distribuyen, Existencias de ese artículo 
-en cada fábrica, Descripción del artículo. • Para cada pedido: Cada pedido tiene una cabecera y el cuerpo del pedido. 
-La cabecera está formada por el número de cliente, dirección de envío y fecha del pedido. El cuerpo del pedido son varias líneas, en 
-cada línea se especifican el número del artículo pedido y la cantidad. 
-Además, se ha determinado que se debe almacenar la información de las fábricas. Sin embargo, dado el 
-uso de distribuidores, se usará: Número de la fábrica (único) y Teléfono de contacto. Y se desean ver 
-cuántos artículos (en total) provee la fábrica. También, por información estratégica, se podría incluir 
-información de fábricas alternativas respecto de las que ya fabrican artículos para esta empresa. Nota: Una dirección se entenderá como Nº, Calle, Comuna y Ciudad. Una fecha incluye hora. 
-Se pide hacer el diagrama ER para la base de datos que represente esta información."
 
-			date = LocalDate.of(2020, 09, 05)
-			
-			available = true
-		]
+		realizarDer.uploadHomework(derRealizado)
 		
-		realizarDer.addHomeworkDone(derRealizado)
-		
-		//Subject repo create
-		
-		subjectRepo.createOrUpdate(dataBase)
-		dataBase.id = new Long(1)
-		
-		//Classroom data definition
-		
+		// Classroom data definition
 		val cursadaDataBase = new Classroom => [
 			subject = dataBase
 			description = "cursada de 10 a 12"
 		]
+		
+		// Subject repo create
+		subjectRepo.create(dataBase)
+		
+		// User repo create and setup values on list
+		userRepo.create(student1)
+		userRepo.create(admin)
+		userRepo.create(teacher)
 		
 		cursadaDataBase.addHomeWork(realizarDer)
 		cursadaDataBase.addPost(consultaDer)
 		cursadaDataBase.addUser(student1)
 		cursadaDataBase.addUser(teacher)
 		
-		//User repo create and setup values on list
-		
-		userRepo.createOrUpdate(student1)
-		userRepo.createOrUpdate(admin)
-		userRepo.createOrUpdate(teacher)
-		
-		//Classroom repo create
-		
-		classroomRepo.createOrUpdate(cursadaDataBase)
+		// Classroom repo create
+		classroomRepo.create(cursadaDataBase)
+
+
 	}
 }
