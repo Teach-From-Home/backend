@@ -14,7 +14,6 @@ class UserService {
 		userRepo.allInstances
 	}
 	
-	
 	def getUserById(String id){
 		userRepo.searchById(id)
 	}
@@ -31,7 +30,7 @@ class UserService {
 	
 	def deleteUser(String id){
 		val deleted = getUserById(id)
-		deleted.active = false
+		deleted.active = !deleted.active
 		userRepo.update(deleted)
 	}
 	

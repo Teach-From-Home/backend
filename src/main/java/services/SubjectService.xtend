@@ -23,7 +23,7 @@ class SubjectService {
 	
 	def deleteSubject(String id){
 		val deleted = subjectRepo.searchById(id)
-		deleted.active = false
+		deleted.active = !deleted.active
 		subjectRepo.update(deleted)
 	}
 	

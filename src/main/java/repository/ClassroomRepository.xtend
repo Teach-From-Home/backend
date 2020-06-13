@@ -40,7 +40,7 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 		}
 	}
 	
-	def getClassroomByListType(Long id, String dataJoinType){
+	def getClassroomByListType(String id, String dataJoinType){
 		val entityManager = this.entityManager
 		try {
 			val criteria = entityManager.criteriaBuilder
@@ -49,7 +49,7 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			from.fetch(dataJoinType, JoinType.LEFT)
 			query.select(from).where(
 				criteria.and(
-					criteria.equal(from.get("id"), id)
+					criteria.equal(from.get("id"), Long.parseLong(id))
 				)
 			)
 			entityManager.createQuery(query).singleResult

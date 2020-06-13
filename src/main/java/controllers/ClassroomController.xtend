@@ -5,6 +5,11 @@ import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.json.JSONUtils
 import services.ClassroomService
 import utils.Parsers
+import org.uqbar.xtrest.api.annotation.Post
+import org.uqbar.xtrest.api.annotation.Body
+import domain.Classroom
+import org.uqbar.xtrest.api.annotation.Delete
+import org.uqbar.xtrest.api.annotation.Put
 
 @Controller
 class ClassroomController {
@@ -29,6 +34,48 @@ class ClassroomController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	@Get("/classroom/:id")
+	def getClassroomById(){
+		try {
+			val users = classroomService.getClassroomById(id)
+			return ok(users.toJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Post("/classroom")
+	def createClassroom(@Body String body){
+		try {
+			val classroom = body.fromJson(Classroom)
+			classroomService.createClassroom(classroom)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Delete("/classroom/:id")
+	def deleteClassroom(){
+		try {
+			classroomService.deleteClassroom(id)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Put("/classroom/:id")
+	def editClassroom(@Body String body) {
+		try {
+			val classroom = body.fromJson(Classroom)
+			classroomService.editClassroom(classroom,id)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
 
 // TODO
 	@Get("/classroom/:id/homework/:userId")
@@ -49,4 +96,6 @@ class ClassroomController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	
 }
