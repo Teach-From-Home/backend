@@ -2,9 +2,11 @@ package services
 
 import domain.User
 import repository.UserRepository
+import utils.ParserStringToLong
 
 class UserService {
 	UserRepository userRepo = UserRepository.instance
+	static ParserStringToLong parserStringToLong = ParserStringToLong.instance
 	
 	def getUserSignIn(User loginCredentials){
 		userRepo.login(loginCredentials)
@@ -12,5 +14,10 @@ class UserService {
 	
 	def getUsers(){
 		userRepo.allInstances
+	}
+	
+	
+	def getUserById(String id){
+		userRepo.getUserById(parserStringToLong.parsearDeStringALong(id))
 	}
 }

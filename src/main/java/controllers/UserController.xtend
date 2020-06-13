@@ -46,4 +46,19 @@ class UserController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	//TODO
+	@Get("/user/:id")
+	def getUserById(){
+		try {
+			try {
+				val users = userService.getUserById(id)
+				return ok(users.toJson)
+			} catch (UserException exception) {
+				return badRequest()
+			}
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
 }

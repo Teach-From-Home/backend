@@ -11,7 +11,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Accessors
 class Teacher extends User{
 	
-	@OneToMany(fetch=FetchType.LAZY)
+	@OneToMany(fetch=FetchType.EAGER)
 	List<Subject> subjects = new ArrayList<Subject>
 	
 	def addSubject(Subject subjectToAdd){

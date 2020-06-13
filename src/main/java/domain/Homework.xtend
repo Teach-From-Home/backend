@@ -12,6 +12,7 @@ import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 @Entity
 @Accessors
@@ -31,6 +32,7 @@ class Homework {
 	
 	@Column
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	List<HomeworkDone> uploadedHomeworks = new ArrayList<HomeworkDone>
 	
 	def changeState(){
@@ -42,7 +44,6 @@ class Homework {
 	}
 	
 }
-
 
 @Entity
 @Accessors

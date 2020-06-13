@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.HashSet
+import java.util.Set
 
 @Entity
 @Accessors
@@ -35,7 +37,7 @@ class Classroom {
 	//not using cascade classroom should not change any users
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JsonIgnore
-	List<User> users = new ArrayList<User>
+	Set<User> users = new HashSet<User>
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore

@@ -63,7 +63,6 @@ class GenObjects {
 
 		teacher.addSubject(dataBase)
 
-
 		// Post and coment data definition
 		val comentarioDer = new Post => [
 			user = teacher
@@ -101,7 +100,9 @@ class GenObjects {
 
 			available = true
 		]
+		
 		// HomeworkDone data definition
+		
 		val derRealizado = new HomeworkDone => [
 			uploadDate = LocalDate.of(2020, 09, 01)
 			student = student1
