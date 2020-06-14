@@ -4,9 +4,7 @@ import domain.Classroom
 import domain.Homework
 import domain.HomeworkDone
 import domain.Post
-import domain.Student
 import domain.Subject
-import domain.Teacher
 import domain.User
 import java.time.LocalDate
 import repository.ClassroomRepository
@@ -37,7 +35,7 @@ class GenObjects {
 			password = "admin"
 		]
 
-		val student1 = new Student => [
+		val student1 = new User => [
 			name = "pepe"
 
 			lastname = "tini"
@@ -49,7 +47,7 @@ class GenObjects {
 			password = "tini"
 		]
 
-		val teacher = new Teacher => [
+		val teacher = new User => [
 			name = "julian"
 
 			lastname = "weich"

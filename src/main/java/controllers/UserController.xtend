@@ -1,5 +1,6 @@
 package controllers
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import domain.User
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.xtrest.api.annotation.Body
@@ -53,18 +54,20 @@ class UserController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
-	
+
 	@Post("/user")
 	def createUser(@Body String body) {
 		try {
 			val user = body.fromJson(User)
 			userService.createUser(user)
 			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
-	
+
 	@Delete("/user/:id")
 	def deleteUser() {
 		try {
@@ -74,13 +77,15 @@ class UserController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
-	
+
 	@Put("/user/:id")
 	def editUser(@Body String body) {
 		try {
 			val user = body.fromJson(User)
-			userService.editUser(user,id)
+			userService.editUser(user, id)
 			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}

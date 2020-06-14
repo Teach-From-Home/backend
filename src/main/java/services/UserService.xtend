@@ -25,6 +25,7 @@ class UserService {
 		userg.email = user.email
 		userg.dni = user.dni
 		userg.password = user.password
+		userg.subjects = user.subjects
 		userRepo.update(userg)
 	}
 	

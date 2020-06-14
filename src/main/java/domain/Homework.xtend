@@ -1,5 +1,6 @@
 package domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalDate
 import java.util.ArrayList
 import java.util.List
@@ -12,7 +13,6 @@ import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
-import com.fasterxml.jackson.annotation.JsonIgnore
 
 @Entity
 @Accessors
@@ -54,7 +54,7 @@ class HomeworkDone{
 	
 	//student edit only file_link and send the new homework to the homeworkDone list
 	@OneToOne
-	Student student
+	User student
 	
 	@Column
 	String file
