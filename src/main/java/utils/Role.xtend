@@ -7,7 +7,7 @@ import repository.UserRepository
 class Role {
 	static String admin = "ADMIN"
 	static String teacher = "TEACHER"
-	static String alumn = "ALUMN"
+	static String student = "STUDENT"
 
 	static def validateRole(String userId, String role) {
 		UserRepository.instance.searchById(userId).role == role
