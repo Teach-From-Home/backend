@@ -15,6 +15,7 @@ import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.HashSet
 import java.util.Set
+import javax.persistence.JoinColumn
 
 @Entity
 @Accessors
@@ -31,6 +32,7 @@ class Classroom {
 	Subject subject
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="classroomId")
 	@JsonIgnore
 	List<Homework> homework = new ArrayList<Homework>
 	

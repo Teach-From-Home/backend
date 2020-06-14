@@ -3,6 +3,9 @@ package services
 import repository.ClassroomRepository
 import utils.Parsers
 import domain.Classroom
+import utils.Role
+import java.util.List
+import domain.Homework
 
 class ClassroomService {
 	ClassroomRepository classroomRepo = ClassroomRepository.instance
@@ -37,11 +40,29 @@ class ClassroomService {
 		classroomRepo.getClassroomByListType(id, "users").users
 	}
 	
-	def getClassroomHomework(String id){
-		classroomRepo.getClassroomByListType(id, "homework").homework
+	def getClassroomHomework(String id, String userId){
+		if(Role.validateRole(userId, Role.teacher) ){
+			classroomRepo.getClassroomByListType(id, "homework").homework
+		}else if(Role.validateRole(userId, Role.student)){
+			val homeworkList = classroomRepo.getClassroomByStudentView(id, userId)//.filter[it |  it.hasThisHomeworkDone(Long.parseLong(userId))]
+			val chanchullo = chanchullo(homeworkList, userId).toList
+			val mapMisTareas = mapMisTareas(classroomRepo.getClassroomByListType(id, "homework").homework, userId)
+			chanchullo.addAll(mapMisTareas)
+			return chanchullo
+		}
 	}
+	
+	def chanchullo(List<Homework> homeworks, String userId) {
+		return homeworks.filter[homework |  homework.hasThisHomeworkDone(Long.parseLong(userId))]
+	}
+	
+	def mapMisTareas(List<Homework> homeworks, String userId){
+		homeworks.map[homework | homework.getHomeworkDone(Long.parseLong(userId))]
+	}
+	
 	
 	def getClassroomPosts(String id){
 		classroomRepo.getClassroomByListType(id, "posts").posts
 	}
 }
+

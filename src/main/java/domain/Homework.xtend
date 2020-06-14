@@ -27,34 +27,15 @@ class Homework {
 	@Column
 	boolean available
 	
-	
+	@Column
 	LocalDate date
 	
 	@Column
-	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	List<HomeworkDone> uploadedHomeworks = new ArrayList<HomeworkDone>
-	
-	def changeState(){
-		available = !available
-	}
-	
-	def uploadHomework(HomeworkDone homeworkDoneToAdd){
-		uploadedHomeworks.add(homeworkDoneToAdd)
-	}
-	
-}
-
-@Entity
-@Accessors
-class HomeworkDone{
-	@Id
-	@GeneratedValue
-	Long id
-	
-	//student edit only file_link and send the new homework to the homeworkDone list
-	@OneToOne
-	User student
+ 	Long classroomId;
+ 	
+ 	//student edit only file_link and send the new homework to the homeworkDone list
+	@Column
+	Long studentId
 	
 	@Column
 	String file
@@ -68,4 +49,28 @@ class HomeworkDone{
 	
 	@Column
 	LocalDate uploadDate
+	
+	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Homework> uploadedHomeworks = new ArrayList<Homework>
+	
+	def changeState(){
+		available = !available
+	}
+	
+	def uploadHomework(Homework homeworkDoneToAdd){
+		uploadedHomeworks.add(homeworkDoneToAdd)
+	}
+	
+	def hasThisHomeworkDone(Long userId){
+		if(uploadedHomeworks !== null){
+			uploadedHomeworks.exists(homework | homework.studentId == userId)//  exists(homework|homework.studentId == userId)
+		}else{
+			false
+		}
+	}
+	
+	def getHomeworkDone(Long userId){
+		uploadedHomeworks.findFirst[homework | homework.studentId == userId]
+	}
 }

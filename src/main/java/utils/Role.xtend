@@ -5,9 +5,9 @@ import repository.UserRepository
 
 @Accessors
 class Role {
-	static String admin = "ADMIN"
-	static String teacher = "TEACHER"
-	static String student = "STUDENT"
+	public static String admin = "ADMIN"
+	public static String teacher = "TEACHER"
+	public static String student = "STUDENT"
 
 	static def validateRole(String userId, String role) {
 		UserRepository.instance.searchById(userId).role == role

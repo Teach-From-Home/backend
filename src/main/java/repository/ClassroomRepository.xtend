@@ -7,6 +7,7 @@ import javax.persistence.criteria.JoinType
 import javax.persistence.criteria.Root
 import javax.persistence.NoResultException
 import utils.BadCredentialsException
+import domain.Homework
 
 class ClassroomRepository extends HibernateRepository<Classroom> {
 
@@ -51,8 +52,29 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 				criteria.and(
 					criteria.equal(from.get("id"), Long.parseLong(id))
 				)
-			)
+			)			
 			entityManager.createQuery(query).singleResult
+		}catch (NoResultException e) {
+			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
+		} 
+		finally {
+			entityManager?.close
+		}
+	}
+	
+	def getClassroomByStudentView(String idClassroom, String idUser){
+		val entityManager = this.entityManager
+		try {
+			val criteria = entityManager.criteriaBuilder
+			val query = criteria.createQuery(Homework)
+			val from = query.from(Homework)
+			query.select(from).where(
+				criteria.and(
+					criteria.equal(from.get("classroomId"), Long.parseLong(idClassroom)),
+					criteria.equal(from.get("available"), 1)
+				)
+			)
+			entityManager.createQuery(query).resultList
 		}catch (NoResultException e) {
 			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
 		} 

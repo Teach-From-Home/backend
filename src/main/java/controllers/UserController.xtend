@@ -28,6 +28,8 @@ class UserController {
 			return ok(ShortUserSerializer.toJson(loggedUser))
 		} catch (BadCredentialsException e) {
 			return forbidden(Parsers.errorJson(e.message))
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}

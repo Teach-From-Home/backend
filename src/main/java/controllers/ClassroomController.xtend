@@ -10,6 +10,7 @@ import org.uqbar.xtrest.api.annotation.Body
 import domain.Classroom
 import org.uqbar.xtrest.api.annotation.Delete
 import org.uqbar.xtrest.api.annotation.Put
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
 
 @Controller
 class ClassroomController {
@@ -51,6 +52,8 @@ class ClassroomController {
 			val classroom = body.fromJson(Classroom)
 			classroomService.createClassroom(classroom)
 			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
@@ -72,6 +75,8 @@ class ClassroomController {
 			val classroom = body.fromJson(Classroom)
 			classroomService.editClassroom(classroom,id)
 			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
@@ -81,14 +86,14 @@ class ClassroomController {
 	@Get("/classroom/:id/homework/:userId")
 	def getClassroomHomework() {
 		try {
-			return ok(classroomService.getClassroomHomework(id).toJson)
+			return ok(classroomService.getClassroomHomework(id, userId).toJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
 
 // TODO
-	@Get("/classroom/:id/posts/teacher")
+	@Get("/classroom/:id/posts/:userId")
 	def getClassroomPosts() {
 		try {
 			return ok(classroomService.getClassroomPosts(id).toJson)

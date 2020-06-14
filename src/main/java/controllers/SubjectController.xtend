@@ -10,6 +10,7 @@ import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
 import services.SubjectService
 import utils.Parsers
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
 
 @Controller
 class SubjectController {
@@ -41,6 +42,8 @@ class SubjectController {
 			val subject = body.fromJson(Subject)
 			subjectService.createSubject(subject)
 			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
@@ -62,6 +65,8 @@ class SubjectController {
 			val subject = body.fromJson(Subject)
 			subjectService.editSubject(subject,id)
 			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
