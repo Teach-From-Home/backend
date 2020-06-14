@@ -40,29 +40,37 @@ class ClassroomService {
 		classroomRepo.getClassroomByListType(id, "users").users
 	}
 	
-	def getClassroomHomework(String id, String userId){
+	def getClassroomHomework(String idClassroom, String userId){
 		if(Role.validateRole(userId, Role.teacher) ){
-			classroomRepo.getClassroomByListType(id, "homework").homework
+			classroomRepo.getClassroomByListType(idClassroom, "homework").homework
 		}else if(Role.validateRole(userId, Role.student)){
-			val homeworkList = classroomRepo.getClassroomByStudentView(id, userId)//.filter[it |  it.hasThisHomeworkDone(Long.parseLong(userId))]
+			val homeworkList = classroomRepo.getClassroomByStudentView(idClassroom, userId)
 			val chanchullo = chanchullo(homeworkList, userId).toList
-			val mapMisTareas = mapMisTareas(classroomRepo.getClassroomByListType(id, "homework").homework, userId)
+			val mapMisTareas = mapMisTareas(classroomRepo.getClassroomByListType(idClassroom, "homework").homework, userId)
 			chanchullo.addAll(mapMisTareas)
 			return chanchullo
 		}
 	}
 	
 	def chanchullo(List<Homework> homeworks, String userId) {
-		return homeworks.filter[homework |  homework.hasThisHomeworkDone(Long.parseLong(userId))]
+		return homeworks.filter[homework |  !homework.hasThisHomeworkDone(Long.parseLong(userId))]
 	}
 	
 	def mapMisTareas(List<Homework> homeworks, String userId){
 		homeworks.map[homework | homework.getHomeworkDone(Long.parseLong(userId))]
 	}
 	
+	def getClassroomHomeworkDone(String idClassroom, String idHomework){
+		classroomRepo.getHomeworkDoneOfHomework(idClassroom, idHomework).uploadedHomeworks
+	}
 	
 	def getClassroomPosts(String id){
 		classroomRepo.getClassroomByListType(id, "posts").posts
 	}
+	
+	def getNotAddedSubjects(String idClassroom) {
+		classroomRepo.notAddedUsers(idClassroom)
+	}
+	
 }
 

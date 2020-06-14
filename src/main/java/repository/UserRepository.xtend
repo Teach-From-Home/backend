@@ -55,7 +55,7 @@ class UserRepository extends HibernateRepository<User> {
 			val user = searchById(userId)
 			query.select(from).where(
 				criteria.not(
-				from.get("id").in(user.subjects.map[it.id].toSet)	
+					from.get("id").in(user.subjects.map[it.id].toSet)	
 				)
 			)
 			entityManager.createQuery(query).resultList

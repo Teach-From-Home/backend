@@ -37,7 +37,7 @@ class Classroom {
 	List<Homework> homework = new ArrayList<Homework>
 	
 	//not using cascade classroom should not change any users
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JsonIgnore
 	Set<User> users = new HashSet<User>
 	
