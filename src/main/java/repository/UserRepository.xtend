@@ -1,11 +1,13 @@
 package repository
 
+import domain.Subject
 import domain.User
 import javax.persistence.NoResultException
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 import utils.BadCredentialsException
+import javassist.NotFoundException
 
 class UserRepository extends HibernateRepository<User> {
 
@@ -38,6 +40,27 @@ class UserRepository extends HibernateRepository<User> {
 			entityManager.createQuery(query).singleResult
 		}catch (NoResultException e) {
 			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
+		} 
+		finally {
+			entityManager?.close
+		}
+	}
+	
+	def notAddedSubjects(String userId) {
+		val entityManager = this.entityManager
+		try {
+			val criteria = entityManager.criteriaBuilder
+			val query = criteria.createQuery(Subject)
+			val from = query.from(Subject)
+			val user = searchById(userId)
+			query.select(from).where(
+				criteria.not(
+				from.get("id").in(user.subjects.map[it.id].toSet)	
+				)
+			)
+			entityManager.createQuery(query).resultList
+		}catch (NoResultException e) {
+			throw new NotFoundException("No hay mas materias por agregar")
 		} 
 		finally {
 			entityManager?.close

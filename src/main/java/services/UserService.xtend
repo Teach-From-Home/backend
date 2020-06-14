@@ -38,4 +38,9 @@ class UserService {
 	def createUser(User user){
 		userRepo.create(user)
 	}
+	
+	def getNotAddedSubjects(String id) {
+		userRepo.searchById(id)
+	}
+	
 }

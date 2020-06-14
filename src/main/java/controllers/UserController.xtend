@@ -2,6 +2,7 @@ package controllers
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import domain.User
+import javax.persistence.NoResultException
 import org.uqbar.commons.model.exceptions.UserException
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
@@ -88,6 +89,17 @@ class UserController {
 			return ok(Parsers.statusOkJson)
 		} catch (InvalidFormatException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Get("/user/:id/subjects/notadded")
+	def getSubs() {
+		try {
+			return ok(userService.getNotAddedSubjects(id).toJson)
+		} catch (NoResultException e) {
+			return internalServerError(Parsers.errorJson(e.message))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
