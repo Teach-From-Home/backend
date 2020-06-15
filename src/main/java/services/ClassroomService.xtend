@@ -56,7 +56,7 @@ class ClassroomService {
 		val user = UserRepository.getInstance.searchById(userId)
 		val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available]
 		var hw = homeworks.map[it.uploadedHomeworks].flatten.toList
-		hw = hw.filter[it.id == user.id].toList
+		hw = hw.filter[it.student.id == user.id].toList
 		if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas subidas")
 		hw
 	}
