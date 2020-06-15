@@ -11,6 +11,7 @@ class HomeworkService {
 	def createHomework(String idClassroom,Homework homework, String idUser){
 		homework.teacher = Long.parseLong(idUser)//userRepo.searchById(idUser)
 		homework.classroomId = Long.parseLong(idClassroom)
+		homework.available = false
 		homeworkRepo.create(homework)
 	}
 	
