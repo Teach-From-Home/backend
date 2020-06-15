@@ -8,10 +8,10 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.xtrest.json.JSONUtils
 
 @Accessors
 abstract class HibernateRepository<T> {
-
 	static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TeachFromHome")
 
 	abstract def Class<T> getEntityType()

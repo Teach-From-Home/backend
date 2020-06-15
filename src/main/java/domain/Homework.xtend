@@ -13,6 +13,7 @@ import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
+import javax.persistence.ManyToOne
 
 @Entity
 @Accessors
@@ -33,9 +34,12 @@ class Homework {
 	@Column
  	Long classroomId;
  	
- 	//student edit only file_link and send the new homework to the homeworkDone list
 	@Column
-	Long studentId
+ 	Long teacher
+ 	//student edit only file_link and send the new homework to the homeworkDone list
+ 	
+	@Column
+	Long student
 	
 	@Column
 	String file
@@ -64,13 +68,13 @@ class Homework {
 	
 	def hasThisHomeworkDone(Long userId){
 		if(uploadedHomeworks !== null){
-			uploadedHomeworks.exists(homework | homework.studentId == userId)//  exists(homework|homework.studentId == userId)
+			uploadedHomeworks.exists(homework | homework.student == userId)//  exists(homework|homework.studentId == userId)
 		}else{
 			false
 		}
 	}
 	
 	def getHomeworkDone(Long userId){
-		uploadedHomeworks.findFirst[homework | homework.studentId == userId]
+		uploadedHomeworks.findFirst[homework | homework.student == userId]
 	}
 }

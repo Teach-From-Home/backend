@@ -54,7 +54,7 @@ class GenObjects {
 			email = "agustinmariotini@gmail.com"
 
 			dni = 38992539
-
+			
 			password = "madera"
 			
 			role = "STUDENT"
@@ -67,7 +67,7 @@ class GenObjects {
 			
 			email = "eugerosso22@gmail.com"
 			
-			dni = 40213293
+			dni = 39912240
 			
 			password = "challenger"
 			
@@ -184,7 +184,7 @@ class GenObjects {
 			available = true
 			
 			uploadDate = LocalDate.of(2020, 09, 01)
-			studentId = Long.parseLong("3")
+			student = Long.parseLong("3")
 			file = "asdasd"
 			grade = 9
 			coment = "nicely done!!"

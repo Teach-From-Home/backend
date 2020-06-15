@@ -119,7 +119,29 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 				criteria.or(
 					criteria.equal(from.get("role"), "STUDENT"),
 					criteria.equal(from.get("role"), "TEACHER")
-				)
+				),
+				criteria.equal(from.get("active"), true)
+			)			
+			entityManager.createQuery(query).resultList
+		}catch (NoResultException e) {
+			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
+		} 
+		finally {
+			entityManager?.close
+		}
+	}
+	
+	def getClassroomsByUser(String idUser){
+		val entityManager = this.entityManager
+		try {
+			val criteria = entityManager.criteriaBuilder
+			val query = criteria.createQuery(entityType)
+			val from = query.from(entityType)
+			val users = from.fetch("users", JoinType.INNER)
+			from.fetch("users", JoinType.LEFT)
+			query.select(from).where(
+				
+				criteria.equal(from.get("active"), true)
 			)			
 			entityManager.createQuery(query).resultList
 		}catch (NoResultException e) {

@@ -42,5 +42,4 @@ class UserService {
 	def getNotAddedSubjects(String id) {
 		userRepo.notAddedSubjects(id)
 	}
-	
 }

@@ -24,6 +24,7 @@ class ShortUserSerializer extends StdSerializer<User> {
 		gen.writeStringField("email", value.email)
 		gen.writeNumberField("dni", value.dni)
 		gen.writeStringField("password", value.password)
+		gen.writeStringField("role", value.role)
 		gen.writeEndObject()
 	}
 

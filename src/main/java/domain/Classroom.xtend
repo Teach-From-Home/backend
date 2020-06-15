@@ -31,9 +31,9 @@ class Classroom {
 	@OneToOne
 	Subject subject
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	//le tuve que sacar el jsonignore para poder meter una tarea
+	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="classroomId")
-	@JsonIgnore
 	List<Homework> homework = new ArrayList<Homework>
 	
 	//not using cascade classroom should not change any users
@@ -62,6 +62,10 @@ class Classroom {
 	
 	def removeHomeWork(Homework homeWorkToRemove){
 		homework.remove(homeWorkToRemove)
+	}
+	
+	def addHomeworkDoneToHomework(String idHomework, Homework homeworkDone){
+		homework.findFirst[it.id == idHomework].uploadHomework(homeworkDone)
 	}
 	
 	def addPost(Post postToAdd){

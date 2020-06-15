@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 import utils.BadCredentialsException
 import javassist.NotFoundException
+import domain.Classroom
 
 class UserRepository extends HibernateRepository<User> {
 

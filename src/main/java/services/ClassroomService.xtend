@@ -9,6 +9,7 @@ import domain.Homework
 
 class ClassroomService {
 	ClassroomRepository classroomRepo = ClassroomRepository.instance
+
 	Parsers parsers = new Parsers
 	
 	def getClassrooms(){
@@ -41,7 +42,7 @@ class ClassroomService {
 	}
 	
 	def getClassroomHomework(String idClassroom, String userId){
-		if(Role.validateRole(userId, Role.teacher) ){
+		if(Role.validateRole(userId, Role.teacher)){
 			classroomRepo.getClassroomByListType(idClassroom, "homework").homework
 		}else if(Role.validateRole(userId, Role.student)){
 			val homeworkList = classroomRepo.getClassroomByStudentView(idClassroom, userId)
@@ -72,5 +73,8 @@ class ClassroomService {
 		classroomRepo.notAddedUsers(idClassroom)
 	}
 	
+	def getClassroomsByUser(String id){
+		classroomRepo.getClassroomsByUser(id)
+	}
 }
 

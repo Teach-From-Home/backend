@@ -12,6 +12,7 @@ import org.uqbar.xtrest.api.annotation.Delete
 import org.uqbar.xtrest.api.annotation.Put
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import javax.persistence.NoResultException
+import domain.Homework
 
 @Controller
 class ClassroomController {
@@ -124,4 +125,14 @@ class ClassroomController {
 	}
 	
 	
+	@Get("/user/:id/classrooms")
+	def getClassrooms() {
+		try {
+			return ok(classroomService.getClassroomsByUser(id).toJson)
+		} catch (NoResultException e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
 }
