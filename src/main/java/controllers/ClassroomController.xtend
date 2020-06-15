@@ -1,18 +1,17 @@
 package controllers
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
+import domain.Classroom
+import javax.persistence.NoResultException
+import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
+import org.uqbar.xtrest.api.annotation.Delete
 import org.uqbar.xtrest.api.annotation.Get
+import org.uqbar.xtrest.api.annotation.Post
+import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
 import services.ClassroomService
 import utils.Parsers
-import org.uqbar.xtrest.api.annotation.Post
-import org.uqbar.xtrest.api.annotation.Body
-import domain.Classroom
-import org.uqbar.xtrest.api.annotation.Delete
-import org.uqbar.xtrest.api.annotation.Put
-import com.fasterxml.jackson.databind.exc.InvalidFormatException
-import javax.persistence.NoResultException
-import domain.Homework
 
 @Controller
 class ClassroomController {
@@ -84,11 +83,11 @@ class ClassroomController {
 		}
 	}
 
-// TODO
 	@Get("/classroom/:id/homework/:userId")
 	def getClassroomHomework() {
 		try {
-			return ok(classroomService.getClassroomHomework(id, userId).toJson)
+			val a = classroomService.getClassroomHomework(id, userId)
+			return ok(a.toJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
@@ -97,7 +96,7 @@ class ClassroomController {
 	@Get("/classroom/:id/homeworkDone/:homeworkId")
 	def getClassroomHomeworkDone() {
 		try {
-			return ok(classroomService.getClassroomHomeworkDone(id, homeworkId).toJson)
+			return ok(classroomService.getUploadedHomeworks(id, homeworkId).toJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
@@ -114,7 +113,6 @@ class ClassroomController {
 		}
 	}
 
-// TODO
 	@Get("/classroom/:id/posts/:userId")
 	def getClassroomPosts() {
 		try {

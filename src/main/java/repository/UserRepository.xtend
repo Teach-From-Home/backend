@@ -2,13 +2,12 @@ package repository
 
 import domain.Subject
 import domain.User
+import javassist.NotFoundException
 import javax.persistence.NoResultException
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 import utils.BadCredentialsException
-import javassist.NotFoundException
-import domain.Classroom
 
 class UserRepository extends HibernateRepository<User> {
 

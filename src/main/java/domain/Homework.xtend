@@ -1,6 +1,7 @@
 package domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
 import java.util.ArrayList
 import java.util.List
@@ -10,10 +11,10 @@ import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
-import org.eclipse.xtend.lib.annotations.Accessors
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
+import org.eclipse.xtend.lib.annotations.Accessors
+import serializers.LocalDateSerializer
 
 @Entity
 @Accessors
@@ -22,6 +23,9 @@ class Homework {
 	@GeneratedValue
 	Long id
 	
+	@Column
+	String title
+	
 	@Column(columnDefinition="TEXT")
 	String description
 	
@@ -29,52 +33,47 @@ class Homework {
 	boolean available
 	
 	@Column
-	LocalDate date
+	@JsonSerialize(using = LocalDateSerializer)
+	LocalDate deadLine
 	
-	@Column
- 	Long classroomId;
- 	
-	@Column
- 	Long teacher
- 	//student edit only file_link and send the new homework to the homeworkDone list
- 	
-	@Column
-	Long student
-	
-	@Column
-	String file
-	
-	//teacher edit grade and coment on the selected homework on homeworkDone
-	@Column
-	double grade
-	
-	@Column
-	String coment
-	
-	@Column
-	LocalDate uploadDate
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
-	List<Homework> uploadedHomeworks = new ArrayList<Homework>
+	List<HomeworkDone> uploadedHomeworks = new ArrayList<HomeworkDone>
 	
 	def changeState(){
 		available = !available
 	}
 	
-	def uploadHomework(Homework homeworkDoneToAdd){
+	def uploadHomework(HomeworkDone homeworkDoneToAdd){
 		uploadedHomeworks.add(homeworkDoneToAdd)
 	}
 	
-	def hasThisHomeworkDone(Long userId){
-		if(uploadedHomeworks !== null){
-			uploadedHomeworks.exists(homework | homework.student == userId)//  exists(homework|homework.studentId == userId)
-		}else{
-			false
-		}
+	def isDoneByUser(User user){
+		uploadedHomeworks.exists[it.student == user]
 	}
 	
-	def getHomeworkDone(Long userId){
-		uploadedHomeworks.findFirst[homework | homework.student == userId]
-	}
+}
+
+@Entity
+@Accessors
+class HomeworkDone{
+	@Id @GeneratedValue
+	Long id
+		
+	@Column
+	double grade
+	
+	@Column(columnDefinition="TEXT")
+	String coment
+	
+	@Column
+	@JsonSerialize(using = LocalDateSerializer)
+	LocalDate uploadDate = LocalDate.now
+	
+	@ManyToOne
+	User student
+		
+	@Column
+	String file
 }

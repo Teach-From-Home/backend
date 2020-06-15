@@ -11,10 +11,10 @@ import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.api.annotation.Post
 import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
+import serializers.ShortUserSerializer
 import services.UserService
 import utils.BadCredentialsException
 import utils.Parsers
-import utils.ShortUserSerializer
 
 @Controller
 class UserController {

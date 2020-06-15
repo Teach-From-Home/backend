@@ -1,13 +1,14 @@
 package controllers
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
+import domain.Homework
+import domain.HomeworkDone
+import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Post
-import services.HomeworkService
-import domain.Homework
-import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.json.JSONUtils
+import services.HomeworkService
 import utils.Parsers
-import com.fasterxml.jackson.databind.exc.InvalidFormatException
 
 @Controller
 class HomeworkController {
@@ -18,7 +19,7 @@ class HomeworkController {
 	def createHomework(@Body String body){
 		try {
 			val homework = body.fromJson(Homework)
-			homerowkService.createHomework(id,homework,idUser)
+			homerowkService.createHomework(id,homework)
 			return ok(Parsers.statusOkJson)
 		} catch (InvalidFormatException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))
@@ -27,11 +28,12 @@ class HomeworkController {
 		}
 	}
 	
-	@Post("/classroom/:id/homework/:homeworkId/user/:idUser")
-	def createClassroomHomeworkDone(@Body String body) {
+	@Post("/homework/:homeworkId/user/:idUser")
+	def uploadHomework(@Body String body) {
 		try {
-			val homeworkDone = body.fromJson(Homework)
-			return ok(homerowkService.createHomeworkDone(id, homeworkId, idUser, homeworkDone).toJson)
+			val homeworkDone = body.fromJson(HomeworkDone)
+			homerowkService.uploadHomework(homeworkId, idUser, homeworkDone)
+			return ok(Parsers.statusOkJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}

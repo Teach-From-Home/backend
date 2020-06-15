@@ -1,33 +1,26 @@
 package services
 
-import repository.HomeworkRepository
 import domain.Homework
+import domain.HomeworkDone
+import repository.HomeworkRepository
 import repository.UserRepository
+import repository.ClassroomRepository
 
 class HomeworkService {
-	HomeworkRepository homeworkRepo = HomeworkRepository.instance
-	UserRepository userRepo = UserRepository.instance
+	HomeworkRepository homeworkRepo = HomeworkRepository.getInstance
+	UserRepository userRepo = UserRepository.getInstance
+	ClassroomRepository classroomRepo = ClassroomRepository.getInstance
 	
-	def createHomework(String idClassroom,Homework homework, String idUser){
-		homework.teacher = Long.parseLong(idUser)//userRepo.searchById(idUser)
-		homework.classroomId = Long.parseLong(idClassroom)
-		homework.available = false
-		homeworkRepo.create(homework)
+	def createHomework(String classroomId, Homework homework){
+		val classroom = classroomRepo.searchById(classroomId)
+		classroom.homework.add(homework)
+		classroomRepo.update(classroom)
 	}
 	
-	def createHomeworkDone(String idClassroom, String idHomework,String idUser, Homework homeworkDone){
-		val description =  homeworkDone.description
-		
-		homeworkDone.student = Long.parseLong(idUser)//userRepo.searchById(idUser)
-		
-		homeworkRepo.create(homeworkDone)
-		
-		val homeworkDONE = homeworkRepo.searchByExample(idUser, description)
-		
-		val homework = homeworkRepo.searchById(idHomework)
-		
-		homework.uploadHomework(homeworkDONE)
-		
+	def uploadHomework(String homeworkId, String idUser, HomeworkDone homeworkDone){
+		homeworkDone.student = userRepo.searchById(idUser)
+		val homework = homeworkRepo.searchById(homeworkId)
+		homework.uploadHomework(homeworkDone)
 		homeworkRepo.update(homework)
 	}
 }

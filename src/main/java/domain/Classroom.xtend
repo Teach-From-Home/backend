@@ -2,20 +2,20 @@ package domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.ArrayList
+import java.util.HashSet
 import java.util.List
+import java.util.Set
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.JoinColumn
 import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.HashSet
-import java.util.Set
-import javax.persistence.JoinColumn
 
 @Entity
 @Accessors
@@ -33,7 +33,7 @@ class Classroom {
 	
 	//le tuve que sacar el jsonignore para poder meter una tarea
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name="classroomId")
+	@JoinColumn(name="classroomId") @JsonIgnore
 	List<Homework> homework = new ArrayList<Homework>
 	
 	//not using cascade classroom should not change any users
@@ -62,10 +62,6 @@ class Classroom {
 	
 	def removeHomeWork(Homework homeWorkToRemove){
 		homework.remove(homeWorkToRemove)
-	}
-	
-	def addHomeworkDoneToHomework(String idHomework, Homework homeworkDone){
-		homework.findFirst[it.id == idHomework].uploadHomework(homeworkDone)
 	}
 	
 	def addPost(Post postToAdd){

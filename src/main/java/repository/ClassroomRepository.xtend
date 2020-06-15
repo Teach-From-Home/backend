@@ -1,14 +1,15 @@
 package repository
 
 import domain.Classroom
+import domain.Homework
+import domain.User
+import javax.persistence.NoResultException
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.JoinType
 import javax.persistence.criteria.Root
-import javax.persistence.NoResultException
 import utils.BadCredentialsException
-import domain.Homework
-import domain.User
+import javassist.NotFoundException
 
 class ClassroomRepository extends HibernateRepository<Classroom> {
 
@@ -63,26 +64,6 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 		}
 	}
 	
-	def getClassroomByStudentView(String idClassroom, String idUser){
-		val entityManager = this.entityManager
-		try {
-			val criteria = entityManager.criteriaBuilder
-			val query = criteria.createQuery(Homework)
-			val from = query.from(Homework)
-			query.select(from).where(
-				criteria.and(
-					criteria.equal(from.get("classroomId"), Long.parseLong(idClassroom)),
-					criteria.equal(from.get("available"), 1)
-				)
-			)
-			entityManager.createQuery(query).resultList
-		}catch (NoResultException e) {
-			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
-		} 
-		finally {
-			entityManager?.close
-		}
-	}
 	
 	def getHomeworkDoneOfHomework(String idClassroom, String idHomework){
 		val entityManager = this.entityManager
@@ -137,7 +118,6 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(entityType)
 			val from = query.from(entityType)
-			val users = from.fetch("users", JoinType.INNER)
 			from.fetch("users", JoinType.LEFT)
 			query.select(from).where(
 				
@@ -151,4 +131,9 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			entityManager?.close
 		}
 	}
+	
+	def enabledHomework(String string) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }
