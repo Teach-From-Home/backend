@@ -9,7 +9,6 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.JoinType
 import javax.persistence.criteria.Root
 import utils.BadCredentialsException
-import javassist.NotFoundException
 
 class ClassroomRepository extends HibernateRepository<Classroom> {
 
@@ -64,27 +63,6 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 		}
 	}
 	
-	
-	def getHomeworkDoneOfHomework(String idClassroom, String idHomework){
-		val entityManager = this.entityManager
-		try {
-			val criteria = entityManager.criteriaBuilder
-			val query = criteria.createQuery(Homework)
-			val from = query.from(Homework)
-			query.select(from).where(
-				criteria.and(
-					criteria.equal(from.get("classroomId"), Long.parseLong(idClassroom)),
-					criteria.equal(from.get("id"), Long.parseLong(idHomework))
-				)
-			)
-			entityManager.createQuery(query).singleResult
-		}catch (NoResultException e) {
-			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
-		} 
-		finally {
-			entityManager?.close
-		}
-	}
 	
 	def notAddedUsers(String idClassroom){
 		val entityManager = this.entityManager

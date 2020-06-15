@@ -23,4 +23,9 @@ class HomeworkService {
 		homework.uploadHomework(homeworkDone)
 		homeworkRepo.update(homework)
 	}
+	
+	def getUploadedHomeworks(String idHomework) {
+		return homeworkRepo.searchById(idHomework).uploadedHomeworks.toList
+	}
+	
 }

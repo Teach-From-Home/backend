@@ -1,6 +1,7 @@
 package services
 
 import domain.Classroom
+import javassist.NotFoundException
 import repository.ClassroomRepository
 import repository.UserRepository
 import utils.Role
@@ -39,16 +40,25 @@ class ClassroomService {
 
 	def getClassroomHomework(String idClassroom, String userId) {
 		if (Role.validateRole(userId, Role.teacher)) {
-			return classroomRepo.searchById(idClassroom).homework
+			val hw = classroomRepo.searchById(idClassroom).homework
+			if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas subidas")
+			return hw
 		} else {
 			val user = UserRepository.getInstance.searchById(userId)
 			val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available]
-			return homeworks.filter[!it.isDoneByUser(user)].toList
+			val hw = homeworks.filter[!it.isDoneByUser(user)].toList
+			if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas pendientes")
+			return hw
 		}
 	}
 
-	def getUploadedHomeworks(String idClassroom, String idHomework) {
-		classroomRepo.getHomeworkDoneOfHomework(idClassroom, idHomework).uploadedHomeworks
+	def getUserUploadedHomework(String idClassroom, String userId) {
+		val user = UserRepository.getInstance.searchById(userId)
+		val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available]
+		var hw = homeworks.map[it.uploadedHomeworks].flatten.toList
+		hw = hw.filter[it.id == user.id].toList
+		if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas subidas")
+		hw
 	}
 
 	def getClassroomPosts(String id) {

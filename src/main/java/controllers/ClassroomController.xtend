@@ -93,14 +93,17 @@ class ClassroomController {
 		}
 	}
 	
-	@Get("/classroom/:id/homeworkDone/:homeworkId")
-	def getClassroomHomeworkDone() {
+	@Get("/classroom/:id/homeworkuploaded/:userId")
+	def getUserUploadedHomework() {
 		try {
-			return ok(classroomService.getUploadedHomeworks(id, homeworkId).toJson)
+			val a = classroomService.getUserUploadedHomework(id, userId)
+			return ok(a.toJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	
 	
 	@Get("/classroom/:id/users/notadded")
 	def getSubs() {
