@@ -68,10 +68,10 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(User)
 			val from = query.from(User)
-			query.select(from).where(
-				criteria.not(
-					from.get("id").in(classroom.users.map[it.id].toSet)
-				),
+			if (!classroom.users.empty) {
+				query.where(criteria.not(from.get("id").in(classroom.users.map[it.id].toSet)))
+			}
+			query.where(
 				criteria.and(
 					criteria.equal(from.get("role"), Role.teacher),
 					criteria.equal(from.get("active"), true)
@@ -91,10 +91,10 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(User)
 			val from = query.from(User)
-			query.select(from).where(
-				criteria.not(
-					from.get("id").in(classroom.users.map[it.id].toSet)
-				),
+			if (!classroom.users.empty) {
+				query.where(criteria.not(from.get("id").in(classroom.users.map[it.id].toSet)))
+			}
+			query.where(
 				criteria.and(
 					criteria.equal(from.get("role"), Role.student),
 					criteria.equal(from.get("active"), true)
