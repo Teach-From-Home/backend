@@ -38,7 +38,6 @@ class Classroom {
 	
 	//not using cascade classroom should not change any users
 	@ManyToMany(fetch=FetchType.EAGER)
-	@JsonIgnore
 	Set<User> users = new HashSet<User>
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

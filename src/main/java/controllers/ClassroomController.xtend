@@ -103,18 +103,6 @@ class ClassroomController {
 		}
 	}
 	
-	
-	
-	@Get("/classroom/:id/users/notadded")
-	def getSubs() {
-		try {
-			return ok(classroomService.getNotAddedSubjects(id).toJson)
-		} catch (NoResultException e) {
-			return internalServerError(Parsers.errorJson(e.message))
-		} catch (Exception e) {
-			return internalServerError(Parsers.errorJson(e.message))
-		}
-	}
 
 	@Get("/classroom/:id/posts/:userId")
 	def getClassroomPosts() {
@@ -132,6 +120,44 @@ class ClassroomController {
 			return ok(classroomService.getClassroomsByUser(id).toJson)
 		} catch (NoResultException e) {
 			return internalServerError(Parsers.errorJson(e.message))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Get("/classroom/:id/teachers/notadded")
+	def notAddedTeacher() {
+		try {
+			return ok(classroomService.notAddedTeachers(id).toJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Get("/classroom/:id/students/notadded")
+	def notAddedStudents() {
+		try {
+			return ok(classroomService.notAddedStudents(id).toJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Post("/classroom/:id/user/:uid")
+	def adduser() {
+		try {
+			classroomService.addUser(id,uid)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Delete("/classroom/:id/user/:uid")
+	def deleteUser() {
+		try {
+			classroomService.deleteUser(id,uid)
+			return ok(Parsers.statusOkJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}

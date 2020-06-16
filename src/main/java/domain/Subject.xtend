@@ -22,4 +22,17 @@ class Subject {
 	
 	@Column
 	boolean active = true
+	
+	override equals(Object obj) {
+		try {
+			val other = obj as Subject
+			id == other?.id
+		} catch (ClassCastException e) {
+			return false
+		}
+	}
+	
+	override hashCode() {
+		if (id !== null) id.hashCode else super.hashCode
+	}
 }

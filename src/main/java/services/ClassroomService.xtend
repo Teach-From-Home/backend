@@ -7,6 +7,7 @@ import repository.UserRepository
 import utils.Role
 
 class ClassroomService {
+	UserRepository userRepo = UserRepository.getInstance
 	ClassroomRepository classroomRepo = ClassroomRepository.instance
 
 	def getClassrooms() {
@@ -65,11 +66,32 @@ class ClassroomService {
 		classroomRepo.getClassroomByListType(id, "posts").posts
 	}
 
-	def getNotAddedSubjects(String idClassroom) {
-		classroomRepo.notAddedUsers(idClassroom)
-	}
-
 	def getClassroomsByUser(String id) {
 		classroomRepo.getClassroomsByUser(id)
+	}
+	
+	def notAddedTeachers(String classroomId){
+		val classr = classroomRepo.searchById(classroomId)
+		var all = classroomRepo.notAddedTeachers(classr)
+		all = all.filter[it.subjects.exists[it == classr.subject]].toList
+		return all
+	}
+	
+	def notAddedStudents(String classroomId){
+		val classr = classroomRepo.searchById(classroomId)
+		var all = classroomRepo.notAddedStudents(classr)
+		return all
+	}
+	
+	def addUser(String classroomId, String userId){
+		val classr = classroomRepo.searchById(classroomId)
+		classr.users.add(userRepo.searchById(userId))
+		classroomRepo.update(classr)
+	}
+	
+	def deleteUser(String classroomId, String userId){
+		val classr = classroomRepo.searchById(classroomId)
+		classr.users.remove(userRepo.searchById(userId))
+		classroomRepo.update(classr)
 	}
 }
