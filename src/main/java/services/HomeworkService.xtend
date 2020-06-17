@@ -13,7 +13,7 @@ class HomeworkService {
 	
 	def createHomework(String classroomId, Homework homework){
 		val classroom = classroomRepo.searchById(classroomId)
-		classroom.homework.add(homework)
+		classroom.addHomeWork(homework)
 		classroomRepo.update(classroom)
 	}
 	

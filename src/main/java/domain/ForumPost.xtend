@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 
 @Entity
 @Accessors
-class Post {
+class ForumPost {
 	
 	@Id
 	@GeneratedValue
@@ -29,20 +29,23 @@ class Post {
 	boolean isPrivate
 
 	@Column(columnDefinition="TEXT")
+	String title
+
+	@Column(columnDefinition="TEXT")
 	String text
 
 	@Column
 	LocalDate date
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
-	List<Post> responses = new ArrayList<Post>
+	List<ForumPost> responses = new ArrayList<ForumPost>
 	
-	def addComent(Post comentToAdd){
+	def addComent(ForumPost comentToAdd){
 		responses.add(comentToAdd)
 	}
 	
-	def removeComent(Post comentToRemove){
+	def removeComent(ForumPost comentToRemove){
 		responses.remove(comentToRemove)
 	}
 }

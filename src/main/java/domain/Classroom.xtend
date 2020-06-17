@@ -42,7 +42,7 @@ class Classroom {
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
-	List<Post> posts = new ArrayList<Post>
+	List<ForumPost> posts = new ArrayList<ForumPost>
 	
 	@Column
 	boolean active = true
@@ -63,11 +63,11 @@ class Classroom {
 		homework.remove(homeWorkToRemove)
 	}
 	
-	def addPost(Post postToAdd){
+	def addPost(ForumPost postToAdd){
 		posts.add(postToAdd)
 	}
 	
-	def removePost(Post postToRemove){
+	def removePost(ForumPost postToRemove){
 		posts.remove(postToRemove)
 	}
 }

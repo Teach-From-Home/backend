@@ -36,7 +36,6 @@ class Homework {
 	@JsonSerialize(using = LocalDateSerializer)
 	LocalDate deadLine
 	
-	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<HomeworkDone> uploadedHomeworks = new ArrayList<HomeworkDone>

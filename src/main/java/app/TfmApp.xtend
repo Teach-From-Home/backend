@@ -5,6 +5,7 @@ import controllers.UserController
 import controllers.SubjectController
 import controllers.ClassroomController
 import controllers.HomeworkController
+import controllers.ForumPostController
 
 class TfmApp {
 	def static void main(String[] args) {
@@ -16,7 +17,8 @@ class TfmApp {
 			new UserController,
 			new SubjectController,
 			new ClassroomController,
-			new HomeworkController
+			new HomeworkController,
+			new ForumPostController
 		)
 	}
 }

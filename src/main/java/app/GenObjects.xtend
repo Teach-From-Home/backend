@@ -3,13 +3,13 @@ package app
 import domain.Classroom
 import domain.Homework
 import domain.HomeworkDone
-import domain.Post
 import domain.Subject
 import domain.User
 import java.time.LocalDate
 import repository.ClassroomRepository
 import repository.SubjectRepository
 import repository.UserRepository
+import domain.ForumPost
 
 class GenObjects {
 	def static generateAll() {
@@ -122,23 +122,25 @@ class GenObjects {
 		teacher2.addSubject(phm)
 
 		// Post and coment data definition
-		val comentarioDer = new Post => [
+		val comentarioDer = new ForumPost => [
 			user = teacher
 			isPrivate = true
 			text = "hola, como estas? que necesitas?"
 			date = LocalDate.of(2020, 09, 04)
 		]
 		
-		val consultaUml = new Post => [
+		val consultaUml = new ForumPost => [
 			user = student2
 			isPrivate = false
+			title = "uml tarea"
 			text = "hola, tengo una consulta con el uml de la tarea."
 			date = LocalDate.of(2020, 09, 09)
 		]
 
-		val consultaDer = new Post => [
+		val consultaDer = new ForumPost => [
 			user = student1
 			isPrivate = true
+			title = "der tarea"
 			text = "hola, tengo una consulta con el der de la tarea."
 			date = LocalDate.of(2020, 09, 03)
 		]
