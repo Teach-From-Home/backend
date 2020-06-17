@@ -68,7 +68,6 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(User)
 			val from = query.from(User)
-						
 			query.where(					
 				criteria.and(
 					if (!classroom.users.empty) {

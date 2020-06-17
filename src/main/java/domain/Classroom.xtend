@@ -33,11 +33,13 @@ class Classroom {
 	
 	//le tuve que sacar el jsonignore para poder meter una tarea
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name="classroomId") @JsonIgnore
+	@JoinColumn(name="classroomId") 
+	@JsonIgnore
 	List<Homework> homework = new ArrayList<Homework>
 	
 	//not using cascade classroom should not change any users
 	@ManyToMany(fetch=FetchType.EAGER)
+	//@JsonIgnore
 	Set<User> users = new HashSet<User>
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

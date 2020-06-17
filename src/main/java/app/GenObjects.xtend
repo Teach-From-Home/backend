@@ -149,6 +149,8 @@ class GenObjects {
 
 		// Homework data definition
 		val realizarDer = new Homework => [
+			title = "Crear der"
+			
 			description = "Una base de datos para una peque�a empresa debe contener informaci�n acerca de clientes, art�culos y pedidos. Hasta el momento se registran los siguientes datos en documentos varios: � Para cada cliente: N�mero de cliente (�nico), Direcciones de env�o (varias por cliente), Saldo, L�mite de
 				cr�dito (depende del cliente, pero en ning�n caso debe superar los 3.000.000 pts), Descuento. 
 				� Para cada art�culo: N�mero de art�culo (�nico), F�bricas que lo distribuyen, Existencias de ese art�culo 
@@ -168,6 +170,8 @@ class GenObjects {
 
 		// HomeworkDone data definition
 		val crearUML = new Homework => [
+			title = "Crear uml"
+			
 			description = "Crear uml de los libros que vimos en clases"
 
 			deadLine = LocalDate.of(2020, 011, 03)
@@ -176,6 +180,8 @@ class GenObjects {
 		]
 		
 		val subirCUS = new Homework => [
+			title = "Subir CUS"
+			
 			description = "Subir CUS que vimos en clases"
 
 			deadLine = LocalDate.of(2020, 011, 03)
@@ -217,6 +223,7 @@ class GenObjects {
 		cursadaDataBase.addPost(consultaDer)
 		cursadaDataBase.addPost(consultaUml)
 		cursadaDataBase.addUser(student1)
+		cursadaDataBase.addUser(student2)
 		cursadaDataBase.addUser(teacher)
 
 		// Classroom repo create

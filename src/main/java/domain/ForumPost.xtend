@@ -45,6 +45,10 @@ class ForumPost {
 		responses.add(comentToAdd)
 	}
 	
+	def getCommentsAmount(){
+		responses.size
+	}
+	
 	def removeComent(ForumPost comentToRemove){
 		responses.remove(comentToRemove)
 	}

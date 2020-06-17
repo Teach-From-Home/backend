@@ -2,7 +2,7 @@ package utils
 
 class Parsers{
 	static def errorJson(String message) {
-		'{ "error": "' + message + '" }'
+		'{ "message": "' + message + '" }'
 	}
 	static def statusOkJson() {
 		'{ "status": "ok" }'
