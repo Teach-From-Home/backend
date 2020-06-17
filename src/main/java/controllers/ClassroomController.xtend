@@ -103,17 +103,15 @@ class ClassroomController {
 		}
 	}
 	
-
 	@Get("/classroom/:id/posts/:userId")
 	def getClassroomPosts() {
 		try {
-			return ok(classroomService.getClassroomPosts(id).toJson)
+			return ok(classroomService.getClassroomPosts(id, userId).toJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
-	
-	
+
 	@Get("/user/:id/classrooms")
 	def getClassrooms() {
 		try {
@@ -128,7 +126,7 @@ class ClassroomController {
 	@Get("/classroom/:id/teachers/notadded")
 	def notAddedTeacher() {
 		try {
-			return ok(classroomService.notAddedTeachers(id).toJson)
+			return ok(classroomService.notAddedByUserType(id, "TEACHER").toJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
@@ -137,7 +135,7 @@ class ClassroomController {
 	@Get("/classroom/:id/students/notadded")
 	def notAddedStudents() {
 		try {
-			return ok(classroomService.notAddedStudents(id).toJson)
+			return ok(classroomService.notAddedByUserType(id, "STUDENT").toJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}

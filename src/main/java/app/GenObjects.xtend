@@ -128,6 +128,13 @@ class GenObjects {
 			text = "hola, como estas? que necesitas?"
 			date = LocalDate.of(2020, 09, 04)
 		]
+		
+		val consultaUml = new Post => [
+			user = student2
+			isPrivate = false
+			text = "hola, tengo una consulta con el uml de la tarea."
+			date = LocalDate.of(2020, 09, 09)
+		]
 
 		val consultaDer = new Post => [
 			user = student1
@@ -206,6 +213,7 @@ class GenObjects {
 		cursadaDataBase.addHomeWork(crearUML)
 		cursadaDataBase.addHomeWork(subirCUS)
 		cursadaDataBase.addPost(consultaDer)
+		cursadaDataBase.addPost(consultaUml)
 		cursadaDataBase.addUser(student1)
 		cursadaDataBase.addUser(teacher)
 

@@ -62,27 +62,37 @@ class ClassroomService {
 		hw
 	}
 
-	def getClassroomPosts(String id) {
-		classroomRepo.getClassroomByListType(id, "posts").posts
+	def getClassroomPosts(String id,String idUser) {
+		if (Role.validateRole(idUser, Role.teacher)) {
+			val ps = classroomRepo.getClassroomByListType(id, "posts").posts
+			if(ps.nullOrEmpty) throw new NotFoundException("No hay posts pendientes")
+			return ps
+		} else {
+			val userValue = userRepo.searchById(idUser)
+			val ps = classroomRepo.getClassroomByListType(id, "posts").posts.filter[!it.isPrivate || it.user == userValue].toList
+			if(ps.nullOrEmpty) throw new NotFoundException("No hay posts pendientes")
+			return ps
+		}
 	}
 
 	def getClassroomsByUser(String id) {
-		classroomRepo.getClassroomsByUser(id)
+		classroomRepo.getClassroomsByUser(id).toList
 	}
 	
-	def notAddedTeachers(String classroomId){
+	def notAddedByUserType(String classroomId, String userType){
 		val classr = classroomRepo.searchById(classroomId)
-		var all = classroomRepo.notAddedTeachers(classr)
-		all = all.filter[it.subjects.exists[it == classr.subject]].toList
-		return all
+		if(userType == Role.teacher){
+			val error = "No hay profesores para agregar"
+			var all = classroomRepo.notAddedByUserType(classr, userType, error)
+			all = all.filter[it.subjects.exists[it == classr.subject]].toList
+			return all
+		}else{
+			val error = "No hay estudiantes para agregar"
+			var all = classroomRepo.notAddedByUserType(classr, userType, error)
+			return all
+		}
 	}
-	
-	def notAddedStudents(String classroomId){
-		val classr = classroomRepo.searchById(classroomId)
-		var all = classroomRepo.notAddedStudents(classr)
-		return all
-	}
-	
+
 	def addUser(String classroomId, String userId){
 		val classr = classroomRepo.searchById(classroomId)
 		classr.users.add(userRepo.searchById(userId))

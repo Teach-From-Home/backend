@@ -62,47 +62,24 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 		}
 	}
 
-	def notAddedTeachers(Classroom classroom) {
+	def notAddedByUserType(Classroom classroom, String userType, String error) {
 		val entityManager = this.entityManager
 		try {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(User)
 			val from = query.from(User)
-			if (!classroom.users.empty) {
-				query.where(criteria.not(from.get("id").in(classroom.users.map[it.id].toSet)))
-			}
-			query.where(
+			query.where(					
 				criteria.and(
-					criteria.equal(from.get("role"), Role.teacher),
+					if (!classroom.users.empty) {
+						criteria.not(from.get("id").in(classroom.users.map[it.id].toSet))
+					},
+					criteria.equal(from.get("role"), userType),
 					criteria.equal(from.get("active"), true)
 				)
 			)
 			entityManager.createQuery(query).resultList
 		} catch (NoResultException e) {
-			throw new BadCredentialsException("No hay profesores para agregar")
-		} finally {
-			entityManager?.close
-		}
-	}
-
-	def notAddedStudents(Classroom classroom) {
-		val entityManager = this.entityManager
-		try {
-			val criteria = entityManager.criteriaBuilder
-			val query = criteria.createQuery(User)
-			val from = query.from(User)
-			if (!classroom.users.empty) {
-				query.where(criteria.not(from.get("id").in(classroom.users.map[it.id].toSet)))
-			}
-			query.where(
-				criteria.and(
-					criteria.equal(from.get("role"), Role.student),
-					criteria.equal(from.get("active"), true)
-				)
-			)
-			entityManager.createQuery(query).resultList
-		} catch (NoResultException e) {
-			throw new BadCredentialsException("No hay alumnos para agregar")
+			throw new BadCredentialsException(error)
 		} finally {
 			entityManager?.close
 		}
@@ -114,10 +91,12 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(entityType)
 			val from = query.from(entityType)
-			from.fetch("users", JoinType.LEFT)
+			val users = from.joinSet("users", JoinType.INNER)
+			from.fetch("users", JoinType.INNER)
 			query.select(from).where(
-				criteria.equal(from.get("active"), true)
-			)
+				criteria.equal(from.get("active"), true),
+				criteria.equal(users.get("id"),Long.parseLong(idUser))
+			).distinct(true)
 			entityManager.createQuery(query).resultList
 		} catch (NoResultException e) {
 			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
@@ -126,8 +105,8 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 		}
 	}
 
-	def enabledHomework(String string) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	def getClassroomListTypeByUser(String string) {
+		
 	}
 
 }
