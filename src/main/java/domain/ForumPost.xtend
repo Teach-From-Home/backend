@@ -1,5 +1,7 @@
 package domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
 import java.util.ArrayList
 import java.util.List
@@ -12,7 +14,7 @@ import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
-import com.fasterxml.jackson.annotation.JsonIgnore
+import serializers.LocalDateSerializer
 
 @Entity
 @Accessors
@@ -35,6 +37,7 @@ class ForumPost {
 	String text
 
 	@Column
+	@JsonSerialize(using = LocalDateSerializer)
 	LocalDate date
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
