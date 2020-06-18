@@ -3,8 +3,8 @@ package domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
-import java.util.ArrayList
-import java.util.List
+import java.util.HashSet
+import java.util.Set
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -26,6 +26,9 @@ class Homework {
 	@Column
 	String title
 	
+	@ManyToOne
+	User teacher
+	
 	@Column(columnDefinition="TEXT")
 	String description
 	
@@ -38,7 +41,7 @@ class Homework {
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
-	List<HomeworkDone> uploadedHomeworks = new ArrayList<HomeworkDone>
+	Set<HomeworkDone> uploadedHomeworks = new HashSet<HomeworkDone>
 	
 	def changeState(){
 		available = !available
@@ -51,7 +54,6 @@ class Homework {
 	def isDoneByUser(User user){
 		uploadedHomeworks.exists[it.student == user]
 	}
-	
 }
 
 @Entity
@@ -59,7 +61,7 @@ class Homework {
 class HomeworkDone{
 	@Id @GeneratedValue
 	Long id
-		
+	
 	@Column
 	double grade
 	
@@ -72,7 +74,7 @@ class HomeworkDone{
 	
 	@ManyToOne
 	User student
-		
+	
 	@Column
 	String file
 }

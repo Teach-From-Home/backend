@@ -1,14 +1,15 @@
 package controllers
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
+import domain.ForumPost
+import domain.Responses
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
-import org.uqbar.xtrest.json.JSONUtils
-import utils.Parsers
 import org.uqbar.xtrest.api.annotation.Post
-import domain.ForumPost
+import org.uqbar.xtrest.json.JSONUtils
 import services.ForumPostService
+import utils.Parsers
 
 @Controller
 class ForumPostController {
@@ -19,7 +20,7 @@ class ForumPostController {
 	def createPost(@Body String body) {
 		try {
 			val post = body.fromJson(ForumPost)
-			postService.createPost(idClassroom, post)
+			postService.createPost(idClassroom, post,idUser)
 			return ok(Parsers.statusOkJson)
 		} catch (InvalidFormatException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))
@@ -40,7 +41,7 @@ class ForumPostController {
 	@Post("/post/:idPost/user/:idUser")
 	def uploadComment(@Body String body) {
 		try {
-			val post = body.fromJson(ForumPost)
+			val post = body.fromJson(Responses)
 			postService.uploadComment(idPost, idUser, post)
 			return ok(Parsers.statusOkJson)
 		} catch (Exception e) {

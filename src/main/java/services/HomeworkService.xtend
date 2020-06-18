@@ -11,7 +11,9 @@ class HomeworkService {
 	UserRepository userRepo = UserRepository.getInstance
 	ClassroomRepository classroomRepo = ClassroomRepository.getInstance
 	
-	def createHomework(String classroomId, Homework homework){
+	def createHomework(String classroomId, Homework homework, String idUser){
+		val userParent = userRepo.searchById(idUser)
+		homework.teacher = userParent
 		val classroom = classroomRepo.searchById(classroomId)
 		classroom.addHomeWork(homework)
 		classroomRepo.update(classroom)
@@ -27,5 +29,4 @@ class HomeworkService {
 	def getUploadedHomeworks(String idHomework) {
 		return homeworkRepo.searchById(idHomework).uploadedHomeworks.toList
 	}
-	
 }

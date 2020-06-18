@@ -47,7 +47,7 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(entityType)
 			val from = query.from(entityType)
-			from.fetch(dataJoinType, JoinType.LEFT) 
+			from.fetch(dataJoinType, JoinType.LEFT)
 			query.select(from).where(
 				criteria.and(
 					criteria.equal(from.get("id"), Long.parseLong(id))

@@ -34,15 +34,15 @@ class Classroom {
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="classroomId")
 	@JsonIgnore
-	List<Homework> homework = new ArrayList<Homework>
+	Set<Homework> homework = new HashSet<Homework>
 
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JsonIgnore
 	Set<User> users = new HashSet<User>
 
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonIgnore
-	List<ForumPost> posts = new ArrayList<ForumPost>
+	Set<ForumPost> posts = new HashSet<ForumPost>
 
 	@Column
 	boolean active = true

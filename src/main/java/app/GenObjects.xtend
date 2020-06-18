@@ -10,6 +10,7 @@ import repository.ClassroomRepository
 import repository.SubjectRepository
 import repository.UserRepository
 import domain.ForumPost
+import domain.Responses
 
 class GenObjects {
 	def static generateAll() {
@@ -89,7 +90,7 @@ class GenObjects {
 			role = "STUDENT"
 		]
 
-		val teacher = new User => [
+		val teacher1 = new User => [
 			name = "julian"
 
 			lastname = "weich"
@@ -117,14 +118,13 @@ class GenObjects {
 			role = "TEACHER"
 		]
 
-		teacher.addSubject(dataBase)
+		teacher1.addSubject(dataBase)
 
 		teacher2.addSubject(phm)
 
 		// Post and coment data definition
-		val comentarioDer = new ForumPost => [
-			user = teacher
-			isPrivate = true
+		val comentarioDer = new Responses => [
+			user = teacher1
 			text = "hola, como estas? que necesitas?"
 			date = LocalDate.of(2020, 09, 04)
 		]
@@ -164,7 +164,9 @@ class GenObjects {
 				Se pide hacer el diagrama ER para la base de datos que represente esta informaci�n."
 
 			deadLine = LocalDate.of(2020, 09, 05)
-
+			
+			teacher = teacher1
+			
 			available = true
 		]
 
@@ -175,16 +177,20 @@ class GenObjects {
 			description = "Crear uml de los libros que vimos en clases"
 
 			deadLine = LocalDate.of(2020, 011, 03)
-
+			
+			teacher = teacher1
+			
 			available = false
 		]
 		
 		val subirCUS = new Homework => [
 			title = "Subir CUS"
-			
+		
 			description = "Subir CUS que vimos en clases"
 
 			deadLine = LocalDate.of(2020, 011, 03)
+
+			teacher = teacher1
 
 			available = true
 		]
@@ -214,7 +220,7 @@ class GenObjects {
 		userRepo.create(student2)
 		userRepo.create(student3)
 		userRepo.create(admin)
-		userRepo.create(teacher)
+		userRepo.create(teacher1)
 		userRepo.create(teacher2)
 
 		cursadaDataBase.addHomeWork(realizarDer)
@@ -224,7 +230,7 @@ class GenObjects {
 		cursadaDataBase.addPost(consultaUml)
 		cursadaDataBase.addUser(student1)
 		cursadaDataBase.addUser(student2)
-		cursadaDataBase.addUser(teacher)
+		cursadaDataBase.addUser(teacher1)
 
 		// Classroom repo create
 		classroomRepo.create(cursadaDataBase)

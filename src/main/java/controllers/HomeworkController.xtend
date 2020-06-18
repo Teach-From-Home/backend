@@ -20,7 +20,7 @@ class HomeworkController {
 	def createHomework(@Body String body) {
 		try {
 			val homework = body.fromJson(Homework)
-			homerowkService.createHomework(id, homework)
+			homerowkService.createHomework(id, homework, idUser)
 			return ok(Parsers.statusOkJson)
 		} catch (InvalidFormatException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))
