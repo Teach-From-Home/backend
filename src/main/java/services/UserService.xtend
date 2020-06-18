@@ -2,6 +2,8 @@ package services
 
 import domain.User
 import repository.UserRepository
+import utils.MailSender
+import utils.MailTemplates
 
 class UserService {
 	UserRepository userRepo = UserRepository.instance
@@ -37,6 +39,7 @@ class UserService {
 	
 	def createUser(User user){
 		userRepo.create(user)
+		//MailSender.send(user,MailTemplates.newUser(user),"Bienvenido a TFM")
 	}
 	
 	def getNotAddedSubjects(String id) {

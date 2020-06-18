@@ -4,6 +4,8 @@ import domain.Classroom
 import javassist.NotFoundException
 import repository.ClassroomRepository
 import repository.UserRepository
+import utils.MailSender
+import utils.MailTemplates
 import utils.Role
 
 class ClassroomService {
@@ -102,8 +104,10 @@ class ClassroomService {
 
 	def addUser(String classroomId, String userId){
 		val classr = classroomRepo.searchById(classroomId)
-		classr.users.add(userRepo.searchById(userId))
+		val newUser = userRepo.searchById(userId)
+		classr.users.add(newUser)
 		classroomRepo.update(classr)
+		//MailSender.send(newUser,MailTemplates.addedToClassroom(newUser,classr),"Notificación TFM")
 	}
 	
 	def deleteUser(String classroomId, String userId){
