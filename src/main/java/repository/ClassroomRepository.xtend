@@ -8,7 +8,6 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.JoinType
 import javax.persistence.criteria.Root
 import utils.BadCredentialsException
-import utils.Role
 
 class ClassroomRepository extends HibernateRepository<Classroom> {
 
@@ -48,7 +47,7 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			val criteria = entityManager.criteriaBuilder
 			val query = criteria.createQuery(entityType)
 			val from = query.from(entityType)
-			from.fetch(dataJoinType, JoinType.LEFT)
+			from.fetch(dataJoinType, JoinType.LEFT) 
 			query.select(from).where(
 				criteria.and(
 					criteria.equal(from.get("id"), Long.parseLong(id))

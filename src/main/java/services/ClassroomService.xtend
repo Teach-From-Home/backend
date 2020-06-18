@@ -81,6 +81,13 @@ class ClassroomService {
 	
 	def notAddedByUserType(String classroomId, String userType){
 		val classr = classroomRepo.searchById(classroomId)
+		if(classr.users.isEmpty){
+			val all = userRepo.getActiveUsers(userType)
+			if(userType == Role.teacher)
+				return all.filter[it.subjects.exists[it == classr.subject]].toList
+			return all
+		} 
+		
 		if(userType == Role.teacher){
 			val error = "No hay profesores para agregar"
 			var all = classroomRepo.notAddedByUserType(classr, userType, error)

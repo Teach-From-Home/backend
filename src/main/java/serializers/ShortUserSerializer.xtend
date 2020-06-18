@@ -28,9 +28,11 @@ class ShortUserSerializer extends StdSerializer<User> {
 	static def String toJson(User user) {
 		mapper().writeValueAsString(user)
 	}
+
 	static def String toJson(Set<User> user) {
 		mapper().writeValueAsString(user)
 	}
+
 	static def String toJson(List<User> user) {
 		mapper().writeValueAsString(user)
 	}
@@ -42,5 +44,7 @@ class ShortUserSerializer extends StdSerializer<User> {
 		mapper.registerModule(module)
 		mapper
 	}
-	
+
 }
+
+

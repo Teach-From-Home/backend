@@ -1,7 +1,6 @@
 package services
 
 import domain.ForumPost
-import repository.UserRepository
 import repository.ClassroomRepository
 import repository.ForumPostRepository
 

@@ -71,5 +71,26 @@ class UserRepository extends HibernateRepository<User> {
 		query.select(from).where(builder.equal(from.get("id"), id))
 	}
 	
+	def getActiveUsers(String userType) {
+		val entityManager = this.entityManager
+		try {
+			val criteria = entityManager.criteriaBuilder
+			val query = criteria.createQuery(entityType)
+			val from = query.from(entityType)
+			query.select(from).where(
+				criteria.and(
+					criteria.equal(from.get("active"), true),
+					criteria.equal(from.get("role"), userType)
+				)
+			)
+			entityManager.createQuery(query).resultList
+		}catch (NoResultException e) {
+			throw new BadCredentialsException("No hay usuarios para agregar")
+		} 
+		finally {
+			entityManager?.close
+		}
+	}
+	
 
 }
