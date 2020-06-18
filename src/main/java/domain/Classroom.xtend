@@ -37,6 +37,7 @@ class Classroom {
 	List<Homework> homework = new ArrayList<Homework>
 
 	@ManyToMany(fetch=FetchType.EAGER)
+	@JsonIgnore
 	Set<User> users = new HashSet<User>
 
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)

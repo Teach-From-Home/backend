@@ -5,7 +5,7 @@ import repository.ClassroomRepository
 import repository.ForumPostRepository
 
 class ForumPostService {
-	ForumPostRepository forumPostRepository = ForumPostRepository.getInstance
+	ForumPostRepository forumPostRepo = ForumPostRepository.getInstance
 	//UserRepository userRepo = UserRepository.getInstance
 	ClassroomRepository classroomRepo = ClassroomRepository.getInstance
 	
@@ -16,11 +16,13 @@ class ForumPostService {
 	}
 	
 	def uploadComment(String idPost, String idUser, ForumPost comment){
-		
+		val postParent = forumPostRepo.searchById(idPost)
+		postParent.addComent(comment)
+		forumPostRepo.update(postParent)
 	}
 	
 	def getCommentsOfPost(String idPost) {
-		val asd = forumPostRepository.searchById(idPost).responses.toList
+		val asd = forumPostRepo.searchById(idPost).responses.toList
 		println(asd)
 		return asd
 	}
