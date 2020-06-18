@@ -6,8 +6,8 @@ import repository.UserRepository
 class UserService {
 	UserRepository userRepo = UserRepository.instance
 	
-	def getUserSignIn(User loginCredentials){
-		userRepo.login(loginCredentials)
+	def getUserSignIn(User loginCredentials, String AppType){
+		userRepo.login(loginCredentials,AppType)
 	}
 	
 	def getUsers(){

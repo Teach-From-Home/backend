@@ -22,10 +22,10 @@ class UserController {
 	UserService userService = new UserService
 
 	@Post("/login")
-	def login(@Body String body) {
+	def login(@Body String body, String AppType) {
 		try {
 			val loginCredentials = body.fromJson(User)
-			val loggedUser = userService.getUserSignIn(loginCredentials)
+			val loggedUser = userService.getUserSignIn(loginCredentials, AppType)
 			return ok(ShortUserSerializer.toJson(loggedUser))
 		} catch (BadCredentialsException e) {
 			return forbidden(Parsers.errorJson(e.message))

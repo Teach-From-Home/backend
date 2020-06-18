@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 import utils.BadCredentialsException
+import utils.Role
 
 class UserRepository extends HibernateRepository<User> {
 
@@ -24,7 +25,7 @@ class UserRepository extends HibernateRepository<User> {
 		User
 	}
 
-	def login(User userCredentials) {
+	def login(User userCredentials,String AppType) {
 		val entityManager = this.entityManager
 		try {
 			val criteria = entityManager.criteriaBuilder
@@ -34,7 +35,12 @@ class UserRepository extends HibernateRepository<User> {
 				criteria.and(
 					criteria.equal(from.get("dni"), userCredentials.dni),
 					criteria.equal(from.get("password"), userCredentials.password),
-					criteria.equal(from.get("active"), true)
+					criteria.equal(from.get("active"), true),
+					if(AppType == "admin"){
+						criteria.equal(from.get("role"), Role.admin)
+					}else{
+						criteria.notEqual(from.get("role"), Role.admin)
+					}
 				)
 			)
 			entityManager.createQuery(query).singleResult
