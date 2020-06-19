@@ -36,11 +36,13 @@ class Homework {
 	boolean available
 	
 	@Column
+	boolean uploaded = false
+	
+	@Column
 	@JsonSerialize(using = LocalDateSerializer)
 	LocalDate deadLine
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	@JsonIgnore
 	Set<HomeworkDone> uploadedHomeworks = new HashSet<HomeworkDone>
 	
 	def changeState(){
@@ -52,7 +54,7 @@ class Homework {
 	}
 	
 	def isDoneByUser(User user){
-		uploadedHomeworks.exists[it.student == user]
+		return uploadedHomeworks.exists[it.student == user]
 	}
 }
 

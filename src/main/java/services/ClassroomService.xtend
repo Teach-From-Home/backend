@@ -53,11 +53,15 @@ class ClassroomService {
 			if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas subidas")
 			return hw
 		} else {
+			// DANGER ZONE!!!!!
+			//FOR YOUR MADAFAKIN LIFE PLEASE NEVER UPDATE A HW WITH THE RESPONSE OF THIS METHOD!!!
 			val user = UserRepository.getInstance.searchById(userId)
-			val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available]
-			val hw = homeworks.filter[!it.isDoneByUser(user)].toList
-			if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas pendientes")
-			return hw
+			val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available].toSet
+			homeworks.forEach[ it.uploaded = it.isDoneByUser(user) ]
+			homeworks.forEach[ it.uploadedHomeworks = it.uploadedHomeworks.filter[ it.student == user ].toSet ]
+			if(homeworks.nullOrEmpty) throw new NotFoundException("No hay tareas pendientes")
+			return homeworks
+			//DANGER ZONE!!!!!
 		}
 	}
 
