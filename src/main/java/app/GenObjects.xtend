@@ -151,17 +151,19 @@ class GenObjects {
 		val realizarDer = new Homework => [
 			title = "Crear der"
 			
-			description = "Una base de datos para una peque�a empresa debe contener informaci�n acerca de clientes, art�culos y pedidos. Hasta el momento se registran los siguientes datos en documentos varios: � Para cada cliente: N�mero de cliente (�nico), Direcciones de env�o (varias por cliente), Saldo, L�mite de
-				cr�dito (depende del cliente, pero en ning�n caso debe superar los 3.000.000 pts), Descuento. 
-				� Para cada art�culo: N�mero de art�culo (�nico), F�bricas que lo distribuyen, Existencias de ese art�culo 
-				en cada f�brica, Descripci�n del art�culo. � Para cada pedido: Cada pedido tiene una cabecera y el cuerpo del pedido. 
-				La cabecera est� formada por el n�mero de cliente, direcci�n de env�o y fecha del pedido. El cuerpo del pedido son varias l�neas, en 
-				cada l�nea se especifican el n�mero del art�culo pedido y la cantidad. 
-				Adem�s, se ha determinado que se debe almacenar la informaci�n de las f�bricas. Sin embargo, dado el 
-				uso de distribuidores, se usar�: N�mero de la f�brica (�nico) y Tel�fono de contacto. Y se desean ver 
-				cu�ntos art�culos (en total) provee la f�brica. Tambi�n, por informaci�n estrat�gica, se podr�a incluir 
-				informaci�n de f�bricas alternativas respecto de las que ya fabrican art�culos para esta empresa. Nota: Una direcci�n se entender� como N�, Calle, Comuna y Ciudad. Una fecha incluye hora. 
-				Se pide hacer el diagrama ER para la base de datos que represente esta informaci�n."
+			description = "La aerolínea Nuevo Horizonte ha solicitado la elaboración de un nuevo sistema para registrar la
+			venta de tickets. Se requiere modelar la base de datos en la cual se almacenará toda la información
+			sobre la compra de dichos tickets:
+			1. De cada ticket se registra: identificador único, fecha del vuelo, hora del vuelo, aeropuerto
+			origen, aeropuerto destino, puerta de embarque.
+			2. Cada ticket se paga con un único medio de pago. Los medios de pago son tarjetas de debito y
+			tarjetas de crédito. Al pagar un ticket se registra: nro de tarjeta (identificador único), código
+			seguridad de la tarjeta, fecha vencimiento de la tarjeta, monto pagado y si la tarjeta es de
+			debito o crédito.
+			3. Cada ticket pertenece a un único pasajero. Del mismo se registra: nro de pasaporte, apellido,
+			nombre, nacionalidad.
+			Un pasajero puede tener distintos tickets, para distintas fechas y horas de vuelo. También puede
+			haber pasajeros que aún no tengan ningún ticket relacionado."
 
 			deadLine = LocalDate.of(2020, 09, 05)
 			
@@ -200,7 +202,8 @@ class GenObjects {
 			student = student1
 			file = "asdasd"
 			grade = 9
-			coment = "nicely done!!"
+			coment = "Muy completo!"
+			file="https://firebasestorage.googleapis.com/v0/b/teach-from-home.appspot.com/o/homeworks%2FCuadernillo%20practica_del_alumno.pdf?alt=media&token=361a0334-172b-40ca-935e-7122ae9454ef"
 		]
 
 		realizarDer.uploadHomework(derRealizado)
@@ -208,7 +211,8 @@ class GenObjects {
 		// Classroom data definition
 		val cursadaDataBase = new Classroom => [
 			subject = dataBase
-			description = "cursada de 10 a 12"
+			name="Miercoles - Viernes Noche"
+			description = "Cursada dias miercoles y viernes en el horario de 18 A 21:30HS "
 		]
 
 		// Subject repo create
@@ -234,6 +238,8 @@ class GenObjects {
 
 		// Classroom repo create
 		classroomRepo.create(cursadaDataBase)
+		cursadaDataBase.keyName = cursadaDataBase.subject.name.replaceAll("\\s+","").toLowerCase+cursadaDataBase.id
+		classroomRepo.update(cursadaDataBase)
 
 	}
 }

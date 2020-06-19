@@ -48,7 +48,7 @@ class UserRepository extends HibernateRepository<User> {
 			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
 		} 
 		finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 	
@@ -69,7 +69,7 @@ class UserRepository extends HibernateRepository<User> {
 			throw new NotFoundException("No hay mas materias por agregar")
 		} 
 		finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 
@@ -94,7 +94,7 @@ class UserRepository extends HibernateRepository<User> {
 			throw new BadCredentialsException("No hay usuarios para agregar")
 		} 
 		finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 	

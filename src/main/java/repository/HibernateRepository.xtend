@@ -28,7 +28,7 @@ abstract class HibernateRepository<T> {
 			entityManager.transaction.rollback
 			throw new RuntimeException("Ocurrió un error, la operación no puede completarse", e)
 		} finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 
@@ -45,7 +45,7 @@ abstract class HibernateRepository<T> {
 			entityManager.transaction.rollback
 			throw new RuntimeException("Ocurrió un error, la operación no puede completarse", e)
 		} finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 
@@ -58,7 +58,7 @@ abstract class HibernateRepository<T> {
 			query.select(from)
 			entityManager.createQuery(query).resultList
 		} finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 

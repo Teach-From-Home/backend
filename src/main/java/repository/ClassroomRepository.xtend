@@ -37,7 +37,7 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 			query.select(from)
 			entityManager.createQuery(query).resultList
 		} finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 
@@ -57,7 +57,7 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 		} catch (NoResultException e) {
 			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
 		} finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 
@@ -80,7 +80,7 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 		} catch (NoResultException e) {
 			throw new BadCredentialsException(error)
 		} finally {
-			entityManager?.close
+			entityManager.close
 		}
 	}
 
@@ -100,12 +100,8 @@ class ClassroomRepository extends HibernateRepository<Classroom> {
 		} catch (NoResultException e) {
 			throw new BadCredentialsException("No existe la combinacion de usuario y contraseña")
 		} finally {
-			entityManager?.close
+			entityManager.close
 		}
-	}
-
-	def getClassroomListTypeByUser(String string) {
-		
 	}
 
 }
