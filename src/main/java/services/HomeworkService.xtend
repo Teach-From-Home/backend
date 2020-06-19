@@ -2,9 +2,9 @@ package services
 
 import domain.Homework
 import domain.HomeworkDone
+import repository.ClassroomRepository
 import repository.HomeworkRepository
 import repository.UserRepository
-import repository.ClassroomRepository
 
 class HomeworkService {
 	HomeworkRepository homeworkRepo = HomeworkRepository.getInstance
@@ -19,7 +19,17 @@ class HomeworkService {
 		classroomRepo.update(classroom)
 	}
 	
-	def uploadHomework(String homeworkId, String idUser, HomeworkDone homeworkDone){
+	def updateHomework(String idHomework, Homework homework){
+		val homeworkParent = homeworkRepo.searchById(idHomework)
+		homeworkParent.uploadedHomeworks.clear
+		homeworkParent.uploadedHomeworks = homework.uploadedHomeworks
+		homeworkParent.title = homework.title
+		homeworkParent.description = homework.description
+		homeworkParent.available = homework.available
+		homeworkRepo.update(homeworkParent)
+	}
+	
+	def createHomeworkDone(String homeworkId, String idUser, HomeworkDone homeworkDone){
 		homeworkDone.student = userRepo.searchById(idUser)
 		val homework = homeworkRepo.searchById(homeworkId)
 		homework.uploadHomework(homeworkDone)

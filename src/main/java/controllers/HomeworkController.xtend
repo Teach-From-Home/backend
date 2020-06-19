@@ -10,6 +10,7 @@ import org.uqbar.xtrest.api.annotation.Post
 import org.uqbar.xtrest.json.JSONUtils
 import services.HomeworkService
 import utils.Parsers
+import org.uqbar.xtrest.api.annotation.Put
 
 @Controller
 class HomeworkController {
@@ -38,11 +39,22 @@ class HomeworkController {
 		}
 	}
 
-	@Post("/homework/:homeworkId/user/:idUser")
+	@Put("/homework/:homeworkId/user/:idUser")
 	def uploadHomework(@Body String body) {
 		try {
+			val homework = body.fromJson(Homework)
+			homerowkService.updateHomework(homeworkId, homework)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+
+	@Post("/homework/:homeworkId/user/:idUser")
+	def createHomeworkDone(@Body String body) {
+		try {
 			val homeworkDone = body.fromJson(HomeworkDone)
-			homerowkService.uploadHomework(homeworkId, idUser, homeworkDone)
+			homerowkService.createHomeworkDone(homeworkId, idUser, homeworkDone)
 			return ok(Parsers.statusOkJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))

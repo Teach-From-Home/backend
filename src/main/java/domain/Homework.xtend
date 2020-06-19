@@ -1,6 +1,5 @@
 package domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
 import java.util.HashSet
@@ -39,7 +38,7 @@ class Homework {
 	boolean uploaded = false
 	
 	@Column
-	@JsonSerialize(using = LocalDateSerializer)
+	@JsonSerialize//(using = LocalDateSerializer)
 	LocalDate deadLine
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
@@ -71,7 +70,7 @@ class HomeworkDone{
 	String coment
 	
 	@Column
-	@JsonSerialize(using = LocalDateSerializer)
+	@JsonSerialize//(using = LocalDateSerializer)
 	LocalDate uploadDate = LocalDate.now
 	
 	@ManyToOne
