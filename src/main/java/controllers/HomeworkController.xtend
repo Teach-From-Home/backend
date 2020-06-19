@@ -39,8 +39,8 @@ class HomeworkController {
 		}
 	}
 
-	@Put("/homework/:homeworkId/user/:idUser")
-	def uploadHomework(@Body String body) {
+	@Put("/homework/:homeworkId")
+	def updateHomework(@Body String body) {
 		try {
 			val homework = body.fromJson(Homework)
 			homerowkService.updateHomework(homeworkId, homework)

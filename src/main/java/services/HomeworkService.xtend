@@ -21,8 +21,6 @@ class HomeworkService {
 	
 	def updateHomework(String idHomework, Homework homework){
 		val homeworkParent = homeworkRepo.searchById(idHomework)
-		homeworkParent.uploadedHomeworks.clear
-		homeworkParent.uploadedHomeworks = homework.uploadedHomeworks
 		homeworkParent.title = homework.title
 		homeworkParent.description = homework.description
 		homeworkParent.available = homework.available
