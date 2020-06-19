@@ -14,6 +14,7 @@ class HomeworkService {
 	def createHomework(String classroomId, Homework homework, String idUser){
 		val userParent = userRepo.searchById(idUser)
 		homework.teacher = userParent
+		homework.available = false
 		val classroom = classroomRepo.searchById(classroomId)
 		classroom.addHomeWork(homework)
 		classroomRepo.update(classroom)
@@ -24,6 +25,7 @@ class HomeworkService {
 		homeworkParent.title = homework.title
 		homeworkParent.description = homework.description
 		homeworkParent.available = homework.available
+		//homeworkParent.deadLine = homework.deadLine
 		homeworkRepo.update(homeworkParent)
 	}
 	
