@@ -35,9 +35,9 @@ class GenObjects {
 
 		// User Data definition
 		val admin = new User => [
-			name = "blanca"
+			name = "Blanca"
 
-			lastname = "suarez"
+			lastname = "Suarez"
 
 			dni = 40128383
 
@@ -49,9 +49,9 @@ class GenObjects {
 		]
 
 		val student1 = new User => [
-			name = "agustin mario"
+			name = "Agustin Mario"
 
-			lastname = "tini"
+			lastname = "Tini"
 
 			email = "agustinmariotini@gmail.com"
 
@@ -63,9 +63,9 @@ class GenObjects {
 		]
 
 		val student2 = new User => [
-			name = "eugenio"
+			name = "Eugenio"
 
-			lastname = "rossetto"
+			lastname = "Rossetto"
 
 			email = "eugerosso22@gmail.com"
 
@@ -77,9 +77,9 @@ class GenObjects {
 		]
 
 		val student3 = new User => [
-			name = "javier"
+			name = "Javier"
 
-			lastname = "gomez"
+			lastname = "Gomez"
 
 			email = "javiemgz@gmail.com"
 
@@ -91,9 +91,9 @@ class GenObjects {
 		]
 
 		val teacher1 = new User => [
-			name = "julian"
+			name = "Julian"
 
-			lastname = "weich"
+			lastname = "Weich"
 
 			email = "julianweich@gmail.com"
 
@@ -105,7 +105,7 @@ class GenObjects {
 		]
 
 		val teacher2 = new User => [
-			name = "dodain"
+			name = "Dodain"
 
 			lastname = "Mc Clane"
 
@@ -125,14 +125,14 @@ class GenObjects {
 		// Post and coment data definition
 		val comentarioDer = new Responses => [
 			user = teacher1
-			text = "hola, como estas? que necesitas?"
+			text = "Hola, como estas? Que necesitas?"
 			date = LocalDate.of(2020, 09, 04)
 		]
 		
 		val consultaUml = new ForumPost => [
 			user = student2
 			isPrivate = false
-			title = "uml tarea"
+			title = "UML tarea"
 			text = "hola, tengo una consulta con el uml de la tarea."
 			date = LocalDate.of(2020, 09, 09)
 		]
@@ -140,8 +140,8 @@ class GenObjects {
 		val consultaDer = new ForumPost => [
 			user = student1
 			isPrivate = true
-			title = "der tarea"
-			text = "hola, tengo una consulta con el der de la tarea."
+			title = "Der tarea"
+			text = "Hola, tengo una consulta con el der de la tarea."
 			date = LocalDate.of(2020, 09, 03)
 		]
 
