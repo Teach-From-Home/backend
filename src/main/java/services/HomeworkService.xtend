@@ -5,6 +5,7 @@ import domain.HomeworkDone
 import repository.ClassroomRepository
 import repository.HomeworkRepository
 import repository.UserRepository
+import utils.Role
 
 class HomeworkService {
 	HomeworkRepository homeworkRepo = HomeworkRepository.getInstance
@@ -25,7 +26,6 @@ class HomeworkService {
 		homeworkParent.title = homework.title
 		homeworkParent.description = homework.description
 		homeworkParent.available = homework.available
-		//homeworkParent.deadLine = homework.deadLine
 		homeworkRepo.update(homeworkParent)
 	}
 	
@@ -36,7 +36,32 @@ class HomeworkService {
 		homeworkRepo.update(homework)
 	}
 	
-	def getUploadedHomeworks(String idHomework) {
-		return homeworkRepo.searchById(idHomework).uploadedHomeworks.toList
+	def updateHomeworkDone(String homeworkId, HomeworkDone newHomeworkDone){
+		val homeworkParent = homeworkRepo.searchById(homeworkId)
+		val oldHomeworkDone = homeworkParent.uploadedHomeworks.findFirst[it == newHomeworkDone]
+		homeworkParent.removeHomework(oldHomeworkDone)
+		if(newHomeworkDone.grade !== null){
+			oldHomeworkDone.grade = newHomeworkDone.grade
+		}
+		if(newHomeworkDone.coment !== null){
+			oldHomeworkDone.coment = newHomeworkDone.coment
+		}
+		if(oldHomeworkDone.file != newHomeworkDone.file){
+			oldHomeworkDone.file = newHomeworkDone.file
+			oldHomeworkDone.grade = null
+			oldHomeworkDone.coment = null
+		}
+		homeworkParent.uploadHomework(oldHomeworkDone)
+		homeworkRepo.update(homeworkParent)
+	}
+	
+	def getUploadedHomeworks(String idHomework, String idUser) {
+		if(Role.validateRole(idUser, Role.teacher)){
+			return homeworkRepo.searchById(idHomework).uploadedHomeworks.toList
+		}else{
+			val user = userRepo.searchById(idUser)
+			val homeworks = homeworkRepo.searchById(idHomework).uploadedHomeworks.filter[it.student == user].toList
+			return homeworks
+		}
 	}
 }

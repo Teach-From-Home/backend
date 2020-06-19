@@ -38,7 +38,7 @@ class Homework {
 	boolean uploaded = false
 	
 	@Column
-	@JsonSerialize//(using = LocalDateSerializer)
+	@JsonSerialize(using = LocalDateSerializer)
 	LocalDate deadLine
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
@@ -50,6 +50,10 @@ class Homework {
 	
 	def uploadHomework(HomeworkDone homeworkDoneToAdd){
 		uploadedHomeworks.add(homeworkDoneToAdd)
+	}
+	
+	def removeHomework(HomeworkDone homeworkDoneToRemove){
+		uploadedHomeworks.remove(homeworkDoneToRemove)
 	}
 	
 	def isDoneByUser(User user){
@@ -64,13 +68,13 @@ class HomeworkDone{
 	Long id
 	
 	@Column
-	double grade
+	Double grade
 	
 	@Column(columnDefinition="TEXT")
 	String coment
 	
 	@Column
-	@JsonSerialize//(using = LocalDateSerializer)
+	@JsonSerialize(using = LocalDateSerializer)
 	LocalDate uploadDate = LocalDate.now
 	
 	@ManyToOne
@@ -78,4 +82,13 @@ class HomeworkDone{
 	
 	@Column
 	String file
+	
+	override equals(Object obj) {
+		try {
+			val other = obj as HomeworkDone
+			id == other?.id
+		} catch (ClassCastException e) {
+			return false
+		}
+	}
 }

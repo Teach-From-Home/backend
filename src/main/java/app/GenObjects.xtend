@@ -1,16 +1,16 @@
 package app
 
 import domain.Classroom
+import domain.ForumPost
 import domain.Homework
 import domain.HomeworkDone
+import domain.Responses
 import domain.Subject
 import domain.User
 import java.time.LocalDate
 import repository.ClassroomRepository
 import repository.SubjectRepository
 import repository.UserRepository
-import domain.ForumPost
-import domain.Responses
 
 class GenObjects {
 	def static generateAll() {
@@ -151,19 +151,7 @@ class GenObjects {
 		val realizarDer = new Homework => [
 			title = "Crear der"
 			
-			description = "La aerolínea Nuevo Horizonte ha solicitado la elaboración de un nuevo sistema para registrar la
-			venta de tickets. Se requiere modelar la base de datos en la cual se almacenará toda la información
-			sobre la compra de dichos tickets:
-			1. De cada ticket se registra: identificador único, fecha del vuelo, hora del vuelo, aeropuerto
-			origen, aeropuerto destino, puerta de embarque.
-			2. Cada ticket se paga con un único medio de pago. Los medios de pago son tarjetas de debito y
-			tarjetas de crédito. Al pagar un ticket se registra: nro de tarjeta (identificador único), código
-			seguridad de la tarjeta, fecha vencimiento de la tarjeta, monto pagado y si la tarjeta es de
-			debito o crédito.
-			3. Cada ticket pertenece a un único pasajero. Del mismo se registra: nro de pasaporte, apellido,
-			nombre, nacionalidad.
-			Un pasajero puede tener distintos tickets, para distintas fechas y horas de vuelo. También puede
-			haber pasajeros que aún no tengan ningún ticket relacionado."
+			description = "Crear der simulando una aerolinea, relacionando vuelos, asientos, usuarios y pasajes."
 
 			deadLine = LocalDate.of(2020, 09, 05)
 			
@@ -201,7 +189,7 @@ class GenObjects {
 			uploadDate = LocalDate.of(2020, 09, 05)
 			student = student1
 			file = "asdasd"
-			grade = 9
+			grade = 9.00
 			coment = "Muy completo!"
 			file="https://firebasestorage.googleapis.com/v0/b/teach-from-home.appspot.com/o/homeworks%2FCuadernillo%20practica_del_alumno.pdf?alt=media&token=361a0334-172b-40ca-935e-7122ae9454ef"
 		]
