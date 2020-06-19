@@ -47,7 +47,13 @@ class Classroom {
 	
 	@Column
 	String name = ""
-
+	
+	@Column
+	String keyName = ""
+	
+	@Column
+	boolean live = false
+	
 	def addUser(User userToAdd) {
 		users.add(userToAdd)
 	}

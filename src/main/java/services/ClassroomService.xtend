@@ -35,6 +35,12 @@ class ClassroomService {
 
 	def createClassroom(Classroom clasroom) {
 		classroomRepo.create(clasroom)
+		//Genero una key """random""" para la call
+		//No la creo antes por que no tiene id el classroom
+		//suprimo espacios en blanco y agrego la id, para que sea unico
+		clasroom.keyName = clasroom.subject.name.replaceAll("\\s+","").toLowerCase+clasroom.id
+		//updateo con la key creada
+		classroomRepo.update(clasroom)
 	}
 
 	def getClassroomUsers(String id) {
