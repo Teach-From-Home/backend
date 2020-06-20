@@ -132,6 +132,7 @@ class GenObjects {
 		val consultaUml = new ForumPost => [
 			user = student2
 			isPrivate = false
+			available = true
 			title = "UML tarea"
 			text = "hola, tengo una consulta con el uml de la tarea."
 			date = LocalDate.of(2020, 09, 09)
@@ -140,6 +141,7 @@ class GenObjects {
 		val consultaDer = new ForumPost => [
 			user = student1
 			isPrivate = true
+			available = true
 			title = "Der tarea"
 			text = "Hola, tengo una consulta con el der de la tarea."
 			date = LocalDate.of(2020, 09, 03)

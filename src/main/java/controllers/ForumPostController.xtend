@@ -10,6 +10,8 @@ import org.uqbar.xtrest.api.annotation.Post
 import org.uqbar.xtrest.json.JSONUtils
 import services.ForumPostService
 import utils.Parsers
+import org.uqbar.xtrest.api.annotation.Put
+import org.uqbar.xtrest.api.annotation.Delete
 
 @Controller
 class ForumPostController {
@@ -48,4 +50,26 @@ class ForumPostController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	@Put("/post/:idPost")
+	def updatePost(@Body String body){
+		try {
+			val post = body.fromJson(ForumPost)
+			postService.updatePost(idPost, post)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Delete("/post/:idPost")
+	def deletePost(){
+		try {
+			postService.deletePost(idPost)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+
 }

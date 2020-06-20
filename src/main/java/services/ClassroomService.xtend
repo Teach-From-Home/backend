@@ -76,12 +76,12 @@ class ClassroomService {
 
 	def getClassroomPosts(String id,String idUser) {
 		if (Role.validateRole(idUser, Role.teacher)) {
-			val ps = classroomRepo.getClassroomByListType(id, "posts").posts
+			val ps = classroomRepo.getClassroomByListType(id, "posts").posts.filter[it.available].toList
 			if(ps.nullOrEmpty) throw new NotFoundException("No hay posts pendientes")
 			return ps
 		} else {
 			val userValue = userRepo.searchById(idUser)
-			val ps = classroomRepo.getClassroomByListType(id, "posts").posts.filter[!it.isPrivate || it.user == userValue].toList
+			val ps = classroomRepo.getClassroomByListType(id, "posts").posts.filter[it.available && (!it.isPrivate || it.user == userValue)].toList
 			if(ps.nullOrEmpty) throw new NotFoundException("No hay posts pendientes")
 			return ps
 		}

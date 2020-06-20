@@ -26,6 +26,9 @@ class ForumPost {
 
 	@ManyToOne
 	User user
+	
+	@Column
+	boolean available
 
 	@Column
 	boolean isPrivate

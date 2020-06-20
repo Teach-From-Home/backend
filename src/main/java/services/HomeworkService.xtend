@@ -58,7 +58,7 @@ class HomeworkService {
 	def getUploadedHomeworks(String idHomework, String idUser) {
 		if(Role.validateRole(idUser, Role.teacher)){
 			return homeworkRepo.searchById(idHomework).uploadedHomeworks.toList
-		}else{
+		}else{ //ELIMINAR ESTO
 			val user = userRepo.searchById(idUser)
 			val homeworks = homeworkRepo.searchById(idHomework).uploadedHomeworks.filter[it.student == user].toList
 			return homeworks
