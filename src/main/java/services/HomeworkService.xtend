@@ -2,6 +2,7 @@ package services
 
 import domain.Homework
 import domain.HomeworkDone
+import java.time.LocalDateTime
 import repository.ClassroomRepository
 import repository.HomeworkRepository
 import repository.UserRepository
@@ -32,6 +33,7 @@ class HomeworkService {
 	def createHomeworkDone(String homeworkId, String idUser, HomeworkDone homeworkDone){
 		homeworkDone.student = userRepo.searchById(idUser)
 		val homework = homeworkRepo.searchById(homeworkId)
+		homeworkDone.uploadDate = LocalDateTime.now
 		homework.uploadHomework(homeworkDone)
 		homeworkRepo.update(homework)
 	}
@@ -51,6 +53,7 @@ class HomeworkService {
 			oldHomeworkDone.grade = null
 			oldHomeworkDone.coment = null
 		}
+		oldHomeworkDone.uploadDate = LocalDateTime.now
 		homeworkParent.uploadHomework(oldHomeworkDone)
 		homeworkRepo.update(homeworkParent)
 	}

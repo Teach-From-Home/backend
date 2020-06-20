@@ -1,11 +1,11 @@
 package services
 
 import domain.ForumPost
+import domain.Responses
+import java.time.LocalDateTime
 import repository.ClassroomRepository
 import repository.ForumPostRepository
 import repository.UserRepository
-import java.time.LocalDate
-import domain.Responses
 
 class ForumPostService {
 	ForumPostRepository forumPostRepo = ForumPostRepository.getInstance
@@ -14,7 +14,7 @@ class ForumPostService {
 	
 	def createPost(String IdClassroom, ForumPost post, String idUser){
 		val userParent = userRepo.searchById(idUser)
-		post.date = LocalDate.now
+		post.date = LocalDateTime.now
 		post.user = userParent
 		post.available = true
 		val classroom = classroomRepo.searchById(IdClassroom)
@@ -39,7 +39,7 @@ class ForumPostService {
 		val postParent = forumPostRepo.searchById(idPost)
 		val userParent = userRepo.searchById(idUser)
 		comment.user = userParent
-		comment.date = LocalDate.now
+		comment.date = LocalDateTime.now
 		postParent.addComent(comment)
 		forumPostRepo.update(postParent)
 	}

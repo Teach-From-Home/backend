@@ -8,6 +8,7 @@ import domain.Responses
 import domain.Subject
 import domain.User
 import java.time.LocalDate
+import java.time.LocalDateTime
 import repository.ClassroomRepository
 import repository.SubjectRepository
 import repository.UserRepository
@@ -126,16 +127,16 @@ class GenObjects {
 		val comentarioDer = new Responses => [
 			user = teacher1
 			text = "Hola, como estas? Que necesitas?"
-			date = LocalDate.of(2020, 09, 04)
+			date = LocalDateTime.of(2020, 09, 04,20,14)
 		]
-		
+
 		val consultaUml = new ForumPost => [
 			user = student2
 			isPrivate = false
 			available = true
 			title = "UML tarea"
 			text = "hola, tengo una consulta con el uml de la tarea."
-			date = LocalDate.of(2020, 09, 09)
+			date = LocalDateTime.of(2020, 09, 09,16,02)
 		]
 
 		val consultaDer = new ForumPost => [
@@ -144,7 +145,7 @@ class GenObjects {
 			available = true
 			title = "Der tarea"
 			text = "Hola, tengo una consulta con el der de la tarea."
-			date = LocalDate.of(2020, 09, 03)
+			date = LocalDateTime.of(2020, 09, 03,03,12)
 		]
 
 		consultaDer.addComent(comentarioDer)
@@ -152,32 +153,32 @@ class GenObjects {
 		// Homework data definition
 		val realizarDer = new Homework => [
 			title = "Crear der"
-			
+
 			description = "Crear der simulando una aerolinea, relacionando vuelos, asientos, usuarios y pasajes."
 
 			deadLine = LocalDate.of(2020, 09, 05)
-			
+
 			teacher = teacher1
-			
+
 			available = true
 		]
 
 		// HomeworkDone data definition
 		val crearUML = new Homework => [
 			title = "Crear uml"
-			
+
 			description = "Crear uml de los libros que vimos en clases"
 
-			deadLine = LocalDate.of(2020, 011, 03)
-			
+			deadLine = LocalDate.of(2020,11,03)
+
 			teacher = teacher1
-			
+
 			available = false
 		]
-		
+
 		val subirCUS = new Homework => [
 			title = "Subir CUS"
-		
+
 			description = "Subir CUS que vimos en clases"
 
 			deadLine = LocalDate.of(2020, 011, 03)
@@ -188,12 +189,12 @@ class GenObjects {
 		]
 
 		val derRealizado = new HomeworkDone => [
-			uploadDate = LocalDate.of(2020, 09, 05)
+			uploadDate = LocalDateTime.of(2020, 09, 05,21,12)
 			student = student1
 			file = "asdasd"
 			grade = 9.00
 			coment = "Muy completo!"
-			file="https://firebasestorage.googleapis.com/v0/b/teach-from-home.appspot.com/o/homeworks%2FCuadernillo%20practica_del_alumno.pdf?alt=media&token=361a0334-172b-40ca-935e-7122ae9454ef"
+			file = "https://firebasestorage.googleapis.com/v0/b/teach-from-home.appspot.com/o/homeworks%2FCuadernillo%20practica_del_alumno.pdf?alt=media&token=361a0334-172b-40ca-935e-7122ae9454ef"
 		]
 
 		realizarDer.uploadHomework(derRealizado)
@@ -201,7 +202,7 @@ class GenObjects {
 		// Classroom data definition
 		val cursadaDataBase = new Classroom => [
 			subject = dataBase
-			name="Miercoles - Viernes Noche"
+			name = "Miercoles - Viernes Noche"
 			description = "Cursada dias miercoles y viernes en el horario de 18 A 21:30HS "
 		]
 
@@ -228,7 +229,7 @@ class GenObjects {
 
 		// Classroom repo create
 		classroomRepo.create(cursadaDataBase)
-		cursadaDataBase.keyName = cursadaDataBase.subject.name.replaceAll("\\s+","").toLowerCase+cursadaDataBase.id
+		cursadaDataBase.keyName = cursadaDataBase.subject.name.replaceAll("\\s+", "").toLowerCase + cursadaDataBase.id
 		classroomRepo.update(cursadaDataBase)
 
 	}

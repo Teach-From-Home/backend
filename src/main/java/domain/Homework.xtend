@@ -2,6 +2,7 @@ package domain
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.HashSet
 import java.util.Set
 import javax.persistence.CascadeType
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import org.eclipse.xtend.lib.annotations.Accessors
 import serializers.LocalDateSerializer
+import serializers.LocalDateTimeSerializer
 
 @Entity
 @Accessors
@@ -74,8 +76,8 @@ class HomeworkDone{
 	String coment
 	
 	@Column
-	@JsonSerialize(using = LocalDateSerializer)
-	LocalDate uploadDate = LocalDate.now
+	@JsonSerialize(using = LocalDateTimeSerializer)
+	LocalDateTime uploadDate 
 	
 	@ManyToOne
 	User student

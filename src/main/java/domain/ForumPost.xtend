@@ -2,7 +2,7 @@ package domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.HashSet
 import java.util.Set
 import javax.persistence.CascadeType
@@ -14,7 +14,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 import org.eclipse.xtend.lib.annotations.Accessors
-import serializers.LocalDateSerializer
+import serializers.LocalDateTimeSerializer
 
 @Entity
 @Accessors
@@ -40,8 +40,8 @@ class ForumPost {
 	String text
 
 	@Column
-	@JsonSerialize(using = LocalDateSerializer)
-	LocalDate date
+	@JsonSerialize(using = LocalDateTimeSerializer)
+	LocalDateTime date 
 	
 	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -77,6 +77,6 @@ class Responses{
 	String text
 
 	@Column
-	@JsonSerialize(using = LocalDateSerializer)
-	LocalDate date
+	@JsonSerialize(using = LocalDateTimeSerializer)
+	LocalDateTime date
 }
