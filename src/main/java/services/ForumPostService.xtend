@@ -14,6 +14,7 @@ class ForumPostService {
 	
 	def createPost(String IdClassroom, ForumPost post, String idUser){
 		val userParent = userRepo.searchById(idUser)
+		post.date = LocalDate.now
 		post.user = userParent
 		val classroom = classroomRepo.searchById(IdClassroom)
 		classroom.addPost(post)
