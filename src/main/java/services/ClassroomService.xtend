@@ -49,25 +49,25 @@ class ClassroomService {
 
 	def getClassroomHomework(String idClassroom, String userId) {
 		if (Role.validateRole(userId, Role.teacher)) {
-			val hw = classroomRepo.searchById(idClassroom).homework
+			val hw = classroomRepo.searchById(idClassroom).homework.sortBy[deadLine].reverseView.toList
 			if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas subidas")
 			return hw
 		} else {
 			// DANGER ZONE!!!!!
 			//FOR YOUR MADAFAKIN LIFE PLEASE NEVER UPDATE A HW WITH THE RESPONSE OF THIS METHOD!!!
 			val user = UserRepository.getInstance.searchById(userId)
-			val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available].toSet
+			val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available].toList
 			homeworks.forEach[ it.uploaded = it.isDoneByUser(user) ]
 			homeworks.forEach[ it.uploadedHomeworks = it.uploadedHomeworks.filter[ it.student == user ].toSet ]
 			if(homeworks.nullOrEmpty) throw new NotFoundException("No hay tareas pendientes")
-			return homeworks
+			return homeworks.sortBy[deadLine].reverseView.toList
 			//DANGER ZONE!!!!!
 		}
 	}
 
 	def getUserUploadedHomework(String idClassroom, String userId) {
 		val user = UserRepository.getInstance.searchById(userId)
-		val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available]
+		val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available].sortBy[deadLine].reverseView.toList
 		var hw = homeworks.map[it.uploadedHomeworks].flatten.toList
 		hw = hw.filter[it.student.id == user.id].toList
 		if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas subidas")
@@ -76,12 +76,12 @@ class ClassroomService {
 
 	def getClassroomPosts(String id,String idUser) {
 		if (Role.validateRole(idUser, Role.teacher)) {
-			val ps = classroomRepo.getClassroomByListType(id, "posts").posts.filter[it.available].toList
+			val ps = classroomRepo.getClassroomByListType(id, "posts").posts.filter[it.available].sortBy[date].reverseView.toList
 			if(ps.nullOrEmpty) throw new NotFoundException("No hay posts pendientes")
 			return ps
 		} else {
 			val userValue = userRepo.searchById(idUser)
-			val ps = classroomRepo.getClassroomByListType(id, "posts").posts.filter[it.available && (!it.isPrivate || it.user == userValue)].toList
+			val ps = classroomRepo.getClassroomByListType(id, "posts").posts.filter[it.available && (!it.isPrivate || it.user == userValue)].sortBy[date].reverseView.toList
 			if(ps.nullOrEmpty) throw new NotFoundException("No hay posts pendientes")
 			return ps
 		}
