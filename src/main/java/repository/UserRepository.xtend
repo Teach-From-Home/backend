@@ -59,11 +59,16 @@ class UserRepository extends HibernateRepository<User> {
 			val query = criteria.createQuery(Subject)
 			val from = query.from(Subject)
 			val user = searchById(userId)
-			query.select(from).where(
-				criteria.not(
-					from.get("id").in(user.subjects.map[it.id].toSet)	
+			if(user.subjects.size > 0){
+				query.select(from).where(
+						criteria.not(
+							from.get("id").in(user.subjects.map[it.id].toSet)	
+						)
 				)
-			)
+			}else{
+				query.select(from)
+			}
+			
 			entityManager.createQuery(query).resultList
 		}catch (NoResultException e) {
 			throw new NotFoundException("No hay mas materias por agregar")

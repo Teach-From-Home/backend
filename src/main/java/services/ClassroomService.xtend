@@ -4,9 +4,9 @@ import domain.Classroom
 import javassist.NotFoundException
 import repository.ClassroomRepository
 import repository.UserRepository
+import utils.Role
 import utils.MailSender
 import utils.MailTemplates
-import utils.Role
 
 class ClassroomService {
 	UserRepository userRepo = UserRepository.getInstance
@@ -38,7 +38,7 @@ class ClassroomService {
 		//Genero una key """random""" para la call
 		//No la creo antes por que no tiene id el classroom
 		//suprimo espacios en blanco y agrego la id, para que sea unico
-		clasroom.keyName = clasroom.subject.name.replaceAll("\\s+","").toLowerCase+clasroom.id
+		clasroom.keyName = "TFM"+clasroom.subject.name.replaceAll("\\s+","").toLowerCase+clasroom.id
 		//updateo con la key creada
 		classroomRepo.update(clasroom)
 	}
@@ -124,5 +124,11 @@ class ClassroomService {
 		val classr = classroomRepo.searchById(classroomId)
 		classr.users.remove(userRepo.searchById(userId))
 		classroomRepo.update(classr)
+	}
+	
+	def makeClassroomLive(String idClassroom){
+		val classroom = classroomRepo.searchById(idClassroom)
+		classroom.live = !classroom.live
+		classroomRepo.update(classroom) 
 	}
 }

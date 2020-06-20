@@ -151,6 +151,16 @@ class ClassroomController {
 		}
 	}
 	
+	@Post("/classroom/:id/live")
+	def classroomLive(){
+		try {
+			classroomService.makeClassroomLive(id)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
 	@Delete("/classroom/:id/user/:uid")
 	def deleteUser() {
 		try {
