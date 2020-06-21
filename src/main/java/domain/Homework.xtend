@@ -64,6 +64,13 @@ class Homework {
 	def getIsOnTerm(){
 		deadLine > LocalDate.now
 	}
+	
+	def updateHomeworkDone(User user, String file){
+		val hw = uploadedHomeworks.findFirst[isDoneByUser(user)]
+		hw.file = file
+		hw.uploadDate = LocalDate.now
+		
+	}
 }
 
 @Entity

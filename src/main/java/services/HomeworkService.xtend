@@ -39,22 +39,22 @@ class HomeworkService {
 		homeworkRepo.update(homework)
 	}
 	
-	def updateHomeworkDone(String homeworkId, HomeworkDone newHomeworkDone){
+	def reUploadHomeworkDone(String homeworkId, String idUser, HomeworkDone updateHomeworkDone){
+		val user = userRepo.searchById(idUser)
+		val homework = homeworkRepo.searchById(homeworkId)
+		homework.updateHomeworkDone(user,updateHomeworkDone.file)
+		homeworkRepo.update(homework)
+	}
+	
+	def updateHomeworkDone(String homeworkId,String idUser, HomeworkDone newHomeworkDone){
 		val homeworkParent = homeworkRepo.searchById(homeworkId)
-		val oldHomeworkDone = homeworkParent.uploadedHomeworks.findFirst[it == newHomeworkDone]
+		val student = userRepo.searchById(idUser)
+		val oldHomeworkDone = homeworkParent.uploadedHomeworks.findFirst[it.student == student]
 		homeworkParent.removeHomework(oldHomeworkDone)
-		if(newHomeworkDone.grade !== null){
+		if(newHomeworkDone.grade !== null)
 			oldHomeworkDone.grade = newHomeworkDone.grade
-		}
-		if(newHomeworkDone.coment !== null){
+		if(newHomeworkDone.coment !== null)
 			oldHomeworkDone.coment = newHomeworkDone.coment
-		}
-		if(oldHomeworkDone.file != newHomeworkDone.file){
-			oldHomeworkDone.file = newHomeworkDone.file
-			oldHomeworkDone.grade = null
-			oldHomeworkDone.coment = null
-		}
-		oldHomeworkDone.uploadDate = LocalDate.now
 		homeworkParent.uploadHomework(oldHomeworkDone)
 		homeworkRepo.update(homeworkParent)
 	}

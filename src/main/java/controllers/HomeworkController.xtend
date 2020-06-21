@@ -50,11 +50,11 @@ class HomeworkController {
 		}
 	}
 	
-	@Put("/homework/:homeworkId/homeworkDone")
-	def updateHomeworkDone(@Body String body){
+	@Put("/homework/:homeworkId/student/:userId/uploadCorrection")
+	def updateCorrectionDone(@Body String body){
 		try {
 			val homeworkDone = body.fromJson(HomeworkDone)
-			homerowkService.updateHomeworkDone(homeworkId, homeworkDone)
+			homerowkService.updateHomeworkDone(homeworkId,userId, homeworkDone)
 			return ok(Parsers.statusOkJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
@@ -66,6 +66,17 @@ class HomeworkController {
 		try {
 			val homeworkDone = body.fromJson(HomeworkDone)
 			homerowkService.createHomeworkDone(homeworkId, idUser, homeworkDone)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Put("/homework/:homeworkId/user/:idUser")
+	def updateHomeworkDone(@Body String body) {
+		try {
+			val homeworkDone = body.fromJson(HomeworkDone)
+			homerowkService.reUploadHomeworkDone(homeworkId, idUser, homeworkDone)
 			return ok(Parsers.statusOkJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
