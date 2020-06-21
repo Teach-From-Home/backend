@@ -1,19 +1,31 @@
 package app
 
-import org.uqbar.xtrest.api.XTRest
-import controllers.UserController
-import controllers.SubjectController
 import controllers.ClassroomController
-import controllers.HomeworkController
 import controllers.ForumPostController
+import controllers.HomeworkController
+import controllers.SubjectController
+import controllers.UserController
+import io.github.cdimascio.dotenv.Dotenv
+import org.uqbar.xtrest.api.XTRest
 
 class TfmApp {
 	def static void main(String[] args) {
 	
 		GenObjects.generateAll()
-		
-		
-		XTRest.startInstance(16000,
+		var int port
+		var Dotenv dotenv
+
+		dotenv = Dotenv.configure().ignoreIfMissing().load()
+
+		try {
+			port = Integer.parseInt(dotenv.get("PORT"))
+		} catch (NumberFormatException e) {
+			println("Probablemente te falta el archivo .env!!")
+			throw e
+		}
+
+		XTRest.startInstance(
+			port,
 			new UserController,
 			new SubjectController,
 			new ClassroomController,

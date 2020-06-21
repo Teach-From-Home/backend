@@ -1,0 +1,1 @@
+web: java -cp target/TFM-0.0.1-SNAPSHOT-jar-with-dependencies.jar app.TfmApp
