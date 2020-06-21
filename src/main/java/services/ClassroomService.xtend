@@ -1,16 +1,17 @@
 package services
 
+import domain.CalendarEntry
 import domain.Classroom
+import java.util.List
 import javassist.NotFoundException
 import repository.ClassroomRepository
 import repository.UserRepository
 import utils.Role
-import utils.MailSender
-import utils.MailTemplates
 
 class ClassroomService {
 	UserRepository userRepo = UserRepository.getInstance
 	ClassroomRepository classroomRepo = ClassroomRepository.instance
+	
 
 	def getClassrooms() {
 		classroomRepo.allInstances

@@ -41,7 +41,7 @@ class Homework {
 	
 	@Column
 	@JsonSerialize(using = LocalDateSerializer)
-	LocalDate deadLine
+	LocalDate deadLine = LocalDate.now
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	Set<HomeworkDone> uploadedHomeworks = new HashSet<HomeworkDone>

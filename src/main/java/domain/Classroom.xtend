@@ -1,6 +1,8 @@
 package domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import java.time.LocalDate
 import java.util.HashSet
 import java.util.Set
 import javax.persistence.CascadeType
@@ -14,6 +16,7 @@ import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
+import serializers.LocalDateSerializer
 
 @Entity
 @Accessors
@@ -76,5 +79,26 @@ class Classroom {
 
 	def removePost(ForumPost postToRemove) {
 		posts.remove(postToRemove)
+	}
+	
+	def calendarEntries(){
+		val active = homework.filter[it.available]
+		active.map[new CalendarEntry(it.deadLine, it.title, this.name ,subject.name)].toList
+	}
+}
+
+@Accessors
+class CalendarEntry{
+	@JsonSerialize(using = LocalDateSerializer)
+	LocalDate deadLine
+	String title
+	String classroomName
+	String subjectName
+	
+	new(LocalDate _deadLine, String _title, String _subjectName, String _classroomName){
+		deadLine = _deadLine
+		title = _title
+		classroomName = _subjectName
+		subjectName = _classroomName
 	}
 }

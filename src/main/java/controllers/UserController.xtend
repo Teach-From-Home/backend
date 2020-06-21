@@ -104,4 +104,16 @@ class UserController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	@Get("/user/:id/calendar")
+	def calendar() {
+		try {
+			val calendar = userService.getUserCalerndar(id)
+			return ok(calendar.toJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
 }

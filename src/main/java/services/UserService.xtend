@@ -1,12 +1,14 @@
 package services
 
+import domain.CalendarEntry
 import domain.User
+import java.util.List
 import repository.UserRepository
-import utils.MailSender
-import utils.MailTemplates
+import repository.ClassroomRepository
 
 class UserService {
 	UserRepository userRepo = UserRepository.instance
+	ClassroomRepository classroomRepo = ClassroomRepository.instance
 	
 	def getUserSignIn(User loginCredentials, String AppType){
 		userRepo.login(loginCredentials,AppType)
@@ -45,4 +47,12 @@ class UserService {
 	def getNotAddedSubjects(String id) {
 		userRepo.notAddedSubjects(id)
 	}
+	
+	def getUserCalerndar(String id){
+		val userClassrooms = classroomRepo.getClassroomsByUser(id)
+		val List<CalendarEntry> calendar = newArrayList
+		userClassrooms.forEach[calendar.addAll(it.calendarEntries)]
+		calendar.sortBy[deadLine].reverseView.toList
+	}
+	
 }
