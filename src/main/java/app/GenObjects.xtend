@@ -156,7 +156,7 @@ class GenObjects {
 
 			description = "Crear der simulando una aerolinea, relacionando vuelos, asientos, usuarios y pasajes."
 
-			deadLine = LocalDate.of(2020, 09, 05)
+			deadLine = LocalDate.of(2020, 05, 05)
 
 			teacher = teacher1
 
@@ -169,11 +169,11 @@ class GenObjects {
 
 			description = "Crear uml de los libros que vimos en clases"
 
-			deadLine = LocalDate.of(2020,11,03)
+			deadLine = LocalDate.of(2020,06,18)
 
 			teacher = teacher1
 
-			available = false
+			available = true
 		]
 
 		val subirCUS = new Homework => [
@@ -181,7 +181,7 @@ class GenObjects {
 
 			description = "Subir CUS que vimos en clases"
 
-			deadLine = LocalDate.of(2020, 011, 03)
+			deadLine = LocalDate.of(2020, 11, 03)
 
 			teacher = teacher1
 
@@ -189,7 +189,7 @@ class GenObjects {
 		]
 
 		val derRealizado = new HomeworkDone => [
-			uploadDate = LocalDateTime.of(2020, 09, 05,21,12)
+			uploadDate = LocalDate.of(2020, 06, 20)
 			student = student1
 			file = "asdasd"
 			grade = 9.00

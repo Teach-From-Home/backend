@@ -2,7 +2,6 @@ package domain
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.HashSet
 import java.util.Set
 import javax.persistence.CascadeType
@@ -15,7 +14,6 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import org.eclipse.xtend.lib.annotations.Accessors
 import serializers.LocalDateSerializer
-import serializers.LocalDateTimeSerializer
 
 @Entity
 @Accessors
@@ -51,6 +49,7 @@ class Homework {
 	}
 	
 	def uploadHomework(HomeworkDone homeworkDoneToAdd){
+		homeworkDoneToAdd.outOfTerm = LocalDate.now > deadLine
 		uploadedHomeworks.add(homeworkDoneToAdd)
 	}
 	
@@ -60,6 +59,10 @@ class Homework {
 	
 	def isDoneByUser(User user){
 		return uploadedHomeworks.exists[it.student == user]
+	}
+	
+	def getIsOnTerm(){
+		deadLine > LocalDate.now
 	}
 }
 
@@ -76,14 +79,17 @@ class HomeworkDone{
 	String coment
 	
 	@Column
-	@JsonSerialize(using = LocalDateTimeSerializer)
-	LocalDateTime uploadDate 
+	@JsonSerialize(using = LocalDateSerializer)
+	LocalDate uploadDate 
 	
 	@ManyToOne
 	User student
 	
 	@Column
 	String file
+	
+	@Column
+	boolean outOfTerm
 	
 	override equals(Object obj) {
 		try {
