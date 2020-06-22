@@ -9,7 +9,6 @@ class Role {
 	public static String teacher = "TEACHER"
 	public static String student = "STUDENT"
 	
-
 	static def validateRole(String userId, String role) {
 		UserRepository.instance.searchById(userId).role == role
 	}

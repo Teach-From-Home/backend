@@ -17,6 +17,8 @@ import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import org.eclipse.xtend.lib.annotations.Accessors
 import serializers.LocalDateSerializer
+import utils.Role
+import utils.Parsers
 
 @Entity
 @Accessors
@@ -56,6 +58,10 @@ class Classroom {
 	
 	@Column
 	boolean live = false
+	
+	def getTeachers(){
+		users.filter[user |Role.validateRole(Parsers.parsearDeLongAString(user.id), Role.teacher)].map[it.getFullName].toList
+	}
 	
 	def addUser(User userToAdd) {
 		users.add(userToAdd)

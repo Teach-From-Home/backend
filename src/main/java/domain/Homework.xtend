@@ -47,7 +47,7 @@ class Homework {
 	def changeState(){
 		available = !available
 	}
-	
+
 	def uploadHomework(HomeworkDone homeworkDoneToAdd){
 		homeworkDoneToAdd.outOfTerm = LocalDate.now > deadLine
 		uploadedHomeworks.add(homeworkDoneToAdd)

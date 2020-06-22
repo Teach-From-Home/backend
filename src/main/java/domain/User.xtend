@@ -46,6 +46,10 @@ class User{
 		subjects.add(subjectToAdd)
 	}
 	
+	def getFullName(){
+		return name + " " + lastname
+	}
+	
 	def removeSubject(Subject subjectToRemove){
 		subjects.remove(subjectToRemove)
 	}
