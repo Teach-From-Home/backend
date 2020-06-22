@@ -1,11 +1,9 @@
 package utils
 
-
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import org.uqbar.commons.model.exceptions.UserException
-import domain.User
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.commons.model.exceptions.UserException
 
 class Parsers{
 	static val DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -35,6 +33,11 @@ class Parsers{
 			throw new UserException("anda mal")
 		}
 	}
+	
+	static def dateString(LocalDate date){
+		val formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+		return formatter.format(date)
+	}
 
 }
 
@@ -44,4 +47,5 @@ class HomeworkParser{
 	String description
 	boolean available
 	String deadLine
+	
 }

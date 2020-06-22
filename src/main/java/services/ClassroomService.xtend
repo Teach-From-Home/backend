@@ -1,11 +1,11 @@
 package services
 
-import domain.CalendarEntry
 import domain.Classroom
-import java.util.List
 import javassist.NotFoundException
 import repository.ClassroomRepository
 import repository.UserRepository
+import utils.MailSender
+import utils.MailTemplates
 import utils.Role
 
 class ClassroomService {
@@ -129,7 +129,7 @@ class ClassroomService {
 	
 	def makeClassroomLive(String idClassroom){
 		val classroom = classroomRepo.searchById(idClassroom)
-		classroom.live = !classroom.live
-		classroomRepo.update(classroom) 
+		//classroom.allStudents.forEach[MailSender.send(it,MailTemplates.liveStart(it,classroom),"Comenzo la clase!")]
+		
 	}
 }

@@ -91,6 +91,10 @@ class Classroom {
 		val active = homework.filter[it.available]
 		active.map[new CalendarEntry(it.deadLine, it.title, this.name ,subject.name)].toList
 	}
+	
+	def allStudents(){
+		users.filter[it.role == Role.student]
+	}
 }
 
 @Accessors
