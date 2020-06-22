@@ -28,7 +28,7 @@ class MailSender {
 				return new PasswordAuthentication(fromEmail, password);
 			}
 		}
-		
+		println("start")
 		val Session session = Session.getInstance(props, auth);
 
 		try {
@@ -50,6 +50,7 @@ class MailSender {
 			Transport.send(msg);
 
 		} catch (Exception e) {
+			println(e)
 			e.printStackTrace();
 		}
 
