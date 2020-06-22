@@ -11,7 +11,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
 abstract class HibernateRepository<T> {
-	static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("LhrE8dbyGG")
+	static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TeachFromHome")
 
 	abstract def Class<T> getEntityType()
 
