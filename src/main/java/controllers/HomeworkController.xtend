@@ -1,16 +1,16 @@
 package controllers
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
-import domain.Homework
 import domain.HomeworkDone
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.api.annotation.Post
+import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
 import services.HomeworkService
+import utils.HomeworkParser
 import utils.Parsers
-import org.uqbar.xtrest.api.annotation.Put
 
 @Controller
 class HomeworkController {
@@ -20,7 +20,7 @@ class HomeworkController {
 	@Post("/classroom/:id/homework/user/:idUser")
 	def createHomework(@Body String body) {
 		try {
-			val homework = body.fromJson(Homework)
+			val homework = body.fromJson(HomeworkParser)
 			homerowkService.createHomework(id, homework, idUser)
 			return ok(Parsers.statusOkJson)
 		} catch (InvalidFormatException exception) {
@@ -42,7 +42,7 @@ class HomeworkController {
 	@Put("/homework/:homeworkId")
 	def updateHomework(@Body String body) {
 		try {
-			val homework = body.fromJson(Homework)
+			val homework = body.fromJson(HomeworkParser)
 			homerowkService.updateHomework(homeworkId, homework)
 			return ok(Parsers.statusOkJson)
 		} catch (Exception e) {
@@ -83,3 +83,5 @@ class HomeworkController {
 		}
 	}
 }
+
+

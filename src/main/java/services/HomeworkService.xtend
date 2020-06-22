@@ -3,31 +3,37 @@ package services
 import domain.Homework
 import domain.HomeworkDone
 import java.time.LocalDate
-import java.time.LocalDateTime
 import repository.ClassroomRepository
 import repository.HomeworkRepository
 import repository.UserRepository
+import utils.HomeworkParser
 import utils.Role
+import utils.Parsers
 
 class HomeworkService {
 	HomeworkRepository homeworkRepo = HomeworkRepository.getInstance
 	UserRepository userRepo = UserRepository.getInstance
 	ClassroomRepository classroomRepo = ClassroomRepository.getInstance
 	
-	def createHomework(String classroomId, Homework homework, String idUser){
+	def createHomework(String classroomId, HomeworkParser homework, String idUser){
 		val userParent = userRepo.searchById(idUser)
-		homework.teacher = userParent
-		homework.available = false
+		val homeworkParent = new Homework
+		homeworkParent.teacher = userParent
+		homeworkParent.available = homework.available
+		homeworkParent.title = homework.title
+		homeworkParent.description = homework.description
+		homeworkParent.deadLine = Parsers.ParseStringToDate(homework.deadLine)
 		val classroom = classroomRepo.searchById(classroomId)
-		classroom.addHomeWork(homework)
+		classroom.addHomeWork(homeworkParent)
 		classroomRepo.update(classroom)
 	}
 	
-	def updateHomework(String idHomework, Homework homework){
+	def updateHomework(String idHomework, HomeworkParser homework){
 		val homeworkParent = homeworkRepo.searchById(idHomework)
 		homeworkParent.title = homework.title
 		homeworkParent.description = homework.description
 		homeworkParent.available = homework.available
+		homeworkParent.deadLine = Parsers.ParseStringToDate(homework.deadLine)
 		homeworkRepo.update(homeworkParent)
 	}
 	
