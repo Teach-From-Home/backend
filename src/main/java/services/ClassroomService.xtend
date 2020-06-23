@@ -23,6 +23,7 @@ class ClassroomService {
 
 	def editClassroom(Classroom classroom, String id) {
 		val classroomg = getClassroomById(id)
+		classroomg.name = classroomg.name
 		classroomg.description = classroom.description
 		classroomg.subject = classroom.subject
 		classroomRepo.update(classroomg)
