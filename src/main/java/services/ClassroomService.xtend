@@ -133,4 +133,10 @@ class ClassroomService {
 		//classroom.allStudents.forEach[MailSender.send(it,MailTemplates.liveStart(it,classroom),"Comenzo la clase!")]
 		
 	}
+	
+	def resetClasroom(String id){
+		val classroom = classroomRepo.searchById(id)
+		classroom.reset()
+		classroomRepo.update(classroom)
+	}
 }

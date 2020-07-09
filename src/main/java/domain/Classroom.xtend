@@ -95,6 +95,16 @@ class Classroom {
 	def allStudents(){
 		users.filter[it.role == Role.student]
 	}
+	
+	def reset(){
+		homework.forEach[it.clearUploadedHomeworks it.disable]
+		removeStudents()
+	}
+	
+	def removeStudents(){
+		users.removeIf[it.role != Role.teacher ]
+	}
+	
 }
 
 @Accessors

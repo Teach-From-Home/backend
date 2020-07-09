@@ -69,7 +69,14 @@ class Homework {
 		val hw = uploadedHomeworks.findFirst[isDoneByUser(user)]
 		hw.file = file
 		hw.uploadDate = LocalDate.now
-		
+	}
+	
+	def disable(){
+		available = false
+	}
+	
+	def clearUploadedHomeworks(){
+		uploadedHomeworks.clear()
 	}
 }
 
