@@ -78,6 +78,10 @@ class Homework {
 	def clearUploadedHomeworks(){
 		uploadedHomeworks.clear()
 	}
+	
+	def getAmountOfHandedHomeworks(){
+		uploadedHomeworks.size
+	}
 }
 
 @Entity

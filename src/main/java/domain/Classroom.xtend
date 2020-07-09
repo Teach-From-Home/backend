@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
 import java.util.HashSet
+import java.util.List
 import java.util.Set
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -15,10 +16,11 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
+import org.bson.types.ObjectId
 import org.eclipse.xtend.lib.annotations.Accessors
 import serializers.LocalDateSerializer
-import utils.Role
 import utils.Parsers
+import utils.Role
 
 @Entity
 @Accessors
@@ -46,6 +48,8 @@ class Classroom {
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonIgnore
 	Set<ForumPost> posts = new HashSet<ForumPost>
+	//esto va a mongo, poligloto! :D
+	List<ObjectId>exams
 
 	@Column
 	boolean active = true
