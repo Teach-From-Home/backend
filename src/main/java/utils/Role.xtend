@@ -13,3 +13,8 @@ class Role {
 		UserRepository.instance.searchById(userId).role == role
 	}
 }
+
+class QuestionType{
+	public static String choice = "CHOICE"
+	public static String write = "WRITE"
+}
