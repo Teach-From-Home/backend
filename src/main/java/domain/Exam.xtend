@@ -1,5 +1,7 @@
 package domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import java.time.LocalDateTime
 import java.util.List
 import javax.persistence.Entity
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -10,8 +12,12 @@ import utils.QuestionType
 class Exam {
 	String title
 	String description
-
+	@JsonIgnore LocalDateTime startDate
+	@JsonIgnore LocalDateTime finishDate
+	LocalDateTime deadLine
+	boolean available
 	List<Question> questions = newArrayList
+	int minutes
 
 }
 @Accessors
@@ -24,7 +30,6 @@ abstract class Question {
 
 @Accessors
 class ChoiseQuestion extends Question {
-	String title
 	List<SingleQuestion> questions = newArrayList
 	
 	new(){
