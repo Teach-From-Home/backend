@@ -67,7 +67,7 @@ class ExamsRepository {
 
 	def defineUpdateOperations(Exam exam){
 		ds.createUpdateOperations(entityType)
-			.set("name", exam.title)
+			.set("title", exam.title)
 			.set("description", exam.description)
 			.set("available", exam.available)
 			.set("deadLine", exam.deadLine)

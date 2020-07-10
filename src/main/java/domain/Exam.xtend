@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeName
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.List
 import org.bson.types.ObjectId
@@ -12,8 +14,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.mongodb.morphia.annotations.Embedded
 import org.mongodb.morphia.annotations.Entity
 import org.mongodb.morphia.annotations.Id
+import serializers.LocalDateDeserializer
+import serializers.LocalDateSerializer
 import serializers.ObjectIdSerializer
-import serializers.LocalDateTimeSerializer
 
 @Entity(value="Exams", noClassnameStored=false)
 @Accessors
@@ -24,8 +27,10 @@ class Exam {
 	String description
 	@JsonIgnore LocalDateTime startDate
 	@JsonIgnore LocalDateTime finishDate
-	@JsonSerialize(using = LocalDateTimeSerializer)
-	LocalDateTime deadLine
+	
+	@JsonSerialize(using = LocalDateSerializer)
+	@JsonDeserialize(using = LocalDateDeserializer) 
+	LocalDate deadLine
 	boolean available
 	@Embedded
 	List<Question> questions = newArrayList
