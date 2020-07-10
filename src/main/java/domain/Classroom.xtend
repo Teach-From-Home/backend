@@ -8,6 +8,7 @@ import java.util.List
 import java.util.Set
 import javax.persistence.CascadeType
 import javax.persistence.Column
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
+import javax.persistence.Transient
 import org.bson.types.ObjectId
 import org.eclipse.xtend.lib.annotations.Accessors
 import serializers.LocalDateSerializer
@@ -48,8 +50,14 @@ class Classroom {
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonIgnore
 	Set<ForumPost> posts = new HashSet<ForumPost>
+	
 	//esto va a mongo, poligloto! :D
-	List<ObjectId>exams
+	@JsonIgnore
+	@ElementCollection(fetch=FetchType.EAGER)
+	List<ObjectId>examsIds
+	
+	@Transient
+	List<Exam>exams
 
 	@Column
 	boolean active = true

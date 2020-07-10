@@ -7,6 +7,7 @@ import controllers.SubjectController
 import controllers.UserController
 import io.github.cdimascio.dotenv.Dotenv
 import org.uqbar.xtrest.api.XTRest
+import controllers.ExamController
 
 class TfmApp {
 	def static void main(String[] args) {
@@ -30,7 +31,8 @@ class TfmApp {
 			new SubjectController,
 			new ClassroomController,
 			new HomeworkController,
-			new ForumPostController
+			new ForumPostController,
+			new ExamController
 		)
 	}
 }
