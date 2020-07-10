@@ -57,16 +57,21 @@ class ExamsRepository {
 		if (id !== null) {
 			query.field("id").equal(id)
 		}
-		validateQuery(query, "No existe el vuelo")
+		validateQuery(query, "No existe el Examen")
 		query.get()
 	}
 
-//	def void update(Exam flight) {
-//		ds.update(flight, this.defineUpdateOperations(flight))
-//	}
-//
-//	def defineUpdateOperations(Exam flight){
-//		ds.createUpdateOperations(entityType)
-//			.set("seats", flight.)
-//	}
+	def void update(Exam exam) {
+		ds.update(exam, this.defineUpdateOperations(exam))
+	}
+
+	def defineUpdateOperations(Exam exam){
+		ds.createUpdateOperations(entityType)
+			.set("name", exam.title)
+			.set("description", exam.description)
+			.set("available", exam.available)
+			.set("deadLine", exam.deadLine)
+			.set("minutes", exam.minutes)
+	}
+	
 }
