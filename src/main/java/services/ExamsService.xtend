@@ -8,13 +8,16 @@ import org.bson.types.ObjectId
 import repository.ClassroomRepository
 import repository.ExamsRepository
 import utils.Role
+import repository.UserRepository
 
 class ExamsService {
 	ExamsRepository examRepo = ExamsRepository.getInstance
 	ClassroomRepository classroomRepo = ClassroomRepository.getInstance
 	
+	
 	def create(Exam newExam, String classroomId) {
 		val classroom = classroomRepo.searchById(classroomId)
+		newExam.questions.forEach[it.setAnswer]
 		val persistedExam = examRepo.create(newExam)
 		classroom.examsIds.add(persistedExam.id)
 		classroomRepo.update(classroom)
@@ -36,7 +39,7 @@ class ExamsService {
 	
 	def startExam(String examId,String userId){
 		val exam = examRepo.searchById(new ObjectId(examId))
-		exam.uploadExam(new SolvedExam(userId))
+		exam.uploadExam(new SolvedExam(UserRepository.instance.searchById(userId)))
 		examRepo.update(exam)
 	}
 	
@@ -51,6 +54,11 @@ class ExamsService {
 		exam.setCorrections(solvedExam.grade, solvedExam.studentId, solvedExam.teacherComment)
 		examRepo.update(exam)
 		
+	}
+	
+	def uploadedExams(String eid){
+		val exam = examRepo.searchById(new ObjectId(eid))
+		exam.uploadedExams
 	}
 	
 }

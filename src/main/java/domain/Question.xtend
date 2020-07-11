@@ -6,14 +6,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
 @JsonSubTypes(@JsonSubTypes.Type(value = ChoiseQuestion, name = "choice"),
        	 @JsonSubTypes.Type(value = WriteQuestion, name = "write"))
 @Accessors
 abstract class Question {
 	String title
+	String validAnswer
 
 	def String getAnswer()
+	
+	def void setAnswer() 
 }
 
 @JsonTypeName("choice")
@@ -21,12 +24,16 @@ abstract class Question {
 class ChoiseQuestion extends Question {
 	List<Options> options = newArrayList
 
-	override getAnswer() {
-		"La respuesta correcta es: " + correctAnswer.question
+	override setAnswer() {
+		validAnswer = "La respuesta correcta es: " + selectedOption.question
 	}
 
-	def correctAnswer() {
+	def selectedOption() {
 		options.findFirst[it.selected]
+	}
+
+	override getAnswer() {
+		"La respuesta es: " + selectedOption.question
 	}
 
 }
@@ -41,9 +48,13 @@ class Options {
 @Accessors
 class WriteQuestion extends Question {
 	String answer
+	
+	override setAnswer() {
+		validAnswer = "La respuesta correcta es: " + answer
+	}
 
 	override getAnswer() {
-		"La respuesta correcta es: " + answer
+		"La respuesta es: " + answer
 	}
 
 }

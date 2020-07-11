@@ -32,8 +32,7 @@ class Exam {
 	List<Question> questions = newArrayList
 	int minutes
 	@Embedded
-	@JsonIgnore
-	List<SolvedExam> uploadedExams = newArrayList
+	@JsonIgnore List<SolvedExam> uploadedExams = newArrayList
 	@Transient boolean uploaded = false
 	@Transient SolvedExam uploadedExam
 
@@ -80,6 +79,7 @@ class Exam {
 @Accessors
 class SolvedExam {
 	String studentId
+	String studentName
 	@JsonIgnore LocalDateTime startDate
 	@JsonIgnore LocalDateTime finishDate
 	double grade
@@ -89,9 +89,10 @@ class SolvedExam {
 	
 	new(){}
 	
-	new(String _studentId){
+	new(User student){
 		startDate = LocalDateTime.now
-		studentId = _studentId
+		studentId = student.id.toString
+		studentName = student.name + " " + student.lastname
 	}
 
 	def getExamIsDone() {
