@@ -96,7 +96,7 @@ class ExamController {
 	def teachercomment(@Body String body) {
 		try {
 			val comment = body.fromJson(ParseComment)
-			examsService.comment(eid,id,comment.comment,comment.grade)
+			examsService.comment(eid,id,comment.teacherComment,comment.grade)
 			return ok(Parsers.statusOkJson)
 		} catch (InvalidFormatException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))
@@ -109,6 +109,6 @@ class ExamController {
 
 @Accessors
 class ParseComment{
-	String comment
+	String teacherComment
 	double grade
 }
