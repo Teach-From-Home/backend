@@ -61,4 +61,10 @@ class ExamsService {
 		exam.uploadedExams
 	}
 	
+	def comment(String eid, String id, String comment, double grade) {
+		val exam = examRepo.searchById(new ObjectId(eid))
+		exam.setCorrections(grade,id,comment)
+		examRepo.update(exam)
+	}
+	
 }

@@ -2,6 +2,7 @@ package controllers
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import domain.Exam
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
@@ -90,5 +91,24 @@ class ExamController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	@Post("/exam/:eid/user/:id/comment")
+	def teachercomment(@Body String body) {
+		try {
+			val comment = body.fromJson(ParseComment)
+			examsService.comment(eid,id,comment.comment,comment.grade)
+			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
 
+}
+
+@Accessors
+class ParseComment{
+	String comment
+	double grade
 }
