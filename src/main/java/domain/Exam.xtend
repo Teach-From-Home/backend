@@ -33,7 +33,7 @@ class Exam {
 	int minutes
 	@Embedded
 	@JsonIgnore
-	List<SolvedExam> uploadedExams
+	List<SolvedExam> uploadedExams = newArrayList
 	@Transient boolean uploaded = false
 	@Transient SolvedExam uploadedExam
 
@@ -63,7 +63,7 @@ class Exam {
 	}
 
 	def examIsUploaded(String id) {
-		uploadedExams.exists[it.studentId == id]
+		uploadedExams.exists[it.studentId.equalsIgnoreCase(id)]
 	}
 
 	def uploadExam(SolvedExam newExam) {
@@ -87,6 +87,8 @@ class SolvedExam {
 	List<Question> answers = newArrayList
 	@Transient boolean solvedOnTime
 	
+	new(){}
+	
 	new(String _studentId){
 		startDate = LocalDateTime.now
 		studentId = _studentId
@@ -101,6 +103,7 @@ class SolvedExam {
 	}
 
 	def getElapsedTimeToSolve() {
-		startDate.until(finishDate, ChronoUnit.MINUTES);
+		if(getExamIsDone)
+			startDate.until(finishDate, ChronoUnit.MINUTES);
 	}
 }

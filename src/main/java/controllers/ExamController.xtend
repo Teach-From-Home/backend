@@ -2,6 +2,8 @@ package controllers
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import domain.Exam
+import domain.Question
+import java.util.List
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
@@ -45,8 +47,33 @@ class ExamController {
 	@Get("/classroom/:id/user/:uid/exams")
 	def getExams() {
 		try {
-			val exams = examsService.clasroomsExams(id)
+			val exams = examsService.clasroomsExams(id,uid)
 			return ok(exams.toJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
+		} catch (Exception e) {
+			return internalServerError(e.toJson)
+		}
+	}
+	
+	@Post("/exam/:eid/user/:uid")
+	def startExam() {
+		try {
+			examsService.startExam(eid,uid)
+			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Put("/exam/:eid/user/:uid")
+	def finishExam(@Body String body) {
+		try {
+			val answers = body.fromJson(Exam).questions
+			examsService.finishExam(eid,uid,answers)
+			return ok(Parsers.statusOkJson)
 		} catch (InvalidFormatException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {

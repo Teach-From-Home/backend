@@ -72,6 +72,7 @@ class ExamsRepository {
 			.set("available", exam.available)
 			.set("deadLine", exam.deadLine)
 			.set("minutes", exam.minutes)
+			.set("uploadedExams", exam.uploadedExams)
 	}
 	
 }
