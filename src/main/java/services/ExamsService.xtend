@@ -20,12 +20,15 @@ class ExamsService {
 		examRepo.update(exam)
 	}
 	
-	def clasroomsExams(String id, String role){
+	def clasroomsExams(String id){
 		val classroom = classroomRepo.searchById(id)
 		var exams = classroom.examsIds.map[examRepo.searchById(it)].toList
-		if(Role.student == role)
+		if(Role.validateRole(id, Role.student)){
 			exams = exams.filter[it.available].toList
+			exams.forEach[it.setUploadedExam(id)]
+		}
 		exams
 	}
+	
 	
 }

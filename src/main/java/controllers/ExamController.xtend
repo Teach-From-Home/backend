@@ -42,10 +42,10 @@ class ExamController {
 		}
 	}
 	
-	@Get("/classroom/:id/exams")
-	def getExams(String role) {
+	@Get("/classroom/:id/user/:uid/exams")
+	def getExams() {
 		try {
-			val exams = examsService.clasroomsExams(id,role)
+			val exams = examsService.clasroomsExams(id)
 			return ok(exams.toJson)
 		} catch (InvalidFormatException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))

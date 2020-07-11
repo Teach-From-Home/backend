@@ -12,6 +12,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.mongodb.morphia.annotations.Embedded
 import org.mongodb.morphia.annotations.Entity
 import org.mongodb.morphia.annotations.Id
+import org.mongodb.morphia.annotations.Transient
 import serializers.LocalDateDeserializer
 import serializers.LocalDateSerializer
 import serializers.ObjectIdSerializer
@@ -31,35 +32,41 @@ class Exam {
 	List<Question> questions = newArrayList
 	int minutes
 	@Embedded
+	@JsonIgnore
 	List<SolvedExam> uploadedExams
-	boolean uploaded
-	
-	def setCorrections(double grade, String userId, String comment){ 
+	@Transient boolean uploaded = false
+	@Transient SolvedExam uploadedExam
+
+	def setCorrections(double grade, String userId, String comment) {
 		val exam = studentExam(userId)
 		exam.setGrade(grade)
 		exam.setTeacherComment(comment)
 	}
-	
-	def solvedExams(){
+
+	def solvedExams() {
 		val examsSolved = uploadedExams.filter[it.getExamIsDone()].toList
-		examsSolved.forEach[it.solvedOnTime = it.getExpendedMinutesToSolve<minutes]
+		examsSolved.forEach[it.solvedOnTime = it.getElapsedTimeToSolve < minutes]
 		examsSolved
 	}
-	
-	def studentExam(String id){
+
+	def studentExam(String id) {
 		uploadedExams.findFirst[it.studentId == id]
 	}
-	
-	def setIsUploadedBy(String id){
-		val exam = studentExam(id)
-		uploaded = exam.getExamIsDone
+
+	def setUploadedExam(String id) {
+		if (examIsUploaded(id)) {
+			uploadedExam = studentExam(id)
+			uploaded = true
+			if(uploadedExam.examIsDone)
+				uploadedExam.solvedOnTime = uploadedExam.getElapsedTimeToSolve < minutes
+		}
 	}
-	
-	def filterUploadedExams(String id){
-		uploadedExams = uploadedExams.filter[it == studentExam(id)].toList
+
+	def examIsUploaded(String id) {
+		uploadedExams.exists[it.studentId == id]
 	}
-	
-	def uploadExam(SolvedExam newExam){
+
+	def uploadExam(SolvedExam newExam) {
 		uploadedExams.add(newExam)
 	}
 }
@@ -72,7 +79,7 @@ class SolvedExam {
 	double grade
 	String teacherComment
 	List<Question> answers = newArrayList
-	boolean solvedOnTime
+	@Transient boolean solvedOnTime
 
 	def getExamIsDone() {
 		startDate !== null && finishDate !== null
@@ -82,7 +89,7 @@ class SolvedExam {
 		startDate !== null && finishDate === null
 	}
 
-	def getExpendedMinutesToSolve() {
+	def getElapsedTimeToSolve() {
 		startDate.until(finishDate, ChronoUnit.MINUTES);
 	}
 }
