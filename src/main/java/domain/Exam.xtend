@@ -69,6 +69,12 @@ class Exam {
 	def uploadExam(SolvedExam newExam) {
 		uploadedExams.add(newExam)
 	}
+	
+	def uploadQuestions(String id, List<Question> answers){
+		val exam = studentExam(id)
+		exam.setAnswers(answers)
+		exam.finishDate = LocalDateTime.now
+	}
 }
 
 @Accessors
@@ -80,6 +86,11 @@ class SolvedExam {
 	String teacherComment
 	List<Question> answers = newArrayList
 	@Transient boolean solvedOnTime
+	
+	new(String _studentId){
+		startDate = LocalDateTime.now
+		studentId = _studentId
+	}
 
 	def getExamIsDone() {
 		startDate !== null && finishDate !== null
