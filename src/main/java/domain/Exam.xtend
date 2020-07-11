@@ -1,13 +1,11 @@
 package domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.fasterxml.jackson.annotation.JsonTypeName
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import java.util.List
 import org.bson.types.ObjectId
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -21,61 +19,56 @@ import serializers.ObjectIdSerializer
 @Entity(value="Exams", noClassnameStored=false)
 @Accessors
 class Exam {
-	@JsonSerialize(using = ObjectIdSerializer)
+	@JsonSerialize(using=ObjectIdSerializer)
 	@Id ObjectId id
 	String title
 	String description
-	@JsonIgnore LocalDateTime startDate
-	@JsonIgnore LocalDateTime finishDate
-	
-	@JsonSerialize(using = LocalDateSerializer)
-	@JsonDeserialize(using = LocalDateDeserializer) 
+	@JsonSerialize(using=LocalDateSerializer)
+	@JsonDeserialize(using=LocalDateDeserializer)
 	LocalDate deadLine
 	boolean available
 	@Embedded
 	List<Question> questions = newArrayList
 	int minutes
-
+	@Embedded
+	List<SolvedExam> uploadedExams
+	
+	def setCorrections(double grade, String userId, String comment){ 
+		val exam = studentExam(userId)
+		exam.setGrade(grade)
+		exam.setTeacherComment(comment)
+	}
+	
+	def solvedExams(){
+		val examsSolved = uploadedExams.filter[it.getExamIsDone()].toList
+		examsSolved.forEach[it.solvedOnTime = it.getExpendedMinutesToSolve<minutes]
+		examsSolved
+	}
+	
+	def studentExam(String id){
+		uploadedExams.findFirst[it.studentId == id]
+	}
 }
 
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes(@JsonSubTypes.Type(value = ChoiseQuestion, name = "choice"),
-       	 @JsonSubTypes.Type(value = WriteQuestion, name = "write"))
 @Accessors
-abstract class Question {
-	String title
+class SolvedExam {
+	String studentId
+	@JsonIgnore LocalDateTime startDate
+	@JsonIgnore LocalDateTime finishDate
+	double grade
+	String teacherComment
+	List<Question> answers = newArrayList
+	boolean solvedOnTime
 
-	def String getAnswer()
-}
-
-@JsonTypeName("choice")
-@Accessors
-class ChoiseQuestion extends Question {
-	List<Options> options = newArrayList
-
-	override getAnswer() {
-		"La respuesta correcta es: " + correctAnswer.question
+	def getExamIsDone() {
+		startDate !== null && finishDate !== null
 	}
 
-	def correctAnswer() {
-		options.findFirst[it.selected]
+	def getExamIsInprogress() {
+		startDate !== null && finishDate === null
 	}
 
-}
-
-@Accessors
-class Options {
-	boolean selected
-	String question
-}
-
-@JsonTypeName("write")
-@Accessors
-class WriteQuestion extends Question {
-	String answer
-
-	override getAnswer() {
-		"La respuesta correcta es: " + answer
+	def getExpendedMinutesToSolve() {
+		startDate.until(finishDate, ChronoUnit.MINUTES);
 	}
-
 }
