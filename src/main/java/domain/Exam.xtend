@@ -32,6 +32,7 @@ class Exam {
 	int minutes
 	@Embedded
 	List<SolvedExam> uploadedExams
+	boolean uploaded
 	
 	def setCorrections(double grade, String userId, String comment){ 
 		val exam = studentExam(userId)
@@ -47,6 +48,19 @@ class Exam {
 	
 	def studentExam(String id){
 		uploadedExams.findFirst[it.studentId == id]
+	}
+	
+	def setIsUploadedBy(String id){
+		val exam = studentExam(id)
+		uploaded = exam.getExamIsDone
+	}
+	
+	def filterUploadedExams(String id){
+		uploadedExams = uploadedExams.filter[it == studentExam(id)].toList
+	}
+	
+	def uploadExam(SolvedExam newExam){
+		uploadedExams.add(newExam)
 	}
 }
 
