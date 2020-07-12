@@ -7,6 +7,7 @@ import repository.UserRepository
 import utils.MailSender
 import utils.MailTemplates
 import utils.Role
+import domain.Bibliography
 
 class ClassroomService {
 	UserRepository userRepo = UserRepository.getInstance
@@ -139,4 +140,28 @@ class ClassroomService {
 		classroom.reset()
 		classroomRepo.update(classroom)
 	}
+	
+	def getBibliography(String cid){
+		classroomRepo.searchById(cid).bibliography
+	}
+	
+	def createBibliography(String cid,Bibliography newBiblio){
+		val classr = classroomRepo.searchById(cid)
+		classr.addBibliography(newBiblio)
+		classroomRepo.update(classr)
+	}
+	
+	def updateBiblio(String cid,Bibliography newBiblio){
+		val classr = classroomRepo.searchById(cid)
+		classr.removeBibliography(newBiblio)
+		classr.addBibliography(newBiblio)
+		classroomRepo.update(classr)
+	}
+	
+	def removeBiblio(String cid, String removedBiblio){
+		val classr = classroomRepo.searchById(cid)
+		classr.removeBibliography(removedBiblio)
+		classroomRepo.update(classr)
+	}
+	
 }

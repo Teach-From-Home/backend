@@ -12,6 +12,7 @@ import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
 import services.ClassroomService
 import utils.Parsers
+import domain.Bibliography
 
 @Controller
 class ClassroomController {
@@ -176,6 +177,52 @@ class ClassroomController {
 		try {
 			classroomService.resetClasroom(id)
 			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+	
+	@Get("/classroom/:id/bibliography")
+	def getBiblio() {
+		try {
+			val biblio = classroomService.getBibliography(id)
+			return ok(biblio.toJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+
+	@Post("/classroom/:id/bibliography")
+	def createBiblio(@Body String body) {
+		try {
+			val biblio = body.fromJson(Bibliography)
+			classroomService.createBibliography(id,biblio)
+			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+
+	@Delete("/classroom/:id/bibliography/:bid")
+	def deleteBiblio() {
+		try {
+			classroomService.removeBiblio(id,bid)
+			return ok(Parsers.statusOkJson)
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
+
+	@Put("/classroom/:id/bibliography/:bid")
+	def editBiblio(@Body String body) {
+		try {
+			val biblio = body.fromJson(Bibliography)
+			classroomService.updateBiblio(id,biblio)
+			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
 		}

@@ -54,8 +54,12 @@ class Classroom {
 	//esto va a mongo, poligloto! :D
 	@JsonIgnore
 	@ElementCollection(fetch=FetchType.EAGER)
-	List<ObjectId>examsIds
+	List<ObjectId>examsIds = newArrayList
 	
+	@JsonIgnore
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	Set<Bibliography>bibliography = newHashSet
+		
 	@Transient
 	List<Exam>exams
 
@@ -115,6 +119,18 @@ class Classroom {
 	
 	def removeStudents(){
 		users.removeIf[it.role != Role.teacher ]
+	}
+	
+	def addBibliography(Bibliography newBilbio){
+		bibliography.add(newBilbio)
+	}
+	
+	def removeBibliography(Bibliography bilbio){
+		bibliography.remove(bilbio)
+	}
+	
+	def removeBibliography(String bilbioid){
+		bibliography.removeIf[it.id.toString == bilbioid]
 	}
 	
 }
