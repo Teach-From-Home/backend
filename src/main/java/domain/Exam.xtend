@@ -79,7 +79,8 @@ class Exam {
 @Accessors
 class SolvedExam {
 	String studentId
-	String studentName
+	String name
+	String lastname
 	@JsonIgnore LocalDateTime startDate
 	@JsonIgnore LocalDateTime finishDate
 	double grade
@@ -92,7 +93,9 @@ class SolvedExam {
 	new(User student){
 		startDate = LocalDateTime.now
 		studentId = student.id.toString
-		studentName = student.name + " " + student.lastname
+		name = student.name
+		lastname = student.lastname
+		
 	}
 
 	def getExamIsDone() {
