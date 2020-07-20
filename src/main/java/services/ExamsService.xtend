@@ -69,7 +69,7 @@ class ExamsService {
 	
 	def enableExam(String examId,String classroomId){
 		val exam = examRepo.searchById(new ObjectId(examId))
-		exam.available = true
+		exam.available = !exam.available 
 		examRepo.update(exam)
 	}
 }
