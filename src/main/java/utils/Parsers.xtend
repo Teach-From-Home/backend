@@ -47,5 +47,6 @@ class HomeworkParser{
 	String description
 	boolean available
 	String deadLine
+	String file
 	
 }

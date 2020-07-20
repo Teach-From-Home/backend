@@ -25,6 +25,9 @@ class Homework {
 	@Column
 	String title
 	
+	@Column
+	String file 
+		
 	@ManyToOne
 	User teacher
 	

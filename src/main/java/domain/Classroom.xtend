@@ -3,6 +3,7 @@ package domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.HashSet
 import java.util.List
 import java.util.Set
@@ -23,6 +24,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import serializers.LocalDateSerializer
 import utils.Parsers
 import utils.Role
+import repository.ExamsRepository
 
 @Entity
 @Accessors
@@ -105,7 +107,12 @@ class Classroom {
 	
 	def calendarEntries(){
 		val active = homework.filter[it.available]
-		active.map[new CalendarEntry(it.deadLine, it.title, this.name ,subject.name)].toList
+		val events = active.map[new CalendarEntry(it,this)].toList
+		var activeEx = examsIds.map[ExamsRepository.getInstance.searchById(it)].toList
+		activeEx = activeEx.filter[it.available].toList
+		events.addAll(activeEx.map[new CalendarEntry(it,this)].toList)
+		
+		events
 	}
 	
 	def allStudents(){
@@ -142,11 +149,34 @@ class CalendarEntry{
 	String title
 	String classroomName
 	String subjectName
+	String start
+	long classroomId
+	boolean allDay = true
+	String type
 	
-	new(LocalDate _deadLine, String _title, String _subjectName, String _classroomName){
-		deadLine = _deadLine
-		title = _title
-		classroomName = _subjectName
-		subjectName = _classroomName
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+	
+	new(Homework hw,Classroom classroom){
+		deadLine = hw.deadLine
+		title = hw.title
+		classroomName = classroom.name
+		subjectName = classroom.subject.name
+		start = formatter.format(hw.deadLine)
+		classroomId = classroom.id
+		type = "HW"
+	}
+	
+	new(Exam hw,Classroom classroom){
+		deadLine = hw.deadLine
+		title = hw.title
+		classroomName = classroom.name
+		subjectName = classroom.subject.name
+		start = formatter.format(hw.deadLine)
+		classroomId = classroom.id
+		type = "EX"
 	}
 }
+
+
+
+

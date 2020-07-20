@@ -22,6 +22,7 @@ class HomeworkService {
 		homeworkParent.available = homework.available
 		homeworkParent.title = homework.title
 		homeworkParent.description = homework.description
+		homeworkParent.file = homework.file
 		homeworkParent.deadLine = Parsers.ParseStringToDate(homework.deadLine)
 		val classroom = classroomRepo.searchById(classroomId)
 		classroom.addHomeWork(homeworkParent)
@@ -33,6 +34,7 @@ class HomeworkService {
 		homeworkParent.title = homework.title
 		homeworkParent.description = homework.description
 		homeworkParent.available = homework.available
+		homeworkParent.file = homework.file
 		homeworkParent.deadLine = Parsers.ParseStringToDate(homework.deadLine)
 		homeworkRepo.update(homeworkParent)
 	}
