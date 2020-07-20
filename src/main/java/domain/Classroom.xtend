@@ -108,9 +108,8 @@ class Classroom {
 	def calendarEntries(){
 		val active = homework.filter[it.available]
 		val events = active.map[new CalendarEntry(it,this)].toList
-		var activeEx = examsIds.map[ExamsRepository.getInstance.searchById(it)].toList
-		activeEx = activeEx.filter[it.available].toList
-		events.addAll(activeEx.map[new CalendarEntry(it,this)].toList)
+		var exams = examsIds.map[ExamsRepository.getInstance.searchById(it)].toList
+		events.addAll(exams.map[new CalendarEntry(it,this)].toList)
 		
 		events
 	}

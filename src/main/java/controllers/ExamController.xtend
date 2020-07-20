@@ -104,6 +104,18 @@ class ExamController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	@Put("/classroom/:id/exam/:eid/activate")
+	def getExassms() {
+		try {
+			examsService.enableExam(eid,id)
+			return ok(Parsers.statusOkJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
+		} catch (Exception e) {
+			return internalServerError(e.toJson)
+		}
+	}
 
 }
 
