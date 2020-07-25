@@ -78,8 +78,12 @@ class Classroom {
 	@Column
 	String keyName = ""
 	
-	@OneToOne (fetch = FetchType.EAGER)
+	@JsonIgnore
+	@OneToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	AsistanceLog asintaceLog
+	
+	@Column
+	int numberOfLive = 0
 	
 	def getTeachers(){
 		users.filter[user |Role.validateRole(Parsers.parsearDeLongAString(user.id), Role.teacher)].map[it.getFullName].toList
@@ -124,6 +128,7 @@ class Classroom {
 	
 	def reset(){
 		homework.forEach[it.clearUploadedHomeworks it.disable]
+		exams.forEach[it.clearUploadedExams it.disable]
 		removeStudents()
 	}
 	
@@ -150,12 +155,14 @@ class Classroom {
 	}
 	
 	def goLive(User user){
-		if(!getLive)
+		if(!getLive){
 			asintaceLog = new AsistanceLog(user)
+			numberOfLive++
+		}
 	}
 	
 	def checkIn(User user){
-		if(!asistances.exists[it.userInClass == user && it.isFromToday])
+		if(!asistances.exists[it.userInClass == user && it.isFromToday] && getLive)
 			asistances.add(new AsistanceLog(user))
 	}
 	

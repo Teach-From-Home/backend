@@ -74,6 +74,15 @@ class Exam {
 		exam.setAnswers(answers)
 		exam.finishDate = LocalDateTime.now
 	}
+	
+	def clearUploadedExams() {
+		uploadedExams.clear
+	}
+	
+	def disable() {
+		available = false
+	}
+	
 }
 
 @Accessors
