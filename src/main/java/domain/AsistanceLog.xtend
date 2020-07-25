@@ -19,6 +19,8 @@ class AsistanceLog {
 	@Column
 	LocalDateTime inDate = LocalDateTime.now
 
+	new(){}
+	
 	new(User u) {
 		userInClass = u
 	}
