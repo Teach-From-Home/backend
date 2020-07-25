@@ -129,10 +129,17 @@ class ClassroomService {
 		classroomRepo.update(classr)
 	}
 	
-	def makeClassroomLive(String idClassroom){
+	def makeClassroomLive(String idClassroom, String userId){
 		val classroom = classroomRepo.searchById(idClassroom)
-		//classroom.allStudents.forEach[MailSender.send(it,MailTemplates.liveStart(it,classroom),"Comenzo la clase!")]
-		
+		val user = userRepo.searchById(userId)
+		if(user.role == Role.teacher){
+			classroom.goLive(user)
+			//classroom.allStudents.forEach[MailSender.send(it,MailTemplates.liveStart(it,classroom),"Comenzo la clase!")]
+		}
+		else{
+			classroom.checkIn(user)
+		}
+		classroomRepo.update(classroom)
 	}
 	
 	def resetClasroom(String id){

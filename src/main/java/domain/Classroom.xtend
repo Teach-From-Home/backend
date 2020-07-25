@@ -21,10 +21,10 @@ import javax.persistence.OneToOne
 import javax.persistence.Transient
 import org.bson.types.ObjectId
 import org.eclipse.xtend.lib.annotations.Accessors
+import repository.ExamsRepository
 import serializers.LocalDateSerializer
 import utils.Parsers
 import utils.Role
-import repository.ExamsRepository
 
 @Entity
 @Accessors
@@ -64,6 +64,10 @@ class Classroom {
 		
 	@Transient
 	List<Exam>exams
+	
+	@JsonIgnore
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	Set<AsistanceLog>asistances = newHashSet
 
 	@Column
 	boolean active = true
@@ -74,8 +78,8 @@ class Classroom {
 	@Column
 	String keyName = ""
 	
-	@Column
-	boolean live = false
+	@OneToOne (fetch = FetchType.EAGER)
+	AsistanceLog asintaceLog
 	
 	def getTeachers(){
 		users.filter[user |Role.validateRole(Parsers.parsearDeLongAString(user.id), Role.teacher)].map[it.getFullName].toList
@@ -137,6 +141,22 @@ class Classroom {
 	
 	def removeBibliography(String bilbioid){
 		bibliography.removeIf[it.id.toString == bilbioid]
+	}
+	
+	def getLive(){
+		if(asintaceLog === null)
+			return false
+		asintaceLog.hoursUntilNow < 6
+	}
+	
+	def goLive(User user){
+		if(!getLive)
+			asintaceLog = new AsistanceLog(user)
+	}
+	
+	def checkIn(User user){
+		if(!asistances.exists[it.userInClass == user && it.isFromToday])
+			asistances.add(new AsistanceLog(user))
 	}
 	
 }

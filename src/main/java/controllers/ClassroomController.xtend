@@ -152,10 +152,10 @@ class ClassroomController {
 		}
 	}
 
-	@Post("/classroom/:id/live")
+	@Post("/classroom/:cid/user/:uid/live")
 	def classroomLive() {
 		try {
-			classroomService.makeClassroomLive(id)
+			classroomService.makeClassroomLive(cid,uid)
 			return ok(Parsers.statusOkJson)
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))
