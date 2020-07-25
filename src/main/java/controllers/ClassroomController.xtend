@@ -227,4 +227,16 @@ class ClassroomController {
 			return internalServerError(Parsers.errorJson(e.message))
 		}
 	}
+	
+	@Get("/classroom/:id/report")
+	def lalalal(){
+		try {
+			val a = classroomService.getReport(id)
+			return ok(a.toJson)
+		} catch (InvalidFormatException exception) {
+			return badRequest(Parsers.errorJson("Datos invalidos"))
+		} catch (Exception e) {
+			return internalServerError(Parsers.errorJson(e.message))
+		}
+	}
 }

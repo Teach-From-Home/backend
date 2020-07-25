@@ -171,4 +171,9 @@ class ClassroomService {
 		classroomRepo.update(classr)
 	}
 	
+	def getReport(String cid) {
+		val classr = classroomRepo.searchById(cid)
+		classr.asistanceReport
+	}
+	
 }

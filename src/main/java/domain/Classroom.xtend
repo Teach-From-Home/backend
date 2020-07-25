@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter
 import java.util.HashSet
 import java.util.List
 import java.util.Set
+import java.util.stream.Collectors
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.ElementCollection
@@ -52,43 +53,44 @@ class Classroom {
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonIgnore
 	Set<ForumPost> posts = new HashSet<ForumPost>
-	
-	//esto va a mongo, poligloto! :D
+
+	// esto va a mongo, poligloto! :D
 	@JsonIgnore
 	@ElementCollection(fetch=FetchType.EAGER)
-	List<ObjectId>examsIds = newArrayList
-	
+	List<ObjectId> examsIds = newArrayList
+
 	@JsonIgnore
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	Set<Bibliography>bibliography = newHashSet
-		
+	Set<Bibliography> bibliography = newHashSet
+
 	@Transient
-	List<Exam>exams
-	
+	List<Exam> exams
+
 	@JsonIgnore
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	Set<AsistanceLog>asistances = newHashSet
+	Set<AsistanceLog> asistances = newHashSet
 
 	@Column
 	boolean active = true
-	
+
 	@Column
 	String name = ""
-	
+
 	@Column
 	String keyName = ""
-	
+
 	@JsonIgnore
-	@OneToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	AsistanceLog asintaceLog
-	
+
 	@Column
 	int numberOfLive = 0
-	
-	def getTeachers(){
-		users.filter[user |Role.validateRole(Parsers.parsearDeLongAString(user.id), Role.teacher)].map[it.getFullName].toList
+
+	def getTeachers() {
+		users.filter[user|Role.validateRole(Parsers.parsearDeLongAString(user.id), Role.teacher)].map[it.getFullName].
+			toList
 	}
-	
+
 	def addUser(User userToAdd) {
 		users.add(userToAdd)
 	}
@@ -112,65 +114,73 @@ class Classroom {
 	def removePost(ForumPost postToRemove) {
 		posts.remove(postToRemove)
 	}
-	
-	def calendarEntries(){
+
+	def calendarEntries() {
 		val active = homework.filter[it.available]
-		val events = active.map[new CalendarEntry(it,this)].toList
+		val events = active.map[new CalendarEntry(it, this)].toList
 		var exams = examsIds.map[ExamsRepository.getInstance.searchById(it)].toList
-		events.addAll(exams.map[new CalendarEntry(it,this)].toList)
-		
+		events.addAll(exams.map[new CalendarEntry(it, this)].toList)
+
 		events
 	}
-	
-	def allStudents(){
+
+	def allStudents() {
 		users.filter[it.role == Role.student]
 	}
-	
-	def reset(){
+
+	def reset() {
 		homework.forEach[it.clearUploadedHomeworks it.disable]
 		exams.forEach[it.clearUploadedExams it.disable]
 		removeStudents()
 	}
-	
-	def removeStudents(){
-		users.removeIf[it.role != Role.teacher ]
+
+	def removeStudents() {
+		users.removeIf[it.role != Role.teacher]
 	}
-	
-	def addBibliography(Bibliography newBilbio){
+
+	def addBibliography(Bibliography newBilbio) {
 		bibliography.add(newBilbio)
 	}
-	
-	def removeBibliography(Bibliography bilbio){
+
+	def removeBibliography(Bibliography bilbio) {
 		bibliography.remove(bilbio)
 	}
-	
-	def removeBibliography(String bilbioid){
+
+	def removeBibliography(String bilbioid) {
 		bibliography.removeIf[it.id.toString == bilbioid]
 	}
-	
-	def getLive(){
-		if(asintaceLog === null)
+
+	def getLive() {
+		if (asintaceLog === null)
 			return false
 		asintaceLog.hoursUntilNow < 6
 	}
-	
-	def goLive(User user){
-		if(!getLive){
+
+	def goLive(User user) {
+		if (!getLive) {
 			asintaceLog = new AsistanceLog(user)
 			numberOfLive++
 		}
 	}
-	
-	def checkIn(User user){
-		if(!asistances.exists[it.userInClass == user && it.isFromToday] && getLive)
+
+	def checkIn(User user) {
+		if (!asistances.exists[it.userInClass == user && it.isFromToday] && getLive)
 			asistances.add(new AsistanceLog(user))
 	}
 	
+	def asistanceReport(){
+		val List <ReportLog> listOfReports = newArrayList
+		val asd  = asistances.stream()
+            .collect(Collectors.groupingBy([a | a.userInClass], Collectors.counting())); 
+     	asd.forEach[k , v| listOfReports.add(new ReportLog(numberOfLive,v,k))]
+     	return listOfReports
+	}
+
 }
 
 @Accessors
-class CalendarEntry{
-	@JsonSerialize(using = LocalDateSerializer)
+class CalendarEntry {
+	@JsonSerialize(using=LocalDateSerializer)
 	LocalDate deadLine
 	String title
 	String classroomName
@@ -179,10 +189,10 @@ class CalendarEntry{
 	long classroomId
 	boolean allDay = true
 	String type
-	
+
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
-	
-	new(Homework hw,Classroom classroom){
+
+	new(Homework hw, Classroom classroom) {
 		deadLine = hw.deadLine
 		title = hw.title
 		classroomName = classroom.name
@@ -191,8 +201,8 @@ class CalendarEntry{
 		classroomId = classroom.id
 		type = "HW"
 	}
-	
-	new(Exam hw,Classroom classroom){
+
+	new(Exam hw, Classroom classroom) {
 		deadLine = hw.deadLine
 		title = hw.title
 		classroomName = classroom.name
@@ -203,6 +213,19 @@ class CalendarEntry{
 	}
 }
 
+@Accessors
+class ReportLog {
+	String name
+	String lastName
+	int total
+	Long parcial
+	double percentage
 
-
-
+	new(int t, Long p, User u) {
+		total = t
+		parcial = p
+		percentage = (p * 100)/t
+		name = u.name
+		lastName = u.lastname
+	}
+}
