@@ -187,8 +187,24 @@ class Classroom {
 		return listOfReports
 	}
 	
+	def examsReport() {
+		val List<ReportLog> listOfReports = newArrayList
+		val List<User> uploads = newArrayList
+		activeExams.forEach[uploads.addAll(usersThatUpload)]
+		var asd = uploads.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		asd.forEach [ k, v |
+			listOfReports.add(new ReportLog(activeExams.size,v,k))
+		]
+		return listOfReports
+	}
+	
+	
 	def activeHomeworks(){
 		homework.filter[it.available].toList
+	}
+	
+	def activeExams(){
+		exams.filter[it.available].toList
 	}
 	
 	def amountOfStudents(){

@@ -179,6 +179,9 @@ class ClassroomService {
 			case "asistance":{
 				return classr.asistanceReport
 			}
+			case "exams":{
+				return classr.examsReport
+			}
 			default: throw new BadAttributeValueExpException("El paramatro no existe")
 			
 		}

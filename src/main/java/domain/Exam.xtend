@@ -83,6 +83,10 @@ class Exam {
 		available = false
 	}
 	
+	def usersThatUpload(){
+		uploadedExams.map[new User(it.name, it.lastname)]
+	}
+	
 }
 
 @Accessors

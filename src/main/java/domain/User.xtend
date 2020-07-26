@@ -42,6 +42,13 @@ class User{
 	@ManyToMany(fetch=FetchType.EAGER)
 	List<Subject> subjects = new ArrayList<Subject>
 	
+	new(){}
+	
+	new(String na, String lastn){
+		name = na
+		lastname = lastn
+	}
+	
 	def addSubject(Subject subjectToAdd){
 		subjects.add(subjectToAdd)
 	}
