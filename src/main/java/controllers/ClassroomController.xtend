@@ -237,7 +237,7 @@ class ClassroomController {
 		} catch (BadAttributeValueExpException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
-			return internalServerError(Parsers.errorJson(e.message))
+			return internalServerError(e.toJson)
 		}
 	}
 }

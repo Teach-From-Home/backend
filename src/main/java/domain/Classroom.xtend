@@ -171,14 +171,16 @@ class Classroom {
 
 	def asistanceReport() {
 		val List<ReportLog> listOfReports = newArrayList
-		val asd = asistances.stream().collect(Collectors.groupingBy([a|a.userInClass], Collectors.counting()));
+		val usersCount = students
+		usersCount.addAll(asistances.map[it.userInClass])
+		val asd = usersCount.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 		asd.forEach[k, v|listOfReports.add(new ReportLog(numberOfLive, v, k))]
 		return listOfReports
 	}
 
 	def homeworksReport() {
 		val List<ReportLog> listOfReports = newArrayList
-		val List<User> uploads = newArrayList
+		val List<User> uploads = students
 		activeHomeworks.forEach[uploads.addAll(usersThatUpload)]
 		var asd = uploads.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 		asd.forEach [ k, v |
@@ -189,7 +191,18 @@ class Classroom {
 	
 	def examsReport() {
 		val List<ReportLog> listOfReports = newArrayList
-		val List<User> uploads = newArrayList
+		val List<User> uploads = students
+		activeExams.forEach[uploads.addAll(usersThatUpload)]
+		var asd = uploads.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		asd.forEach [ k, v |
+			listOfReports.add(new ReportLog(activeExams.size,v,k))
+		]
+		return listOfReports
+	}
+	
+	def examsGradeReport() {
+		val List<ReportLog> listOfReports = newArrayList
+		val List<User> uploads = students
 		activeExams.forEach[uploads.addAll(usersThatUpload)]
 		var asd = uploads.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 		asd.forEach [ k, v |
@@ -204,11 +217,12 @@ class Classroom {
 	}
 	
 	def activeExams(){
+		exams = examsIds.map[ExamsRepository.getInstance.searchById(it)].toList
 		exams.filter[it.available].toList
 	}
 	
-	def amountOfStudents(){
-		users.filter[it.role == Role.student].size
+	def students(){
+		users.filter[it.role == Role.student].toList
 	}
 
 }
@@ -258,9 +272,13 @@ class ReportLog {
 
 	new(int t, Long p, User u) {
 		total = t
-		parcial = p
-		percentage = (p * 100) / t
+		parcial = p - 1 //le resto uno por que genero un registro con cada user para que esten todos en el reporte
+		if(total > 0)
+			percentage = (parcial * 100) / total
+		else
+			percentage = 0
 		name = u.name
 		lastName = u.lastname
 	}
 }
+
