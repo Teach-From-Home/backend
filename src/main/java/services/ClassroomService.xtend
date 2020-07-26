@@ -1,13 +1,12 @@
 package services
 
+import domain.Bibliography
 import domain.Classroom
 import javassist.NotFoundException
+import javax.management.BadAttributeValueExpException
 import repository.ClassroomRepository
 import repository.UserRepository
-import utils.MailSender
-import utils.MailTemplates
 import utils.Role
-import domain.Bibliography
 
 class ClassroomService {
 	UserRepository userRepo = UserRepository.getInstance
@@ -171,9 +170,18 @@ class ClassroomService {
 		classroomRepo.update(classr)
 	}
 	
-	def getReport(String cid) {
+	def getReport(String cid, String type) {
 		val classr = classroomRepo.searchById(cid)
-		classr.asistanceReport
+		switch(type){
+			case "homework":{
+				return classr.homeworksReport
+			}
+			case "asistance":{
+				return classr.asistanceReport
+			}
+			default: throw new BadAttributeValueExpException("El paramatro no existe")
+			
+		}
 	}
 	
 }

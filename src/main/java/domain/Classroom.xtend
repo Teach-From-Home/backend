@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter
 import java.util.HashSet
 import java.util.List
 import java.util.Set
+import java.util.function.Function
 import java.util.stream.Collectors
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -167,13 +168,31 @@ class Classroom {
 		if (!asistances.exists[it.userInClass == user && it.isFromToday] && getLive)
 			asistances.add(new AsistanceLog(user))
 	}
+
+	def asistanceReport() {
+		val List<ReportLog> listOfReports = newArrayList
+		val asd = asistances.stream().collect(Collectors.groupingBy([a|a.userInClass], Collectors.counting()));
+		asd.forEach[k, v|listOfReports.add(new ReportLog(numberOfLive, v, k))]
+		return listOfReports
+	}
+
+	def homeworksReport() {
+		val List<ReportLog> listOfReports = newArrayList
+		val List<User> uploads = newArrayList
+		activeHomeworks.forEach[uploads.addAll(usersThatUpload)]
+		var asd = uploads.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		asd.forEach [ k, v |
+			listOfReports.add(new ReportLog(activeHomeworks.size,v,k))
+		]
+		return listOfReports
+	}
 	
-	def asistanceReport(){
-		val List <ReportLog> listOfReports = newArrayList
-		val asd  = asistances.stream()
-            .collect(Collectors.groupingBy([a | a.userInClass], Collectors.counting())); 
-     	asd.forEach[k , v| listOfReports.add(new ReportLog(numberOfLive,v,k))]
-     	return listOfReports
+	def activeHomeworks(){
+		homework.filter[it.available].toList
+	}
+	
+	def amountOfStudents(){
+		users.filter[it.role == Role.student].size
 	}
 
 }
@@ -224,7 +243,7 @@ class ReportLog {
 	new(int t, Long p, User u) {
 		total = t
 		parcial = p
-		percentage = (p * 100)/t
+		percentage = (p * 100) / t
 		name = u.name
 		lastName = u.lastname
 	}

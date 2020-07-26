@@ -1,7 +1,9 @@
 package controllers
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
+import domain.Bibliography
 import domain.Classroom
+import javax.management.BadAttributeValueExpException
 import javax.persistence.NoResultException
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
@@ -12,7 +14,6 @@ import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
 import services.ClassroomService
 import utils.Parsers
-import domain.Bibliography
 
 @Controller
 class ClassroomController {
@@ -229,11 +230,11 @@ class ClassroomController {
 	}
 	
 	@Get("/classroom/:id/report")
-	def lalalal(){
+	def lalalal(String type){
 		try {
-			val a = classroomService.getReport(id)
+			val a = classroomService.getReport(id,type)
 			return ok(a.toJson)
-		} catch (InvalidFormatException exception) {
+		} catch (BadAttributeValueExpException exception) {
 			return badRequest(Parsers.errorJson("Datos invalidos"))
 		} catch (Exception e) {
 			return internalServerError(Parsers.errorJson(e.message))

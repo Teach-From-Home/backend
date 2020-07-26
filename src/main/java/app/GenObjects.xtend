@@ -185,7 +185,7 @@ class GenObjects {
 
 			teacher = teacher1
 
-			available = true
+			available = false
 		]
 
 		val derRealizado = new HomeworkDone => [

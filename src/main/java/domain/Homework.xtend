@@ -47,6 +47,14 @@ class Homework {
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	Set<HomeworkDone> uploadedHomeworks = new HashSet<HomeworkDone>
 	
+	def getUploadedAmount(){
+		uploadedHomeworks.size
+	}
+	
+	def usersThatUpload(){
+		uploadedHomeworks.map[it.student]
+	}
+	
 	def changeState(){
 		available = !available
 	}
@@ -84,6 +92,15 @@ class Homework {
 	
 	def getAmountOfHandedHomeworks(){
 		uploadedHomeworks.size
+	}
+	
+	override equals(Object obj) {
+		try {
+			val other = obj as Homework
+			id == other?.id
+		} catch (ClassCastException e) {
+			return false
+		}
 	}
 }
 
