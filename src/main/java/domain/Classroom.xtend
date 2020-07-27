@@ -181,47 +181,85 @@ class Classroom {
 	def homeworksReport() {
 		val List<ReportLog> listOfReports = newArrayList
 		val List<User> uploads = students
-		activeHomeworks.forEach[uploads.addAll(usersThatUpload)]
+		activeHomeworks.forEach[uploads.addAll(it.usersThatUpload)]
 		var asd = uploads.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 		asd.forEach [ k, v |
-			listOfReports.add(new ReportLog(activeHomeworks.size,v,k))
+			listOfReports.add(new ReportLog(activeHomeworks.size, v, k))
 		]
 		return listOfReports
 	}
-	
+
 	def examsReport() {
 		val List<ReportLog> listOfReports = newArrayList
 		val List<User> uploads = students
-		activeExams.forEach[uploads.addAll(usersThatUpload)]
-		var asd = uploads.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		activeExams.forEach[uploads.addAll(it.usersThatUpload)]
+		var asd = uploads.stream().collect(Collectors.groupingBy([user|user], Collectors.counting()));
 		asd.forEach [ k, v |
-			listOfReports.add(new ReportLog(activeExams.size,v,k))
+			listOfReports.add(new ReportLog(activeExams.size, v, k))
 		]
 		return listOfReports
 	}
-	
+
 	def examsGradeReport() {
-		val List<ReportLog> listOfReports = newArrayList
-		val List<User> uploads = students
-		activeExams.forEach[uploads.addAll(usersThatUpload)]
-		var asd = uploads.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		val List<ReportLogGrade> listOfReports = newArrayList
+		val List<UserInReport> test = newArrayList
+		activeExams.forEach[test.addAll(it.usersThatUploadWithGrade)]
+		test.addAll(students.map[new UserInReport(it.name, it.lastname, it.id, 0)])
+		var asd = test.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.summarizingDouble([ a |
+			grade(a)
+		])))
+
 		asd.forEach [ k, v |
-			listOfReports.add(new ReportLog(activeExams.size,v,k))
+			listOfReports.add(new ReportLogGrade(activeExams.size, v.sum, k))
 		]
 		return listOfReports
 	}
 	
+	def hwGradeReport() {
+		val List<ReportLogGrade> listOfReports = newArrayList
+		val List<UserInReport> test = newArrayList
+		activeHomeworks.forEach[test.addAll(it.usersThatUploadWithGrade)]
+		test.addAll(students.map[new UserInReport(it.name, it.lastname, it.id, 0)])
+		var asd = test.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.summarizingDouble([ a |
+			grade(a)
+		])))
+
+		asd.forEach [ k, v |
+			listOfReports.add(new ReportLogGrade(activeHomeworks.size, v.sum, k))
+		]
+		return listOfReports
+	}
 	
-	def activeHomeworks(){
+	def totalGradeReport() {
+		val List<ReportLogGrade> listOfReports = newArrayList
+		val List<UserInReport> test = newArrayList
+		activeHomeworks.forEach[test.addAll(it.usersThatUploadWithGrade)]
+		activeExams.forEach[test.addAll(it.usersThatUploadWithGrade)]
+		test.addAll(students.map[new UserInReport(it.name, it.lastname, it.id, 0)])
+		var asd = test.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.summarizingDouble([ a |
+			grade(a)
+		])))
+
+		asd.forEach [ k, v |
+			listOfReports.add(new ReportLogGrade(activeExams.size + activeHomeworks.size, v.sum, k))
+		]
+		return listOfReports
+	}
+
+	def grade(UserInReport report) {
+		return report.getGrade()
+	}
+
+	def activeHomeworks() {
 		homework.filter[it.available].toList
 	}
-	
-	def activeExams(){
+
+	def activeExams() {
 		exams = examsIds.map[ExamsRepository.getInstance.searchById(it)].toList
 		exams.filter[it.available].toList
 	}
-	
-	def students(){
+
+	def students() {
 		users.filter[it.role == Role.student].toList
 	}
 
@@ -272,8 +310,8 @@ class ReportLog {
 
 	new(int t, Long p, User u) {
 		total = t
-		parcial = p - 1 //le resto uno por que genero un registro con cada user para que esten todos en el reporte
-		if(total > 0)
+		parcial = p - 1 // le resto uno por que genero un registro con cada user para que esten todos en el reporte
+		if (total > 0)
 			percentage = (parcial * 100) / total
 		else
 			percentage = 0
@@ -282,3 +320,53 @@ class ReportLog {
 	}
 }
 
+@Accessors
+class ReportLogGrade {
+	String name
+	String lastName
+	int total
+	double parcial
+	double percentage
+
+	new(int t, double p, UserInReport u) {
+		total = t
+		
+		if (total > 0){
+			parcial = p / t
+			percentage = (parcial * 10) 
+		}
+		else
+			percentage = 0
+			
+		name = u.name
+		lastName = u.lastname
+	}
+}
+
+@Accessors
+class UserInReport {
+	Long id
+	String name
+	String lastname
+	double grade
+
+	new(String na, String lastn, Long i, double gr) {
+		name = na
+		lastname = lastn
+		grade = gr
+		id = i
+	}
+
+	override equals(Object obj) {
+		try {
+			val other = obj as UserInReport
+			id == other?.id
+		} catch (ClassCastException e) {
+			return false
+		}
+	}
+
+	override hashCode() {
+		if(id !== null) id.hashCode else super.hashCode
+	}
+}

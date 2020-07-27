@@ -102,6 +102,13 @@ class Homework {
 			return false
 		}
 	}
+	
+	def usersThatUploadWithGrade(){
+		val a = uploadedHomeworks.map[
+			new UserInReport(it.student.name, it.student.lastname, it.student.id, it.grade)
+		]
+		return a
+	}
 }
 
 @Entity
@@ -111,7 +118,7 @@ class HomeworkDone{
 	Long id
 	
 	@Column
-	Double grade
+	Double grade = 0.0
 	
 	@Column(columnDefinition="TEXT")
 	String coment

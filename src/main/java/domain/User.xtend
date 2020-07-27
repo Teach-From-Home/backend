@@ -70,6 +70,7 @@ class User{
 		}
 	}
 	
+	
 	override hashCode() {
 		if (id !== null) id.hashCode else super.hashCode
 	}

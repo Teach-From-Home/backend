@@ -13,6 +13,7 @@ import org.mongodb.morphia.annotations.Embedded
 import org.mongodb.morphia.annotations.Entity
 import org.mongodb.morphia.annotations.Id
 import org.mongodb.morphia.annotations.Transient
+import repository.UserRepository
 import serializers.LocalDateDeserializer
 import serializers.LocalDateSerializer
 import serializers.ObjectIdSerializer
@@ -84,8 +85,17 @@ class Exam {
 	}
 	
 	def usersThatUpload(){
-		uploadedExams.map[new User(it.name, it.lastname)]
+		uploadedExams.map[UserRepository.getInstance.searchById(it.studentId)]
 	}
+	
+	def usersThatUploadWithGrade(){
+		val a = uploadedExams.map[
+			val us = UserRepository.getInstance.searchById(it.studentId)
+			new UserInReport(us.name, us.lastname, us.id, it.grade)
+		]
+		return a
+	}
+	
 	
 }
 
@@ -96,7 +106,7 @@ class SolvedExam {
 	String lastname
 	@JsonIgnore LocalDateTime startDate
 	@JsonIgnore LocalDateTime finishDate
-	double grade
+	double grade = 0
 	String teacherComment
 	List<Question> answers = newArrayList
 	@Transient boolean solvedOnTime

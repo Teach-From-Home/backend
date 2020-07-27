@@ -182,6 +182,15 @@ class ClassroomService {
 			case "exams":{
 				return classr.examsReport
 			}
+			case "examsgrade":{
+				return classr.examsGradeReport
+			}
+			case "homeworkgrade":{
+				return classr.hwGradeReport
+			}
+			case "totalgrade":{
+				return classr.totalGradeReport
+			}
 			default: throw new BadAttributeValueExpException("El paramatro no existe")
 			
 		}
