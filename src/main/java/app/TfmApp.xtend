@@ -12,7 +12,7 @@ import controllers.ExamController
 class TfmApp {
 	def static void main(String[] args) {
 	
-		GenObjects.generateAll()
+		//GenObjects.generateAll()
 		var int port
 		var Dotenv dotenv
 

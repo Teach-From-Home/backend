@@ -22,8 +22,8 @@ class GenObjects {
 		val subjectRepo = new SubjectRepository
 
 		// Subject data definition
-		val dataBase = new Subject => [
-			name = "Base de Datos"
+		/*val dataBase = new Subject => [
+		 	name = "Base de Datos"
 
 			description = "Materia en la cual se veran temas relacionados a base de datos, diagramas, formas normales, etc."
 		]
@@ -32,24 +32,26 @@ class GenObjects {
 			name = "Programacion con herramientas modernas"
 
 			description = "Materia en la cual utilizamos 14 millones de tipos de bases de datos y/o graficos geniales para una aplicacion"
-		]
+		]*/
 
 		// User Data definition
 		val admin = new User => [
-			name = "Blanca"
+			name = "Walter"
 
-			lastname = "Suarez"
+			lastname = "Gomez"
 
-			dni = 40128383
+			dni = 92628748
 
-			email = "blancasuarez@gmail.com"
+			email = "wgomez@gmail.com"
 
-			password = "admin"
+			password = "javi"
 
 			role = "ADMIN"
 		]
+		
+		userRepo.create(admin)
 
-		val student1 = new User => [
+		/*val student1 = new User => [
 			name = "Agustin Mario"
 
 			lastname = "Tini"
@@ -214,7 +216,7 @@ class GenObjects {
 		userRepo.create(student1)
 		userRepo.create(student2)
 		userRepo.create(student3)
-		userRepo.create(admin)
+		
 		userRepo.create(teacher1)
 		userRepo.create(teacher2)
 
@@ -230,7 +232,7 @@ class GenObjects {
 		// Classroom repo create
 		classroomRepo.create(cursadaDataBase)
 		cursadaDataBase.keyName = cursadaDataBase.subject.name.replaceAll("\\s+", "").toLowerCase + cursadaDataBase.id
-		classroomRepo.update(cursadaDataBase)
+		classroomRepo.update(cursadaDataBase)*/
 
 	}
 }
