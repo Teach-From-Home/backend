@@ -7,8 +7,10 @@ import java.util.List
 import org.bson.types.ObjectId
 import repository.ClassroomRepository
 import repository.ExamsRepository
-import utils.Role
 import repository.UserRepository
+import utils.MailSender
+import utils.MailTemplates
+import utils.Role
 
 class ExamsService {
 	ExamsRepository examRepo = ExamsRepository.getInstance
@@ -70,6 +72,10 @@ class ExamsService {
 	def enableExam(String examId,String classroomId){
 		val exam = examRepo.searchById(new ObjectId(examId))
 		exam.available = !exam.available 
+		if(exam.available){
+			val classroom = classroomRepo.searchById(classroomId)
+			classroom.students.forEach[MailSender.send(it,MailTemplates.newExam(it,classroom, exam),"Examen activo!")]
+		}
 		examRepo.update(exam)
 	}
 }

@@ -6,6 +6,8 @@ import javassist.NotFoundException
 import javax.management.BadAttributeValueExpException
 import repository.ClassroomRepository
 import repository.UserRepository
+import utils.MailSender
+import utils.MailTemplates
 import utils.Role
 
 class ClassroomService {
@@ -117,7 +119,7 @@ class ClassroomService {
 		val newUser = userRepo.searchById(userId)
 		classr.users.add(newUser)
 		classroomRepo.update(classr)
-		//MailSender.send(newUser,MailTemplates.addedToClassroom(newUser,classr),"Notificación TFM")
+		MailSender.send(newUser,MailTemplates.addedToClassroom(newUser,classr),"Notificación TFM")
 	}
 	
 	def deleteUser(String classroomId, String userId){
@@ -131,7 +133,7 @@ class ClassroomService {
 		val user = userRepo.searchById(userId)
 		if(user.role == Role.teacher){
 			classroom.goLive(user)
-			//classroom.allStudents.forEach[MailSender.send(it,MailTemplates.liveStart(it,classroom),"Comenzo la clase!")]
+			classroom.allStudents.forEach[MailSender.send(it,MailTemplates.liveStart(it,classroom),"Comenzo la clase!")]
 		}
 		else{
 			classroom.checkIn(user)
