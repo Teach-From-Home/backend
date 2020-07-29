@@ -63,7 +63,6 @@ class ClassroomService {
 			val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available].toList
 			homeworks.forEach[ it.uploaded = it.isDoneByUser(user) ]
 			homeworks.forEach[ it.uploadedHomeworks = it.uploadedHomeworks.filter[ it.student == user ].toSet ]
-			if(homeworks.nullOrEmpty) throw new NotFoundException("No hay tareas pendientes")
 			return homeworks.sortBy[deadLine].reverseView.toList
 			//DANGER ZONE!!!!!
 		}
@@ -74,7 +73,7 @@ class ClassroomService {
 		val homeworks = classroomRepo.searchById(idClassroom).homework.filter[it.available].sortBy[deadLine].reverseView.toList
 		var hw = homeworks.map[it.uploadedHomeworks].flatten.toList
 		hw = hw.filter[it.student.id == user.id].toList
-		if(hw.nullOrEmpty) throw new NotFoundException("No hay tareas subidas")
+		
 		hw
 	}
 
