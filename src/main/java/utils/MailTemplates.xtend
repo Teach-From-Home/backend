@@ -61,7 +61,7 @@ class MailTemplates {
 			"<h1>Examen activo!</h1>",
 			"<p>Hola " + user.name + ",</p>",
 			"<p>Se ha activado el examen de: <strong> " + classRoom.subject.name + "</strong><br><p>",
-			"<p>La examen es: <strong>" + exam.title + "</strong></p>",
+			"<p>El examen es: <strong>" + exam.title + "</strong></p>",
 			"<p>Recorda entregarlo antes del <strong>" + Parsers.dateString(exam.deadLine) + "</strong></p>",
 			"<p> <strong>Importante: </strong> Una vez que inicies el examen empieza a correr el tiempo!
 				 recorda entregarlo dentro de <strong> " + exam.minutes + " minutos</strong></p>",
